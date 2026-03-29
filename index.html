@@ -4,492 +4,439 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Glory Elevn</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --dark: #0b1a2b;
-      --accent: #e8c84a;
-      --light: #f7f5f0;
-      --muted: #888;
-    }
+    :root{--dark:#0b1a2b;--accent:#e8c84a;--light:#f7f5f0;--muted:#888;--green:#25D366}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--dark);overflow-x:hidden}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--light);
-      color: var(--dark);
-      overflow-x: hidden;
-    }
+    /* LOADER */
+    #loader{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s}
+    #loader.done{opacity:0;pointer-events:none}
+    .loader-logo{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--accent);letter-spacing:4px;animation:pulse 1s ease infinite alternate}
+    @keyframes pulse{from{opacity:.3}to{opacity:1}}
 
     /* HEADER */
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 48px;
-      background: rgba(11,26,43,0.96);
-      backdrop-filter: blur(8px);
-    }
-
-    .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 26px;
-      color: var(--accent);
-      letter-spacing: 3px;
-    }
-
-    nav a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-left: 32px;
-      transition: color 0.2s;
-    }
-
-    nav a:hover { color: var(--accent); }
+    header{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:18px 48px;background:rgba(11,26,43,.97);backdrop-filter:blur(10px)}
+    .logo{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);letter-spacing:3px;text-decoration:none}
+    nav{display:flex;align-items:center;gap:22px}
+    nav a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s;cursor:pointer}
+    nav a:hover{color:var(--accent)}
+    .nav-insta{display:flex!important;align-items:center;gap:7px;border:1px solid rgba(232,200,74,.4);padding:7px 14px;color:var(--accent)!important}
+    .search-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:7px 14px;transition:border-color .2s}
+    .search-wrap:focus-within{border-color:var(--accent)}
+    #headerSearch{background:none;border:none;outline:none;color:#fff;font-size:12px;font-family:'DM Sans',sans-serif;width:150px}
+    #headerSearch::placeholder{color:rgba(255,255,255,.35)}
 
     /* HERO */
-    .hero {
-      min-height: 100vh;
-      background: var(--dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      padding: 120px 24px 60px;
-    }
+    .hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:120px 24px 80px}
+    .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,26,43,.4) 0%,rgba(11,26,43,.85) 100%)}
+    .hero-content{position:relative;z-index:2}
+    .hero-tag{display:inline-block;font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(232,200,74,.4);padding:6px 18px;margin-bottom:28px;animation:fadeUp .7s ease both}
+    .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,13vw,140px);color:#fff;line-height:.9;letter-spacing:2px;animation:fadeUp .7s .1s ease both}
+    .hero h1 span{color:var(--accent)}
+    .hero-sub{margin:24px auto 40px;max-width:480px;color:rgba(255,255,255,.5);font-size:16px;line-height:1.7;font-weight:300;animation:fadeUp .7s .2s ease both}
+    .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s .3s ease both}
+    .btn-gold{padding:13px 30px;background:var(--accent);color:var(--dark);font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity .2s,transform .15s}
+    .btn-gold:hover{opacity:.85;transform:translateY(-2px)}
+    .btn-ghost{padding:13px 30px;background:transparent;color:rgba(255,255,255,.8);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(255,255,255,.3);cursor:pointer;text-decoration:none;display:inline-block;transition:border-color .2s,color .2s}
+    .btn-ghost:hover{border-color:#fff;color:#fff}
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(232,200,74,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 80% 80%, rgba(255,255,255,0.04) 0%, transparent 60%);
-    }
+    /* SHOP */
+    .shop-section{padding:90px 48px 60px}
+    .shop-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:20px}
+    .section-label{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .section-title{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:1px;line-height:1}
+    .search-inline{display:flex;align-items:center;gap:10px;border:1px solid #ddd;background:#fff;padding:10px 16px}
+    .search-inline svg{color:var(--muted);flex-shrink:0}
+    #shopSearch{border:none;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;width:220px}
+    .result-count{font-size:12px;color:var(--muted);margin-top:6px;min-height:18px}
+    .tab-bar{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0 44px}
+    .tab-btn{padding:8px 20px;border:1px solid #ddd;background:#fff;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+    .tab-btn:hover{border-color:var(--dark)}
+    .tab-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
 
-    .hero-tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid rgba(232,200,74,0.4);
-      padding: 6px 16px;
-      margin-bottom: 28px;
-      animation: fadeUp 0.8s ease both;
-    }
+    /* GRID */
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:26px}
+    .product-card{background:#fff;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s;animation:fadeUp .5s ease both}
+    .product-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(11,26,43,.1)}
+    .prod-img{width:100%;aspect-ratio:4/5;background:#ede9e3;overflow:hidden;position:relative}
+    .prod-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+    .product-card:hover .prod-img img{transform:scale(1.06)}
+    .prod-img img.img2{position:absolute;inset:0;opacity:0;transition:opacity .4s}
+    .product-card:hover .prod-img img.img2{opacity:1}
+    .badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px}
+    .badge-new{background:var(--dark);color:var(--accent)}
+    .badge-sale{background:#e84a4a;color:#fff}
+    .badge-kids{background:#4a90e8;color:#fff}
+    .badge-retro{background:#8b6914;color:#fff}
+    .badge-training{background:#2d6a4f;color:#fff}
+    .badge-interland{background:#6a1a6a;color:#fff}
+    .prod-info{padding:18px}
+    .prod-club{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+    .prod-info h3{font-size:15px;font-weight:500;margin-bottom:8px}
+    .prod-price{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .price-now{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px}
+    .price-was{font-size:13px;color:var(--muted);text-decoration:line-through}
+    .prod-players{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+    .player-tag{font-size:10px;font-weight:600;letter-spacing:.5px;background:var(--light);border:1px solid #e0dbd4;padding:3px 8px}
+    .view-btn{width:100%;padding:10px;background:var(--dark);color:#fff;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+    .view-btn:hover{background:#1a3a5c}
+    .no-results{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);font-size:15px;line-height:2}
 
-    .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(64px, 12vw, 130px);
-      color: white;
-      line-height: 0.92;
-      letter-spacing: 2px;
-      animation: fadeUp 0.8s 0.15s ease both;
-    }
+    /* PRODUCT MODAL */
+    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+    .modal-bg.open{opacity:1;pointer-events:all}
+    .modal{background:#fff;max-width:900px;width:100%;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;position:relative;animation:fadeUp .3s ease}
+    .modal-close{position:absolute;top:14px;right:18px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--dark);z-index:10;transition:color .2s}
+    .modal-close:hover{color:#e84a4a}
+    .modal-gallery{background:#ede9e3;display:flex;flex-direction:column}
+    .modal-main-img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+    .modal-thumbs{display:flex;gap:8px;padding:12px;overflow-x:auto}
+    .modal-thumb{width:64px;height:64px;object-fit:cover;cursor:pointer;border:2px solid transparent;transition:border-color .2s;flex-shrink:0}
+    .modal-thumb.active{border-color:var(--dark)}
+    .modal-body{padding:32px;display:flex;flex-direction:column;gap:18px;overflow-y:auto}
+    .modal-cat{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .modal-name{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px;line-height:1.05}
+    .modal-price-row{display:flex;align-items:center;gap:12px}
+    .modal-price-row .big{font-family:'Bebas Neue',sans-serif;font-size:40px}
+    .modal-price-row .was{font-size:15px;color:var(--muted);text-decoration:line-through}
+    .modal-sub-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .modal-players{display:flex;gap:6px;flex-wrap:wrap}
+    .modal-sizes{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+    .msz{padding:7px 12px;border:1px solid #ddd;background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+    .msz:hover,.msz.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+    .size-guide-link{font-size:11px;color:var(--muted);text-decoration:underline;cursor:pointer;margin-left:4px;background:none;border:none;font-family:'DM Sans',sans-serif}
+    .size-guide-link:hover{color:var(--dark)}
+    .order-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btn-wa-m{padding:13px;background:var(--green);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+    .btn-wa-m:hover{opacity:.88}
+    .btn-ig-m{padding:13px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+    .btn-ig-m:hover{opacity:.88}
+    .order-note{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
 
-    .hero h1 span { color: var(--accent); }
-
-    .hero-sub {
-      margin: 24px auto 40px;
-      max-width: 480px;
-      color: rgba(255,255,255,0.55);
-      font-size: 16px;
-      line-height: 1.7;
-      font-weight: 300;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
-
-    .hero-btns {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      animation: fadeUp 0.8s 0.45s ease both;
-    }
-
-    .btn-primary {
-      padding: 14px 32px;
-      background: var(--accent);
-      color: var(--dark);
-      font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-
-    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
-
-    .btn-outline {
-      padding: 14px 32px;
-      background: transparent;
-      color: rgba(255,255,255,0.7);
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border: 1px solid rgba(255,255,255,0.25);
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .btn-outline:hover { border-color: white; color: white; }
-
-    /* PRODUCTS */
-    .products-section {
-      padding: 100px 48px;
-      background: var(--light);
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 52px;
-    }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 48px;
-      letter-spacing: 1px;
-      line-height: 1;
-    }
-
-    .view-all {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--dark);
-      text-decoration: none;
-      border-bottom: 1px solid currentColor;
-      padding-bottom: 2px;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 24px;
-    }
-
-    .product-card {
-      background: white;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
-
-    .product-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(11,26,43,0.12);
-    }
-
-    .product-img {
-      width: 100%;
-      aspect-ratio: 4/5;
-      background: #e8e4de;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .product-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-
-    .product-card:hover .product-img img {
-      transform: scale(1.06);
-    }
-
-    .product-badge {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      background: var(--dark);
-      color: var(--accent);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 4px 10px;
-    }
-
-    .product-info {
-      padding: 20px;
-    }
-
-    .product-info h3 {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-
-    .product-info .price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 1px;
-      color: var(--dark);
-    }
-
-    .product-info .season {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
+    /* SIZE GUIDE */
+    .size-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+    .size-modal-bg.open{opacity:1;pointer-events:all}
+    .size-modal{background:#fff;max-width:660px;width:100%;max-height:90vh;overflow-y:auto;padding:40px;position:relative;animation:fadeUp .3s ease}
+    .size-modal h2{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;margin-bottom:6px}
+    .size-modal-close{position:absolute;top:14px;right:18px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--dark)}
+    .size-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
+    .size-table th{background:var(--dark);color:#fff;padding:10px 14px;text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+    .size-table td{padding:10px 14px;border-bottom:1px solid #eee}
+    .size-table tr:nth-child(even) td{background:#f9f8f6}
+    .size-note{font-size:12px;color:var(--muted);line-height:1.8;margin-top:16px}
 
     /* FEATURED */
-    .featured {
-      background: var(--dark);
-      padding: 100px 48px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
+    .featured{background:var(--dark);padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .featured .section-label{color:var(--accent)}
+    .featured h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,7vw,88px);color:#fff;line-height:.93;letter-spacing:1px;margin:10px 0 22px}
+    .featured p{color:rgba(255,255,255,.5);font-size:15px;line-height:1.8;font-weight:300;max-width:380px;margin-bottom:36px}
+    .feat-img{aspect-ratio:3/4;overflow:hidden;position:relative}
+    .feat-img img{width:100%;height:100%;object-fit:cover}
+    .feat-img::after{content:'';position:absolute;inset:0;border:1px solid rgba(232,200,74,.2)}
 
-    .featured-text .section-label { color: var(--accent); }
+    /* INSTAGRAM */
+    .insta-section{padding:80px 48px;background:#fff;text-align:center}
+    .insta-section h3{font-family:'Bebas Neue',sans-serif;font-size:44px;margin:8px 0 10px}
+    .insta-section p{color:var(--muted);font-size:14px;margin-bottom:32px}
+    .insta-btn-lnk{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:opacity .2s,transform .2s}
+    .insta-btn-lnk:hover{opacity:.88;transform:translateY(-2px)}
+    .insta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:40px;max-width:720px;margin-left:auto;margin-right:auto}
+    .insta-tile{aspect-ratio:1;overflow:hidden;position:relative;cursor:pointer}
+    .insta-tile img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .insta-tile:hover img{transform:scale(1.08)}
+    .insta-tile-ov{position:absolute;inset:0;background:rgba(11,26,43,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;color:#fff;font-size:22px}
+    .insta-tile:hover .insta-tile-ov{opacity:1}
 
-    .featured-text h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 6vw, 80px);
-      color: white;
-      line-height: 0.95;
-      letter-spacing: 1px;
-      margin: 12px 0 24px;
-    }
+    /* WA STRIP */
+    .wa-strip{background:var(--accent);padding:60px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .wa-strip h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,4vw,52px);color:var(--dark);letter-spacing:1px}
+    .wa-strip p{color:rgba(11,26,43,.6);font-size:14px;margin-top:4px}
+    .strip-btns{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-dark{padding:14px 24px;background:var(--dark);color:#fff;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:opacity .2s}
+    .btn-dark:hover{opacity:.85}
+    .btn-dark-ig{padding:14px 24px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:opacity .2s}
+    .btn-dark-ig:hover{opacity:.85}
 
-    .featured-text p {
-      color: rgba(255,255,255,0.55);
-      font-size: 15px;
-      line-height: 1.8;
-      font-weight: 300;
-      max-width: 380px;
-      margin-bottom: 40px;
-    }
-
-    .featured-img {
-      aspect-ratio: 3/4;
-      background: #1a2f44;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .featured-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .featured-img::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 1px solid rgba(232,200,74,0.2);
-    }
-
-    /* WHATSAPP STRIP */
-    .whatsapp-strip {
-      background: var(--accent);
-      padding: 60px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .whatsapp-strip h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(28px, 4vw, 48px);
-      color: var(--dark);
-      letter-spacing: 1px;
-    }
-
-    .whatsapp-strip p {
-      color: rgba(11,26,43,0.65);
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .btn-dark {
-      padding: 14px 32px;
-      background: var(--dark);
-      color: white;
-      font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border: none;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity 0.2s;
-    }
-
-    .btn-dark:hover { opacity: 0.85; }
+    /* FLOAT WA */
+    .float-wa{position:fixed;bottom:28px;right:28px;z-index:300;width:58px;height:58px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;animation:fadeUp .5s 1s ease both}
+    .float-wa:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.55)}
+    .float-wa svg{width:28px;height:28px;fill:#fff}
+    .float-wa-tip{position:absolute;right:70px;background:var(--dark);color:#fff;font-size:12px;font-weight:600;white-space:nowrap;padding:7px 14px;opacity:0;pointer-events:none;transition:opacity .2s}
+    .float-wa-tip::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);border:6px solid transparent;border-right:none;border-left-color:var(--dark)}
+    .float-wa:hover .float-wa-tip{opacity:1}
 
     /* FOOTER */
-    footer {
-      background: #060f18;
-      padding: 40px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
+    footer{background:#060f18;padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:3px}
+    footer p{color:rgba(255,255,255,.25);font-size:12px}
+    footer a{color:rgba(255,255,255,.45);font-size:13px;text-decoration:none;transition:color .2s}
+    footer a:hover{color:var(--accent)}
 
-    .footer-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      color: var(--accent);
-      letter-spacing: 3px;
-    }
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-    footer p {
-      color: rgba(255,255,255,0.3);
-      font-size: 12px;
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      header { padding: 16px 24px; }
-      .products-section { padding: 60px 24px; }
-      .featured { grid-template-columns: 1fr; padding: 60px 24px; }
-      .featured-img { display: none; }
-      .whatsapp-strip { padding: 40px 24px; }
-      footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+    @media(max-width:900px){
+      header{padding:14px 20px}
+      .search-wrap{display:none}
+      nav a:not(.nav-insta){display:none}
+      .shop-section,.insta-section{padding:60px 20px}
+      .featured{grid-template-columns:1fr;padding:60px 20px}
+      .feat-img{display:none}
+      .wa-strip{padding:40px 20px}
+      .insta-grid{grid-template-columns:repeat(3,1fr)}
+      footer{padding:30px 20px;flex-direction:column;text-align:center}
+      .modal{grid-template-columns:1fr;max-height:95vh}
+      .modal-main-img{aspect-ratio:4/3}
+      .order-choice{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
 
+<div id="loader"><div class="loader-logo">GLORY ELEVN</div></div>
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/310631093840?text=Hallo%2C%20ik%20wil%20graag%20bestellen!" target="_blank" class="float-wa">
+  <span class="float-wa-tip">Bestel via WhatsApp</span>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeMBg(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-gallery">
+      <img class="modal-main-img" id="modalMainImg" src="" alt="">
+      <div class="modal-thumbs" id="modalThumbs"></div>
+    </div>
+    <div class="modal-body">
+      <div><div class="modal-cat" id="modalCat"></div><div class="modal-name" id="modalName"></div></div>
+      <div class="modal-price-row"><span class="big" id="modalPrice"></span><span class="was" id="modalWas"></span></div>
+      <div>
+        <div class="modal-sub-label">Spelers</div>
+        <div class="modal-players" id="modalPlayers"></div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <span class="modal-sub-label" style="margin-bottom:0">Kies je maat</span>
+          <button class="size-guide-link" onclick="openSizeGuide()">📏 Maatgids</button>
+        </div>
+        <div class="modal-sizes" id="modalSizes"></div>
+      </div>
+      <div>
+        <div class="modal-sub-label">Bestellen via</div>
+        <div class="order-choice">
+          <button class="btn-wa-m" onclick="orderWA()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>
+          <button class="btn-ig-m" onclick="orderInsta()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram DM</button>
+        </div>
+        <div class="order-note">Vermeld product + maat — wij reageren zo snel mogelijk!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIZE GUIDE MODAL -->
+<div class="size-modal-bg" id="sizeBg" onclick="closeSizeBg(event)">
+  <div class="size-modal">
+    <button class="size-modal-close" onclick="closeSizeGuide()">✕</button>
+    <h2>📏 Maatgids</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Twijfel je? Kies altijd een maat groter.</p>
+    <!-- Eigen maatgids afbeelding: upload images/maatgids.jpg naar GitHub en verwijder de commentaar hieronder -->
+    <!-- <img src="images/maatgids.jpg" style="width:100%;margin-bottom:20px"> -->
+    <div class="modal-sub-label" style="margin-bottom:10px">Heren / Dames</div>
+    <table class="size-table">
+      <thead><tr><th>Maat</th><th>Borst (cm)</th><th>Lengte (cm)</th><th>Taille (cm)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>S</strong></td><td>88–96</td><td>68</td><td>76–84</td></tr>
+        <tr><td><strong>M</strong></td><td>96–104</td><td>71</td><td>84–92</td></tr>
+        <tr><td><strong>L</strong></td><td>104–112</td><td>74</td><td>92–100</td></tr>
+        <tr><td><strong>XL</strong></td><td>112–120</td><td>77</td><td>100–108</td></tr>
+        <tr><td><strong>XXL</strong></td><td>120–130</td><td>80</td><td>108–118</td></tr>
+      </tbody>
+    </table>
+    <div class="modal-sub-label" style="margin-bottom:10px;margin-top:24px">Kids</div>
+    <table class="size-table">
+      <thead><tr><th>Maat</th><th>Leeftijd</th><th>Lengte (cm)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>128</strong></td><td>7–8 jr</td><td>128</td></tr>
+        <tr><td><strong>140</strong></td><td>9–10 jr</td><td>140</td></tr>
+        <tr><td><strong>152</strong></td><td>11–12 jr</td><td>152</td></tr>
+        <tr><td><strong>164</strong></td><td>13–14 jr</td><td>164</td></tr>
+        <tr><td><strong>176</strong></td><td>15–16 jr</td><td>176</td></tr>
+      </tbody>
+    </table>
+    <p class="size-note">💡 Bij twijfel raden wij een maat groter aan. Vragen? WhatsApp of Instagram.</p>
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
-  <div class="logo">Glory Elevn</div>
+  <a href="#" class="logo">Glory Elevn</a>
   <nav>
-    <a href="#">Home</a>
-    <a href="#">Shop</a>
-    <a href="#">Contact</a>
+    <a onclick="filterTab('all');scrollToShop()">Shop</a>
+    <a onclick="filterTab('new');scrollToShop()">New</a>
+    <a onclick="filterTab('kids');scrollToShop()">Kids</a>
+    <a onclick="filterTab('retro');scrollToShop()">Retro</a>
+    <a onclick="filterTab('interland');scrollToShop()">Interland</a>
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="headerSearch" type="text" placeholder="Zoek shirt of speler..." oninput="doSearch(this.value)">
+    </div>
+    <a href="https://www.instagram.com/glory.elevn" target="_blank" class="nav-insta">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      @glory.elevn
+    </a>
   </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-  <div>
-    <div class="hero-tag">Nieuwe Collectie — 2024/25</div>
+  <video class="hero-video" autoplay muted loop playsinline src="https://gloryelevn.com/cdn/shop/videos/c/vp/b36fbe58c44a4081b0448f37a22cf265/b36fbe58c44a4081b0448f37a22cf265.HD-1080p-7.2Mbps-62377062.mp4?v=0"></video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">🔥 Nieuwe Collectie — 2025/26</div>
     <h1>Wear<br>The <span>Game</span></h1>
     <p class="hero-sub">Exclusieve voetbalshirts. Gedragen door legendes. Gemaakt voor kenners.</p>
     <div class="hero-btns">
-      <button class="btn-primary">Bekijk Collectie</button>
-      <button class="btn-outline">Bestellen via WhatsApp</button>
+      <a href="#shop" class="btn-gold">Bekijk Collectie</a>
+      <a href="https://wa.me/310631093840?text=Hallo%2C%20ik%20wil%20graag%20bestellen!" target="_blank" class="btn-ghost">📲 Direct Bestellen</a>
     </div>
   </div>
 </section>
 
-<section class="products-section">
-  <div class="section-header">
+<!-- SHOP -->
+<section class="shop-section" id="shop">
+  <div class="shop-header">
+    <div><div class="section-label">Collectie</div><div class="section-title">Alle Shirts</div></div>
     <div>
-      <div class="section-label">Collectie</div>
-      <div class="section-title">Shirts</div>
-    </div>
-    <a href="#" class="view-all">Alles bekijken</a>
-  </div>
-  <div class="products-grid">
-    <div class="product-card">
-      <div class="product-img">
-        <img src="https://via.placeholder.com/400x500/e8e4de/0b1a2b?text=Ajax+Shirt" alt="Ajax Shirt">
-        <div class="product-badge">Nieuw</div>
+      <div class="search-inline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="shopSearch" type="text" placeholder="Zoek shirt of speler..." oninput="doSearch(this.value)">
       </div>
-      <div class="product-info">
-        <div class="season">2024/25 · Thuis</div>
-        <h3>Ajax Home Shirt</h3>
-        <div class="price">€59,99</div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <img src="https://via.placeholder.com/400x500/e8e4de/0b1a2b?text=Barcelona" alt="Barcelona Shirt">
-      </div>
-      <div class="product-info">
-        <div class="season">2024/25 · Thuis</div>
-        <h3>Barcelona Shirt</h3>
-        <div class="price">€64,99</div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">
-        <img src="https://via.placeholder.com/400x500/e8e4de/0b1a2b?text=Real+Madrid" alt="Real Madrid Shirt">
-        <div class="product-badge">Top Seller</div>
-      </div>
-      <div class="product-info">
-        <div class="season">2024/25 · Thuis</div>
-        <h3>Real Madrid Shirt</h3>
-        <div class="price">€64,99</div>
-      </div>
+      <div class="result-count" id="resultCount"></div>
     </div>
   </div>
+  <div class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-filter="all">Alles</button>
+    <button class="tab-btn" data-filter="new">🆕 New</button>
+    <button class="tab-btn" data-filter="kids">👦 Kids</button>
+    <button class="tab-btn" data-filter="retro">⚡ Retro / Classics</button>
+    <button class="tab-btn" data-filter="training">🧥 Trainingspakken</button>
+    <button class="tab-btn" data-filter="interland">🌍 Interland</button>
+    <button class="tab-btn" data-filter="sale">🏷️ Sale</button>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
 </section>
 
+<!-- FEATURED -->
 <section class="featured">
-  <div class="featured-text">
+  <div>
     <div class="section-label">Featured Drop</div>
-    <h2>Ajax<br>24/25</h2>
-    <p>Iconisch. Tijdloos. Legendarisch. Het thuisshirt van Ajax is meer dan voetbal — het is cultuur.</p>
-    <button class="btn-primary">Nu Bestellen</button>
+    <h2>Santos<br>Neymar<br>2011</h2>
+    <p>Het iconische shirt van Neymar's Santos-jaren. Pure Braziliaanse voetbalmagie. Een tijdloos stuk voor echte kenners.</p>
+    <button class="btn-gold" onclick="openModalByName('Santos 2011 home Neymar')">Bekijk & Bestel</button>
   </div>
-  <div class="featured-img">
-    <img src="https://via.placeholder.com/600x800/1a2f44/e8c84a?text=Ajax+24%2F25" alt="Ajax 24/25">
+  <div class="feat-img">
+    <img src="https://gloryelevn.com/cdn/shop/files/IMG-4633.jpg?v=1756326765&width=800" alt="Santos Neymar 2011">
   </div>
 </section>
 
-<div class="whatsapp-strip">
-  <div>
-    <h3>Bestellen? Stuur een berichtje.</h3>
-    <p>Snel, persoonlijk en altijd de beste deal.</p>
+<!-- INSTAGRAM -->
+<section class="insta-section">
+  <div class="section-label">Sociaal</div>
+  <h3>Volg @glory.elevn</h3>
+  <p>Bekijk de nieuwste drops en exclusieve content op Instagram</p>
+  <a href="https://www.instagram.com/glory.elevn" target="_blank" class="insta-btn-lnk">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    Bekijk Instagram
+  </a>
+  <div class="insta-grid">
+    <a href="https://www.instagram.com/glory.elevn" target="_blank" class="insta-tile"><img src="https://gloryelevn.com/cdn/shop/files/IMG-4633.jpg?v=1756326765&width=400" alt=""><div class="insta-tile-ov">♥</div></a>
+    <a href="https://www.instagram.com/glory.elevn" target="_blank" class="insta-tile"><img src="https://gloryelevn.com/cdn/shop/files/40796C5C-4A0B-429C-BC78-C184874D742C.jpg?v=1756233941&width=400" alt=""><div class="insta-tile-ov">♥</div></a>
+    <a href="https://www.instagram.com/glory.elevn" target="_blank" class="insta-tile"><img src="https://gloryelevn.com/cdn/shop/files/8B9C7059-C2DD-4E17-B0AF-A50AA588E994.jpg?v=1757079685&width=400" alt=""><div class="insta-tile-ov">♥</div></a>
+    <a href="https://www.instagram.com/glory.elevn" target="_blank" class="insta-tile"><img src="https://gloryelevn.com/cdn/shop/files/E95BF6C6-CE06-47EE-AB7A-91EFDACEF1F6.jpg?v=1756153013&width=400" alt=""><div class="insta-tile-ov">♥</div></a>
   </div>
-  <button class="btn-dark" onclick="window.open('https://wa.me/31612345678?text=Hallo%2C%20ik%20wil%20graag%20een%20shirt%20bestellen!', '_blank')">
-    📲 Order via WhatsApp
-  </button>
+</section>
+
+<div class="wa-strip">
+  <div><h3>Kies hoe je bestelt.</h3><p>WhatsApp of Instagram DM — wij reageren zo snel mogelijk!</p></div>
+  <div class="strip-btns">
+    <a href="https://wa.me/310631093840?text=Hallo%2C%20ik%20wil%20graag%20bestellen!" target="_blank" class="btn-dark"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</a>
+    <a href="https://www.instagram.com/glory.elevn" target="_blank" class="btn-dark-ig"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram DM</a>
+  </div>
 </div>
 
 <footer>
   <div class="footer-logo">Glory Elevn</div>
+  <div style="display:flex;gap:24px"><a href="https://www.instagram.com/glory.elevn" target="_blank">Instagram</a><a href="https://gloryelevn.com" target="_blank">Shopify Store</a></div>
   <p>© 2025 Glory Elevn. Alle rechten voorbehouden.</p>
 </footer>
 
+<script src="producten.js"></script>
+<script>
+const WA='310631093840', IGN='glory.elevn';
+const bmap={new:'badge-new',sale:'badge-sale',kids:'badge-kids',retro:'badge-retro',training:'badge-training',interland:'badge-interland'};
+const blbl={new:'Nieuw',sale:'Sale',kids:'Kids',retro:'Retro',training:'Training',interland:'Interland'};
+let currentFilter='all',currentSearch='',currentProduct=null;
+
+function getFiltered(){
+  let list=currentFilter==='all'?products:currentFilter==='sale'?products.filter(p=>p.sale):products.filter(p=>p.cat===currentFilter);
+  if(currentSearch.trim()){const q=currentSearch.toLowerCase();list=list.filter(p=>p.naam.toLowerCase().includes(q)||p.spelers.some(s=>s.toLowerCase().includes(q)));}
+  return list;
+}
+function render(){
+  const grid=document.getElementById('productsGrid');
+  const list=getFiltered();
+  document.getElementById('resultCount').textContent=currentSearch?`${list.length} resultaat${list.length!==1?'en':''} gevonden`:'';
+  if(!list.length){grid.innerHTML=`<div class="no-results">Geen shirts gevonden voor "<strong>${currentSearch}</strong>"</div>`;return;}
+  grid.innerHTML=list.map((p,i)=>`
+    <div class="product-card" style="animation-delay:${i*.04}s" onclick="openModal(${products.indexOf(p)})">
+      <div class="prod-img">
+        <img src="${p.fotos[0]}" alt="${p.naam}" loading="lazy">
+        ${p.fotos[1]?`<img src="${p.fotos[1]}" alt="" class="img2" loading="lazy">`:''}
+        <div class="badge ${bmap[p.badge]||'badge-new'}">${blbl[p.badge]||'Nieuw'}</div>
+      </div>
+      <div class="prod-info">
+        <div class="prod-club">${p.cat.toUpperCase()}</div>
+        <h3>${p.naam}</h3>
+        <div class="prod-price"><span class="price-now">${p.prijs}</span>${p.sale?`<span class="price-was">${p.sale}</span>`:''}</div>
+        <div class="prod-players">${p.spelers.map(s=>`<span class="player-tag">${s}</span>`).join('')}</div>
+        <button class="view-btn">Bekijk product →</button>
+      </div>
+    </div>`).join('');
+}
+function doSearch(val){currentSearch=val;document.getElementById('shopSearch').value=val;document.getElementById('headerSearch').value=val;if(val){currentFilter='all';document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));scrollToShop();}render();}
+function filterTab(cat){currentFilter=cat;currentSearch='';document.getElementById('shopSearch').value='';document.getElementById('headerSearch').value='';document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));render();}
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>filterTab(btn.dataset.filter)));
+function scrollToShop(){document.getElementById('shop').scrollIntoView({behavior:'smooth'});}
+function openModal(idx){
+  const p=products[idx];currentProduct=p;
+  document.getElementById('modalCat').textContent=p.cat.toUpperCase();
+  document.getElementById('modalName').textContent=p.naam;
+  document.getElementById('modalPrice').textContent=p.prijs;
+  const w=document.getElementById('modalWas');w.textContent=p.sale||'';w.style.display=p.sale?'':'none';
+  document.getElementById('modalPlayers').innerHTML=p.spelers.map(s=>`<span class="player-tag">${s}</span>`).join('');
+  document.getElementById('modalSizes').innerHTML=p.maten.map((m,i)=>`<button class="msz${i===0?' active':''}" onclick="this.closest('.modal-sizes').querySelectorAll('.msz').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${m}</button>`).join('');
+  document.getElementById('modalMainImg').src=p.fotos[0];
+  document.getElementById('modalThumbs').innerHTML=p.fotos.length>1?p.fotos.map((f,i)=>`<img class="modal-thumb${i===0?' active':''}" src="${f}" onclick="switchPhoto(this,'${f}')" alt="">`).join(''):'';
+  document.getElementById('modalBg').classList.add('open');document.body.style.overflow='hidden';
+}
+function openModalByName(naam){const idx=products.findIndex(p=>p.naam===naam);if(idx>=0)openModal(idx);}
+function switchPhoto(t,src){document.getElementById('modalMainImg').src=src;document.querySelectorAll('.modal-thumb').forEach(x=>x.classList.remove('active'));t.classList.add('active');}
+function closeMBg(e){if(e.target===document.getElementById('modalBg'))closeModal();}
+function closeModal(){document.getElementById('modalBg').classList.remove('open');document.body.style.overflow='';}
+function getSize(){return document.querySelector('.msz.active')?.textContent||'';}
+function orderWA(){const p=currentProduct,m=getSize();window.open(`https://wa.me/${WA}?text=Hallo%2C%20ik%20wil%20graag%20bestellen%3A%0A%0AProduct%3A%20${encodeURIComponent(p.naam)}%0APrijs%3A%20${encodeURIComponent(p.prijs)}${m?`%0AMaat%3A%20${encodeURIComponent(m)}`:''}`, '_blank');}
+function orderInsta(){window.open(`https://www.instagram.com/${IGN}`,'_blank');}
+function openSizeGuide(){document.getElementById('sizeBg').classList.add('open');}
+function closeSizeGuide(){document.getElementById('sizeBg').classList.remove('open');}
+function closeSizeBg(e){if(e.target===document.getElementById('sizeBg'))closeSizeGuide();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeSizeGuide();}});
+render();
+setTimeout(()=>document.getElementById('loader').classList.add('done'),900);
+</script>
 </body>
 </html>
