@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Glory Elevn — Beheer</title>
-  <!-- Zoekmachines indexeren deze pagina niet -->
   <meta name="robots" content="noindex, nofollow">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -12,7 +11,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:var(--dark);min-height:100vh}
 
-    /* ── LOGIN SCHERM ── */
+    /* LOGIN */
     #loginScreen{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:32px}
     #loginScreen.hidden{display:none}
     .login-logo{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--accent);letter-spacing:4px}
@@ -22,424 +21,299 @@
     .pw-wrap{display:flex;border:1px solid #ddd;overflow:hidden;margin-bottom:12px}
     .pw-wrap input{flex:1;padding:12px 14px;border:none;outline:none;font-size:14px;font-family:'DM Sans',sans-serif}
     .pw-eye{padding:0 14px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px}
-    .btn-login{width:100%;padding:13px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
-    .btn-login:hover{background:#1a3a5c}
+    .btn-login{width:100%;padding:13px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
     .login-error{font-size:12px;color:var(--red);min-height:18px;margin-top:8px;font-weight:500}
 
-    /* ── ADMIN APP ── */
+    /* APP */
     #adminApp{display:none}
     #adminApp.visible{display:block}
 
-    /* top bar */
-    .topbar{background:var(--dark);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-    .topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);letter-spacing:3px}
-    .topbar-right{display:flex;align-items:center;gap:16px}
-    .topbar-right a{color:rgba(255,255,255,.6);font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:color .2s}
-    .topbar-right a:hover{color:var(--accent)}
-    .btn-logout{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-    .btn-logout:hover{border-color:var(--red);color:var(--red)}
+    /* TOPBAR */
+    .topbar{background:var(--dark);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+    .topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:3px}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .topbar-right a{color:rgba(255,255,255,.6);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none}
+    .btn-logout{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-size:11px;padding:6px 12px;cursor:pointer;font-family:'DM Sans',sans-serif}
 
-    /* layout */
-    .admin-layout{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 60px)}
+    /* NAV TABS */
+    .nav-tabs{display:flex;background:#fff;border-bottom:2px solid #e8e4de;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .nav-tab{padding:14px 20px;border:none;background:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .2s,border-color .2s}
+    .nav-tab.active{color:var(--dark);border-color:var(--dark)}
 
-    /* sidebar */
-    .sidebar{background:#fff;border-right:1px solid #e8e4de;padding:28px 24px;display:flex;flex-direction:column;gap:8px}
-    .sidebar-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;margin-top:12px}
-    .sidebar-title:first-child{margin-top:0}
-    .sidebar-btn{padding:10px 14px;border:none;background:none;text-align:left;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--dark);border-radius:2px;transition:background .15s;display:flex;align-items:center;gap:10px}
-    .sidebar-btn:hover{background:#f0ede8}
-    .sidebar-btn.active{background:var(--dark);color:#fff}
-
-    /* main content */
-    .main{padding:36px 40px;overflow-y:auto}
-    .page{display:none}
+    /* PAGES */
+    .page{display:none;padding:20px}
     .page.active{display:block}
-    .page-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;margin-bottom:6px}
-    .page-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6}
+    .page-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;margin-bottom:6px}
+    .page-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
 
-    /* cards */
-    .card{background:#fff;padding:28px;margin-bottom:20px;border:1px solid #e8e4de}
-    .card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    /* CARDS */
+    .card{background:#fff;padding:20px;margin-bottom:16px;border:1px solid #e8e4de}
+    .card-title{font-size:13px;font-weight:700;margin-bottom:16px;letter-spacing:.5px}
 
-    /* form */
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .form-full{grid-column:1/-1}
+    /* FORM */
+    .field{margin-bottom:16px}
     .field label{display:block;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-    .field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid #ddd;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;background:#fff}
-    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--dark)}
+    .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #ddd;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;border-radius:0;background:#fff}
+    .field input:focus,.field select:focus{border-color:var(--dark)}
     .field small{font-size:11px;color:var(--muted);margin-top:5px;display:block;line-height:1.5}
-    .field textarea{resize:vertical;min-height:60px}
 
-    .btn-primary{padding:12px 28px;background:var(--dark);color:#fff;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
-    .btn-primary:hover{background:#1a3a5c}
-    .btn-accent{padding:12px 28px;background:var(--accent);color:var(--dark);font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
-    .btn-accent:hover{opacity:.85}
-    .btn-red{padding:8px 16px;background:var(--red);color:#fff;font-size:11px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-sm{padding:7px 14px;background:var(--dark);color:#fff;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+    /* FOTO UPLOAD AREA */
+    .photo-upload-area{border:2px dashed #ddd;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;background:#fafafa}
+    .photo-upload-area:hover,.photo-upload-area.dragover{border-color:var(--dark);background:#f0ede8}
+    .photo-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .photo-upload-icon{font-size:36px;margin-bottom:8px}
+    .photo-upload-text{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:4px}
+    .photo-upload-sub{font-size:11px;color:var(--muted)}
 
-    /* product list */
+    /* FOTO PREVIEW GRID */
+    .photo-previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .photo-preview{position:relative;aspect-ratio:1;background:#e8e4de;overflow:hidden}
+    .photo-preview img{width:100%;height:100%;object-fit:cover}
+    .photo-preview .remove-photo{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;border:none;width:22px;height:22px;border-radius:50%;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-weight:bold}
+    .photo-preview .photo-order{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;font-weight:700;padding:2px 6px}
+
+    /* BUTTONS */
+    .btn-primary{width:100%;padding:14px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+    .btn-accent{width:100%;padding:14px;background:var(--accent);color:var(--dark);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+    .btn-sm{padding:8px 14px;background:var(--dark);color:#fff;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+    .btn-red{padding:8px 14px;background:var(--red);color:#fff;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+    .btn-outline{width:100%;padding:14px;background:#fff;color:var(--dark);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:2px solid var(--dark);cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+
+    /* PRODUCT LIST */
     .product-list{display:flex;flex-direction:column;gap:10px}
-    .product-row{display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border:1px solid #e8e4de;transition:border-color .2s}
-    .product-row:hover{border-color:#bbb}
-    .product-thumb{width:60px;height:60px;object-fit:cover;background:#ede9e3;flex-shrink:0}
+    .product-row{background:#fff;border:1px solid #e8e4de;overflow:hidden}
+    .product-row-header{display:flex;align-items:center;gap:12px;padding:12px}
+    .product-thumb{width:56px;height:56px;object-fit:cover;background:#ede9e3;flex-shrink:0}
     .product-info{flex:1;min-width:0}
-    .product-info h4{font-size:14px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .product-info p{font-size:12px;color:var(--muted)}
-    .product-actions{display:flex;gap:8px;flex-shrink:0}
-
-    /* edit form inline */
-    .edit-form{display:none;padding:20px;background:#f9f8f6;border-top:1px solid #e8e4de}
+    .product-info h4{font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .product-info p{font-size:11px;color:var(--muted)}
+    .product-actions{display:flex;gap:6px;flex-shrink:0}
+    .edit-form{display:none;padding:16px;background:#f9f8f6;border-top:1px solid #e8e4de}
     .edit-form.open{display:block}
 
-    /* code export */
-    .code-area{width:100%;font-size:11px;font-family:'Courier New',monospace;padding:14px;border:1px solid #ddd;resize:none;background:#f9f8f6;color:#333;line-height:1.6}
+    /* EXPORT */
+    .code-area{width:100%;font-size:11px;font-family:'Courier New',monospace;padding:12px;border:1px solid #ddd;resize:none;background:#f9f8f6;line-height:1.5;min-height:150px}
 
-    /* steps */
-    .steps{display:flex;flex-direction:column;gap:0}
-    .step{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid #eee}
+    /* INFO BOX */
+    .info-box{background:#fff8e6;border-left:4px solid var(--accent);padding:14px 16px;font-size:13px;line-height:1.7;margin-bottom:16px}
+    .info-box strong{display:block;margin-bottom:4px}
+
+    /* STEPS */
+    .step{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #eee}
     .step:last-child{border-bottom:none}
-    .step-num{width:36px;height:36px;background:var(--dark);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;flex-shrink:0;margin-top:2px}
-    .step-body h4{font-size:14px;font-weight:600;margin-bottom:4px}
-    .step-body p{font-size:13px;color:var(--muted);line-height:1.7}
-    .step-body code{background:#f0ede8;padding:2px 6px;font-size:12px;font-family:monospace}
+    .step-num{width:32px;height:32px;min-width:32px;background:var(--dark);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px}
+    .step-body h4{font-size:13px;font-weight:600;margin-bottom:3px}
+    .step-body p{font-size:12px;color:var(--muted);line-height:1.6}
+    .step-body code{background:#f0ede8;padding:1px 5px;font-size:11px}
 
-    /* info box */
-    .info-box{background:#fff8e6;border:1px solid #f0c040;padding:16px 20px;font-size:13px;line-height:1.7;margin-bottom:20px}
-    .info-box strong{display:block;margin-bottom:4px;font-size:14px}
-
-    /* toast */
-    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--dark);color:#fff;padding:12px 24px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap}
+    /* TOAST */
+    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--dark);color:#fff;padding:12px 24px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-    @media(max-width:768px){
-      .admin-layout{grid-template-columns:1fr}
-      .sidebar{display:flex;flex-direction:row;overflow-x:auto;padding:12px 16px;gap:6px;border-right:none;border-bottom:1px solid #e8e4de}
-      .sidebar-title{display:none}
-      .main{padding:20px 16px}
-      .form-grid{grid-template-columns:1fr}
-    }
+    /* PROGRESS */
+    .upload-progress{margin-top:8px;font-size:12px;color:var(--muted);text-align:center;display:none}
+    .upload-progress.visible{display:block}
   </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
 
-<!-- ══════════════════════════════════════════
-     LOGIN SCHERM
-══════════════════════════════════════════ -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-logo">Glory Elevn</div>
   <div class="login-box">
     <h2>🔐 Beheer</h2>
-    <p>Voer het wachtwoord in om verder te gaan</p>
+    <p>Voer je wachtwoord in</p>
     <div class="pw-wrap">
-      <input type="password" id="pwInput" placeholder="Wachtwoord..." onkeydown="if(event.key==='Enter')checkPw()">
+      <input type="password" id="pwInput" placeholder="Wachtwoord...">
       <button class="pw-eye" onclick="togglePw()">👁️</button>
     </div>
-    <button class="btn-login" onclick="checkPw()">Inloggen</button>
+    <button class="btn-login" onclick="checkPw()">Inloggen →</button>
     <div class="login-error" id="loginError"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     ADMIN APP
-══════════════════════════════════════════ -->
+<!-- ADMIN APP -->
 <div id="adminApp">
   <div class="topbar">
-    <div class="topbar-logo">Glory Elevn — Beheer</div>
+    <div class="topbar-logo">Glory Elevn</div>
     <div class="topbar-right">
-      <a href="index.html" target="_blank">🌐 Bekijk site</a>
+      <a href="index.html" target="_blank">🌐 Site</a>
       <button class="btn-logout" onclick="logout()">Uitloggen</button>
     </div>
   </div>
 
-  <div class="admin-layout">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="sidebar-title">Producten</div>
-      <button class="sidebar-btn active" onclick="showPage('add',this)">➕ Nieuw product</button>
-      <button class="sidebar-btn" onclick="showPage('list',this)">📋 Alle producten</button>
-      <div class="sidebar-title">Publiceren</div>
-      <button class="sidebar-btn" onclick="showPage('export',this)">💾 Exporteer & Publiceer</button>
-      <div class="sidebar-title">Hulp</div>
-      <button class="sidebar-btn" onclick="showPage('fotos',this)">📸 Foto's uploaden</button>
-      <button class="sidebar-btn" onclick="showPage('howto',this)">📖 Stap-voor-stap</button>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('add',this)">➕ Nieuw</button>
+    <button class="nav-tab" onclick="showPage('list',this)">📋 Producten</button>
+    <button class="nav-tab" onclick="showPage('export',this)">💾 Publiceer</button>
+    <button class="nav-tab" onclick="showPage('howto',this)">📖 Uitleg</button>
+  </div>
+
+  <!-- ══ NIEUW PRODUCT ══ -->
+  <div class="page active" id="page-add">
+    <div class="page-title">➕ Nieuw product</div>
+    <div class="page-sub">Vul in en kies foto's direct uit je galerij.</div>
+
+    <div class="card">
+      <div class="card-title">📸 Foto's kiezen</div>
+      <div class="photo-upload-area" id="uploadArea">
+        <input type="file" accept="image/*" multiple onchange="handlePhotos(this.files)" capture="environment">
+        <div class="photo-upload-icon">📷</div>
+        <div class="photo-upload-text">Tik hier om foto's te kiezen</div>
+        <div class="photo-upload-sub">Kies direct uit je iPhone galerij · meerdere tegelijk</div>
+      </div>
+      <div class="photo-previews" id="photoPreviews"></div>
+      <div class="upload-progress" id="uploadProgress">Foto's worden verwerkt...</div>
     </div>
 
-    <!-- MAIN -->
-    <div class="main">
+    <div class="card">
+      <div class="card-title">📝 Product info</div>
+      <div class="field">
+        <label>Naam van het shirt *</label>
+        <input id="f-naam" type="text" placeholder="bijv. Ajax home 25/26">
+      </div>
+      <div class="field">
+        <label>Prijs *</label>
+        <input id="f-prijs" type="text" placeholder="€45">
+      </div>
+      <div class="field">
+        <label>Originele prijs (alleen bij sale)</label>
+        <input id="f-sale" type="text" placeholder="€80  —  leeg laten als geen sale">
+      </div>
+      <div class="field">
+        <label>Categorie *</label>
+        <select id="f-cat">
+          <option value="new">🆕 New arrivals</option>
+          <option value="retro">⚡ Retro / Classics</option>
+          <option value="kids">👦 Kids</option>
+          <option value="training">🧥 Trainingspakken</option>
+          <option value="interland">🌍 Interland</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Maten (komma-gescheiden)</label>
+        <input id="f-maten" type="text" placeholder="S, M, L, XL, XXL">
+        <small>Kids: 128, 140, 152, 164, 176</small>
+      </div>
+      <div class="field">
+        <label>Spelers / legendes (komma-gescheiden)</label>
+        <input id="f-spelers" type="text" placeholder="Neymar, Ronaldo, Messi">
+      </div>
+    </div>
 
-      <!-- ── NIEUW PRODUCT ── -->
-      <div class="page active" id="page-add">
-        <div class="page-title">➕ Nieuw product toevoegen</div>
-        <div class="page-sub">Vul het formulier in. Klik daarna op "Exporteer & Publiceer" om het live te zetten.</div>
+    <button class="btn-primary" onclick="addProduct()">➕ Product toevoegen</button>
+    <button class="btn-accent" onclick="addAndExport()">➕ Toevoegen + direct publiceren</button>
+  </div>
 
-        <div class="card">
-          <div class="form-grid">
-            <div class="field form-full">
-              <label>Naam van het shirt *</label>
-              <input id="f-naam" type="text" placeholder="bijv. Ajax home 25/26">
-            </div>
-            <div class="field">
-              <label>Huidige prijs *</label>
-              <input id="f-prijs" type="text" placeholder="€45">
-            </div>
-            <div class="field">
-              <label>Originele prijs (alleen bij sale)</label>
-              <input id="f-sale" type="text" placeholder="€80  —  leeg laten als geen sale">
-            </div>
-            <div class="field form-full">
-              <label>Categorie *</label>
-              <select id="f-cat">
-                <option value="new">🆕 New arrivals</option>
-                <option value="retro">⚡ Retro / Classics</option>
-                <option value="kids">👦 Kids</option>
-                <option value="training">🧥 Trainingspakken</option>
-                <option value="interland">🌍 Interland</option>
-              </select>
-            </div>
-            <div class="field form-full">
-              <label>Maten (komma-gescheiden)</label>
-              <input id="f-maten" type="text" placeholder="S, M, L, XL, XXL">
-              <small>Voor kids gebruik je: 128, 140, 152, 164, 176</small>
-            </div>
-            <div class="field form-full">
-              <label>Spelers / legendes (komma-gescheiden)</label>
-              <input id="f-spelers" type="text" placeholder="Neymar, Ronaldo, Messi">
-            </div>
-            <div class="field form-full">
-              <label>📸 Foto 1 (hoofd foto) *</label>
-              <input id="f-foto1" type="text" placeholder="images/IMG_1234.JPG">
-              <small>Upload eerst via de GitHub app → images/ map. Kopieer dan de exacte bestandsnaam hierboven.</small>
-            </div>
-            <div class="field">
-              <label>📸 Foto 2 (hover / achterkant)</label>
-              <input id="f-foto2" type="text" placeholder="images/IMG_1235.JPG  (optioneel)">
-            </div>
-            <div class="field">
-              <label>📸 Foto 3 (extra)</label>
-              <input id="f-foto3" type="text" placeholder="images/IMG_1236.JPG  (optioneel)">
-            </div>
-          </div>
-          <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-            <button class="btn-primary" onclick="addProduct()">➕ Product toevoegen aan lijst</button>
-            <button class="btn-accent" onclick="addProduct(true)">➕ Toevoegen + direct exporteren</button>
-          </div>
+  <!-- ══ PRODUCTEN LIJST ══ -->
+  <div class="page" id="page-list">
+    <div class="page-title">📋 Alle producten</div>
+    <div class="page-sub">Tik op <strong>Bewerk</strong> om naam, prijs of foto's aan te passen.</div>
+    <div class="product-list" id="productList"></div>
+  </div>
+
+  <!-- ══ PUBLICEER ══ -->
+  <div class="page" id="page-export">
+    <div class="page-title">💾 Publiceer</div>
+    <div class="page-sub">Zet je wijzigingen live op de site in 3 stappen.</div>
+
+    <div class="info-box">
+      <strong>⚡ Hoe werkt het?</strong>
+      Genereer de code → kopieer → plak in <code>producten.js</code> op GitHub → commit. Klaar!
+    </div>
+
+    <div class="card">
+      <div class="card-title">Stap 1 — Genereer code</div>
+      <button class="btn-primary" onclick="generateCode()">🔄 Genereer code</button>
+      <textarea class="code-area" id="codeArea" readonly style="margin-top:12px" placeholder="Klik hierboven..."></textarea>
+      <button class="btn-accent" onclick="copyCode()" style="margin-top:8px">📋 Kopieer naar klembord</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Stap 2 & 3 — Zet live op GitHub</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Open producten.js op GitHub</h4>
+          <p>Ga naar <code>github.com/riekeltajax-collab/glory-elevn</code> → tik op <code>producten.js</code> → tik op het ✏️ potlood</p>
         </div>
       </div>
-
-      <!-- ── ALLE PRODUCTEN ── -->
-      <div class="page" id="page-list">
-        <div class="page-title">📋 Alle producten</div>
-        <div class="page-sub">Klik op <strong>Bewerk</strong> om een product te wijzigen. Vergeet niet daarna te exporteren!</div>
-        <div class="product-list" id="productList"></div>
-      </div>
-
-      <!-- ── EXPORTEER ── -->
-      <div class="page" id="page-export">
-        <div class="page-title">💾 Exporteer & Publiceer</div>
-        <div class="page-sub">Genereer de code en zet hem live op GitHub in 4 stappen.</div>
-
-        <div class="info-box">
-          <strong>⚡ Hoe werkt publiceren?</strong>
-          Je beheert producten hier in de admin. Als je klaar bent, genereer je de code en plak je die in <code>producten.js</code> op GitHub. Dat is het enige bestand dat je hoeft aan te passen — de rest van de site blijft ongewijzigd.
-        </div>
-
-        <div class="card">
-          <div class="card-title">Stap 1 — Genereer je productencode</div>
-          <button class="btn-primary" onclick="generateCode()">🔄 Genereer code</button>
-          <textarea class="code-area" id="codeArea" rows="12" readonly style="margin-top:14px" placeholder="Klik hierboven om de code te genereren..."></textarea>
-          <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
-            <button class="btn-accent" onclick="copyCode()">📋 Kopieer code</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Stap 2, 3 & 4 — Publiceer naar GitHub</div>
-          <div class="steps">
-            <div class="step">
-              <div class="step-num">2</div>
-              <div class="step-body">
-                <h4>Open GitHub op je telefoon of computer</h4>
-                <p>Ga naar jouw repository → tap op het bestand <code>producten.js</code></p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">3</div>
-              <div class="step-body">
-                <h4>Vervang de inhoud</h4>
-                <p>Tap op het potlood ✏️ → selecteer alle tekst → plak de gekopieerde code → tap <strong>"Commit changes"</strong></p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">4</div>
-              <div class="step-body">
-                <h4>Klaar! 🎉</h4>
-                <p>Je site is binnen 1–2 minuten bijgewerkt. Ververs de pagina om het te zien.</p>
-              </div>
-            </div>
-          </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Vervang alles en commit</h4>
+          <p>Selecteer alle tekst (lang indrukken → Alles selecteren) → plak de gekopieerde code → tik <strong>"Commit changes"</strong> → nog een keer <strong>"Commit changes"</strong></p>
         </div>
       </div>
+    </div>
 
-      <!-- ── FOTO'S UPLOADEN ── -->
-      <div class="page" id="page-fotos">
-        <div class="page-title">📸 Foto's uploaden via je telefoon</div>
-        <div class="page-sub">Je hoeft foto's <strong>niet</strong> te hernoemen — GitHub bewaart gewoon de originele naam (zoals IMG_1234.JPG).</div>
+    <div class="card" style="background:#e8f5e9;border-color:#a5d6a7">
+      <div class="card-title">✅ Klaar!</div>
+      <p style="font-size:13px;color:#2e7d32;line-height:1.7">Na het committen is je site binnen 1-2 minuten bijgewerkt. Ververs de pagina om het te controleren.</p>
+    </div>
+  </div>
 
-        <div class="info-box">
-          <strong>💡 Tip: installeer de GitHub app</strong>
-          Download de <strong>GitHub</strong> app gratis in de App Store of Play Store. Log in met je account. Dan kun je rechtstreeks vanuit je foto's uploaden.
-        </div>
+  <!-- ══ UITLEG ══ -->
+  <div class="page" id="page-howto">
+    <div class="page-title">📖 Uitleg</div>
 
-        <div class="card">
-          <div class="card-title">📱 Uploaden via GitHub app (telefoon)</div>
-          <div class="steps">
-            <div class="step">
-              <div class="step-num">1</div>
-              <div class="step-body">
-                <h4>Open de GitHub app</h4>
-                <p>Ga naar jouw repository (glory-elevn)</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">2</div>
-              <div class="step-body">
-                <h4>Navigeer naar de images/ map</h4>
-                <p>Tap op de map <code>images</code>. Bestaat die nog niet? Tap rechtsboven op <strong>+</strong> → "Create file" → typ <code>images/leeg.txt</code> → commit. Dan bestaat de map.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">3</div>
-              <div class="step-body">
-                <h4>Upload je foto's</h4>
-                <p>Tap rechtsboven op <strong>+</strong> → "Upload files" → kies foto's uit je album. Je kunt meerdere tegelijk selecteren. Tap <strong>"Commit changes"</strong>.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">4</div>
-              <div class="step-body">
-                <h4>Kopieer de bestandsnaam</h4>
-                <p>Na upload zie je de foto staan in de map. De naam is exact zoals je hem nodig hebt in het admin formulier — bijv. <code>images/IMG_1234.JPG</code></p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">💻 Uploaden via computer (browser)</div>
-          <div class="steps">
-            <div class="step">
-              <div class="step-num">1</div>
-              <div class="step-body">
-                <h4>Ga naar github.com → jouw repository</h4>
-                <p>Open de <code>images/</code> map</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">2</div>
-              <div class="step-body">
-                <h4>Klik "Add file" → "Upload files"</h4>
-                <p>Sleep meerdere foto's tegelijk vanuit je Finder of Verkenner naar het uploadvenster.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">3</div>
-              <div class="step-body">
-                <h4>Commit changes → klaar</h4>
-                <p>Foto's zijn nu beschikbaar als <code>images/jouw-foto.jpg</code></p>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="card">
+      <div class="card-title">📸 Eigen foto's toevoegen aan bestaand product</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><h4>Ga naar "Producten"</h4><p>Tik op 📋 Producten in de navigatie bovenaan.</p></div>
       </div>
-
-      <!-- ── STAP VOOR STAP ── -->
-      <div class="page" id="page-howto">
-        <div class="page-title">📖 Bestaand product wijzigen</div>
-        <div class="page-sub">Zo pas je snel de naam, prijs, maten of foto's van een bestaand product aan.</div>
-
-        <div class="card">
-          <div class="card-title">Optie A — Via dit beheer scherm (makkelijkst)</div>
-          <div class="steps">
-            <div class="step">
-              <div class="step-num">1</div>
-              <div class="step-body"><h4>Ga naar "Alle producten"</h4><p>Klik in de sidebar op 📋 Alle producten.</p></div>
-            </div>
-            <div class="step">
-              <div class="step-num">2</div>
-              <div class="step-body"><h4>Klik op "Bewerk"</h4><p>Het formulier klapt open onder het product. Pas aan wat je wilt.</p></div>
-            </div>
-            <div class="step">
-              <div class="step-num">3</div>
-              <div class="step-body"><h4>Klik "Opslaan"</h4><p>De wijziging staat nu in de lijst.</p></div>
-            </div>
-            <div class="step">
-              <div class="step-num">4</div>
-              <div class="step-body"><h4>Exporteer & publiceer</h4><p>Ga naar 💾 Exporteer → genereer code → kopieer → plak in producten.js op GitHub → commit.</p></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Optie B — Direct in producten.js (voor als je snel iets wil fixen)</div>
-          <div class="steps">
-            <div class="step">
-              <div class="step-num">1</div>
-              <div class="step-body"><h4>Open producten.js op GitHub</h4><p>Ga naar github.com → jouw repository → tap op <code>producten.js</code></p></div>
-            </div>
-            <div class="step">
-              <div class="step-num">2</div>
-              <div class="step-body"><h4>Tap op het potlood ✏️</h4><p>Nu kun je de tekst direct aanpassen. Zoek het product op naam (bijv. "Ajax").</p></div>
-            </div>
-            <div class="step">
-              <div class="step-num">3</div>
-              <div class="step-body">
-                <h4>Pas de waarde aan</h4>
-                <p>Bijv. prijs van <code>'€45'</code> naar <code>'€40'</code> — of voeg een speler toe aan de lijst.<br>Let op: tekst altijd tussen aanhalingstekens <code>'...'</code> houden.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-num">4</div>
-              <div class="step-body"><h4>Tap "Commit changes"</h4><p>Binnen 1-2 minuten staat de wijziging live op je site.</p></div>
-            </div>
-          </div>
-        </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><h4>Tik op "Bewerk"</h4><p>Zoek het shirt, tik op de Bewerk knop. Het formulier klapt open.</p></div>
       </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><h4>Kies nieuwe foto's</h4><p>Tik op het foto-upload vlak → kies foto's uit je galerij. De oude foto's worden vervangen.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body"><h4>Sla op en publiceer</h4><p>Tik "Opslaan" → ga naar 💾 Publiceer → genereer → kopieer → plak in GitHub → commit.</p></div>
+      </div>
+    </div>
 
-    </div><!-- /main -->
-  </div><!-- /layout -->
+    <div class="card">
+      <div class="card-title">⚠️ Belangrijk over foto's</div>
+      <div class="info-box" style="margin-bottom:0">
+        <strong>Foto's worden opgeslagen als link</strong>
+        Als je een foto kiest uit je galerij, wordt die omgezet naar een tijdelijke link. Deze werkt alleen zolang je de admin pagina open hebt.<br><br>
+        <strong>Voor permanente foto's op je site:</strong> Upload de foto's ook naar je GitHub <code>images/</code> map. Gebruik dan bij "Foto URL" de GitHub link: <code>images/jouw-foto.jpg</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔐 Wachtwoord veranderen</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7">Open <code>admin.html</code> op GitHub → zoek naar <code>const ADMIN_PASSWORD</code> → verander de waarde → commit.</p>
+    </div>
+  </div>
+
 </div><!-- /adminApp -->
 
 <script src="producten.js"></script>
 <script>
-// ════════════════════════════════════════════
-//  WACHTWOORD — verander dit naar jouw eigen wachtwoord!
-// ════════════════════════════════════════════
-const ADMIN_PASSWORD = 'glory2025';   // ← VERANDER DIT
+const ADMIN_PASSWORD = 'glory2025'; // ← Verander dit naar jouw wachtwoord
 
 // ── LOGIN ──────────────────────────────────
 function checkPw(){
-  const val=document.getElementById('pwInput').value;
-  if(val===ADMIN_PASSWORD){
+  if(document.getElementById('pwInput').value===ADMIN_PASSWORD){
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('adminApp').classList.add('visible');
     sessionStorage.setItem('ge_admin','1');
   } else {
-    document.getElementById('loginError').textContent='Verkeerd wachtwoord. Probeer opnieuw.';
+    document.getElementById('loginError').textContent='Verkeerd wachtwoord.';
     document.getElementById('pwInput').value='';
-    document.getElementById('pwInput').focus();
   }
 }
-function togglePw(){
-  const i=document.getElementById('pwInput');
-  i.type=i.type==='password'?'text':'password';
-}
-function logout(){
-  sessionStorage.removeItem('ge_admin');
-  location.reload();
-}
-// Auto-login als sessie nog actief is
+function togglePw(){const i=document.getElementById('pwInput');i.type=i.type==='password'?'text':'password';}
+function logout(){sessionStorage.removeItem('ge_admin');location.reload();}
+document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
 if(sessionStorage.getItem('ge_admin')==='1'){
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('adminApp').classList.add('visible');
@@ -448,102 +322,167 @@ if(sessionStorage.getItem('ge_admin')==='1'){
 // ── NAVIGATIE ──────────────────────────────
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.sidebar-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   btn.classList.add('active');
   if(name==='list')renderList();
 }
 
-// ── PRODUCT TOEVOEGEN ──────────────────────
-function addProduct(andExport=false){
-  const naam=document.getElementById('f-naam').value.trim();
-  const prijs=document.getElementById('f-prijs').value.trim();
-  const foto1=document.getElementById('f-foto1').value.trim();
-  if(!naam||!prijs||!foto1){showToast('⚠️ Vul naam, prijs en minimaal 1 foto in');return;}
-  const sale=document.getElementById('f-sale').value.trim();
-  const cat=document.getElementById('f-cat').value;
-  const matenRaw=document.getElementById('f-maten').value.trim();
-  const spelersRaw=document.getElementById('f-spelers').value.trim();
-  const foto2=document.getElementById('f-foto2').value.trim();
-  const foto3=document.getElementById('f-foto3').value.trim();
-  const maten=matenRaw?matenRaw.split(',').map(s=>s.trim()).filter(Boolean):['S','M','L','XL','XXL'];
-  const spelers=spelersRaw?spelersRaw.split(',').map(s=>s.trim()).filter(Boolean):[];
-  const fotos=[foto1,foto2,foto3].filter(Boolean);
-  const badge=sale?'sale':cat;
-  products.unshift({naam,prijs,sale,cat,badge,maten,spelers,fotos});
-  ['f-naam','f-prijs','f-sale','f-maten','f-spelers','f-foto1','f-foto2','f-foto3'].forEach(id=>document.getElementById(id).value='');
-  showToast(`✅ "${naam}" toegevoegd!`);
-  if(andExport){
-    showPage('export',document.querySelector('[onclick*="export"]'));
-    setTimeout(generateCode,200);
+// ── FOTO UPLOAD ────────────────────────────
+let newProductPhotos = []; // base64 of url strings for new product
+let editPhotos = {};       // idx -> array of photos for edit forms
+
+function handlePhotos(files, targetArr, previewEl) {
+  // targetArr = array to push into, previewEl = element to show previews
+  if(!files||!files.length) return;
+  const arr = targetArr || newProductPhotos;
+  const el  = previewEl  || document.getElementById('photoPreviews');
+  const progress = document.getElementById('uploadProgress');
+  if(progress) { progress.classList.add('visible'); progress.textContent = `0 / ${files.length} verwerkt...`; }
+  let done = 0;
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      arr.push(e.target.result);
+      done++;
+      if(progress) progress.textContent = `${done} / ${files.length} verwerkt...`;
+      if(done===files.length){
+        if(progress) progress.classList.remove('visible');
+        renderPhotoPreviews(arr, el);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderPhotoPreviews(arr, el) {
+  el.innerHTML = arr.map((src, i) => `
+    <div class="photo-preview">
+      <img src="${src}" alt="Foto ${i+1}">
+      <div class="photo-order">Foto ${i+1}</div>
+      <button class="remove-photo" onclick="removePhoto(${i},event)">✕</button>
+    </div>`).join('');
+}
+
+function removePhoto(idx, e) {
+  // Determine which array we're working with
+  const btn = e.target;
+  const previewGrid = btn.closest('.photo-previews');
+  // find which edit form or new form
+  const editForm = btn.closest('.edit-form');
+  if(editForm) {
+    const rowIdx = parseInt(editForm.dataset.idx);
+    editPhotos[rowIdx].splice(idx,1);
+    renderPhotoPreviews(editPhotos[rowIdx], previewGrid);
+  } else {
+    newProductPhotos.splice(idx,1);
+    renderPhotoPreviews(newProductPhotos, previewGrid);
   }
 }
 
-// ── PRODUCT LIJST ──────────────────────────
+// ── PRODUCT TOEVOEGEN ──────────────────────
+function addProduct(){
+  const naam  = document.getElementById('f-naam').value.trim();
+  const prijs = document.getElementById('f-prijs').value.trim();
+  if(!naam||!prijs){showToast('⚠️ Vul naam en prijs in');return;}
+  if(!newProductPhotos.length){showToast('⚠️ Voeg minimaal 1 foto toe');return;}
+  const sale    = document.getElementById('f-sale').value.trim();
+  const cat     = document.getElementById('f-cat').value;
+  const matenRaw= document.getElementById('f-maten').value.trim();
+  const spelersRaw = document.getElementById('f-spelers').value.trim();
+  const maten   = matenRaw  ? matenRaw.split(',').map(s=>s.trim()).filter(Boolean)  : ['S','M','L','XL','XXL'];
+  const spelers = spelersRaw? spelersRaw.split(',').map(s=>s.trim()).filter(Boolean) : [];
+  const badge   = sale ? 'sale' : cat;
+  products.unshift({naam,prijs,sale,cat,badge,maten,spelers,fotos:[...newProductPhotos]});
+  // Reset form
+  ['f-naam','f-prijs','f-sale','f-maten','f-spelers'].forEach(id=>document.getElementById(id).value='');
+  newProductPhotos=[];
+  document.getElementById('photoPreviews').innerHTML='';
+  showToast(`✅ "${naam}" toegevoegd!`);
+}
+
+function addAndExport(){
+  addProduct();
+  setTimeout(()=>{
+    showPage('export', document.querySelector('[onclick*="export"]'));
+    setTimeout(generateCode,300);
+  },200);
+}
+
+// ── PRODUCTEN LIJST ────────────────────────
 function renderList(){
   const el=document.getElementById('productList');
-  if(!products.length){el.innerHTML='<p style="color:var(--muted);padding:20px">Geen producten.</p>';return;}
+  if(!products.length){el.innerHTML='<p style="padding:20px;color:var(--muted)">Geen producten.</p>';return;}
   el.innerHTML=products.map((p,i)=>`
-    <div>
-      <div class="product-row">
+    <div class="product-row">
+      <div class="product-row-header">
         <img class="product-thumb" src="${p.fotos[0]}" alt="" onerror="this.style.background='#eee'">
         <div class="product-info">
           <h4>${p.naam}</h4>
-          <p>${p.prijs}${p.sale?' (was '+p.sale+')':''} · ${p.cat} · ${p.maten.join(', ')}</p>
+          <p>${p.prijs}${p.sale?' · was '+p.sale:''} · ${p.cat}</p>
         </div>
         <div class="product-actions">
-          <button class="btn-sm" onclick="toggleEdit(${i})">✏️ Bewerk</button>
-          <button class="btn-red" onclick="deleteProduct(${i})">✕</button>
+          <button class="btn-sm" onclick="toggleEdit(${i})">✏️</button>
+          <button class="btn-red" onclick="delProduct(${i})">✕</button>
         </div>
       </div>
-      <div class="edit-form" id="edit-${i}">
-        <div class="form-grid" style="margin-bottom:14px">
-          <div class="field form-full"><label>Naam</label><input id="e-naam-${i}" value="${p.naam}"></div>
-          <div class="field"><label>Prijs</label><input id="e-prijs-${i}" value="${p.prijs}"></div>
-          <div class="field"><label>Originele prijs (sale)</label><input id="e-sale-${i}" value="${p.sale||''}"></div>
-          <div class="field form-full"><label>Categorie</label>
-            <select id="e-cat-${i}">
-              ${['new','retro','kids','training','interland'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}
-            </select>
-          </div>
-          <div class="field form-full"><label>Maten (komma-gescheiden)</label><input id="e-maten-${i}" value="${p.maten.join(', ')}"></div>
-          <div class="field form-full"><label>Spelers (komma-gescheiden)</label><input id="e-spelers-${i}" value="${p.spelers.join(', ')}"></div>
-          <div class="field form-full"><label>Foto 1</label><input id="e-foto1-${i}" value="${p.fotos[0]||''}"></div>
-          <div class="field"><label>Foto 2</label><input id="e-foto2-${i}" value="${p.fotos[1]||''}"></div>
-          <div class="field"><label>Foto 3</label><input id="e-foto3-${i}" value="${p.fotos[2]||''}"></div>
+      <div class="edit-form" id="edit-${i}" data-idx="${i}">
+        <div class="field"><label>Naam</label><input id="en-${i}" value="${p.naam.replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Prijs</label><input id="ep-${i}" value="${p.prijs}"></div>
+        <div class="field"><label>Originele prijs (sale)</label><input id="es-${i}" value="${p.sale||''}"></div>
+        <div class="field"><label>Categorie</label>
+          <select id="ec-${i}">${['new','retro','kids','training','interland'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}</select>
         </div>
-        <button class="btn-primary" onclick="saveEdit(${i})">💾 Opslaan</button>
-        <button class="btn-sm" style="margin-left:8px;background:#888" onclick="toggleEdit(${i})">Annuleer</button>
+        <div class="field"><label>Maten</label><input id="em-${i}" value="${p.maten.join(', ')}"></div>
+        <div class="field"><label>Spelers</label><input id="esl-${i}" value="${p.spelers.join(', ')}"></div>
+        <div class="field">
+          <label>📸 Foto's wijzigen</label>
+          <div class="photo-upload-area" style="margin-bottom:8px">
+            <input type="file" accept="image/*" multiple onchange="handleEditPhotos(${i},this.files)">
+            <div class="photo-upload-icon" style="font-size:24px">📷</div>
+            <div class="photo-upload-text" style="font-size:12px">Tik om nieuwe foto's te kiezen</div>
+            <div class="photo-upload-sub">Huidige foto's worden vervangen</div>
+          </div>
+          <div class="photo-previews" id="ep-prev-${i}">${p.fotos.map((f,fi)=>`<div class="photo-preview"><img src="${f}" alt=""><div class="photo-order">Foto ${fi+1}</div></div>`).join('')}</div>
+        </div>
+        <button class="btn-sm" onclick="saveEdit(${i})">💾 Opslaan</button>
+        <button class="btn-sm" style="background:#888;margin-left:6px" onclick="toggleEdit(${i})">Annuleer</button>
       </div>
     </div>`).join('');
+  // Init editPhotos with current fotos
+  products.forEach((p,i)=>{ editPhotos[i]=[...p.fotos]; });
+}
+
+function handleEditPhotos(idx, files){
+  editPhotos[idx]=[];
+  handlePhotos(files, editPhotos[idx], document.getElementById('ep-prev-'+idx));
 }
 
 function toggleEdit(i){
   const el=document.getElementById('edit-'+i);
   el.classList.toggle('open');
+  if(el.classList.contains('open')) editPhotos[i]=[...products[i].fotos];
 }
+
 function saveEdit(i){
-  const cat=document.getElementById('e-cat-'+i).value;
-  const sale=document.getElementById('e-sale-'+i).value.trim();
+  const cat=document.getElementById('ec-'+i).value;
+  const sale=document.getElementById('es-'+i).value.trim();
   products[i]={
-    naam:    document.getElementById('e-naam-'+i).value.trim(),
-    prijs:   document.getElementById('e-prijs-'+i).value.trim(),
-    sale:    sale,
-    cat:     cat,
+    naam:    document.getElementById('en-'+i).value.trim(),
+    prijs:   document.getElementById('ep-'+i).value.trim(),
+    sale,
+    cat,
     badge:   sale?'sale':cat,
-    maten:   document.getElementById('e-maten-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
-    spelers: document.getElementById('e-spelers-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
-    fotos:   [
-      document.getElementById('e-foto1-'+i).value.trim(),
-      document.getElementById('e-foto2-'+i).value.trim(),
-      document.getElementById('e-foto3-'+i).value.trim(),
-    ].filter(Boolean),
+    maten:   document.getElementById('em-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
+    spelers: document.getElementById('esl-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
+    fotos:   editPhotos[i]||products[i].fotos,
   };
   showToast(`✅ "${products[i].naam}" opgeslagen!`);
   renderList();
 }
-function deleteProduct(i){
-  if(!confirm(`Weet je zeker dat je "${products[i].naam}" wilt verwijderen?`))return;
+
+function delProduct(i){
+  if(!confirm(`"${products[i].naam}" verwijderen?`))return;
   const naam=products[i].naam;
   products.splice(i,1);
   renderList();
@@ -552,25 +491,27 @@ function deleteProduct(i){
 
 // ── CODE GENEREREN ─────────────────────────
 function generateCode(){
-  const lines=products.map(p=>`  {
-    naam:    '${p.naam.replace(/'/g,"\\'")}',
-    prijs:   '${p.prijs}',
-    sale:    '${p.sale||''}',
-    cat:     '${p.cat}',
-    badge:   '${p.badge}',
-    maten:   [${p.maten.map(m=>`'${m}'`).join(',')}],
-    spelers: [${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],
-    fotos:   [${p.fotos.map(f=>`'${f}'`).join(', ')}],
-  }`);
-  const code=`const products = [\n${lines.join(',\n')}\n];`;
-  document.getElementById('codeArea').value=code;
-  showToast('✅ Code gegenereerd — nu kopiëren!');
+  // For base64 photos: warn user
+  const hasBase64 = products.some(p=>p.fotos.some(f=>f.startsWith('data:')));
+  if(hasBase64){
+    showToast('⚠️ Sommige foto\'s zijn tijdelijk. Zie uitleg voor permanente foto\'s.');
+  }
+  const lines=products.map(p=>{
+    const fotosStr=p.fotos.map(f=>{
+      if(f.startsWith('data:')) return `'/* UPLOAD DEZE FOTO NAAR images/ MAP OP GITHUB */'`;
+      return `'${f}'`;
+    }).join(', ');
+    return `  {naam:'${p.naam.replace(/'/g,"\\'")}',prijs:'${p.prijs}',sale:'${p.sale||''}',cat:'${p.cat}',badge:'${p.badge}',maten:[${p.maten.map(m=>`'${m}'`).join(',')}],spelers:[${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],fotos:[${fotosStr}]}`;
+  });
+  document.getElementById('codeArea').value=`const products = [\n${lines.join(',\n')}\n];`;
+  showToast('✅ Code gegenereerd!');
 }
+
 function copyCode(){
   const ta=document.getElementById('codeArea');
-  if(!ta.value.trim()){generateCode();}
+  if(!ta.value.trim()){generateCode();return;}
   navigator.clipboard.writeText(ta.value)
-    .then(()=>showToast('📋 Gekopieerd! Plak nu in producten.js op GitHub.'))
+    .then(()=>showToast('📋 Gekopieerd! Plak in producten.js op GitHub.'))
     .catch(()=>{ta.select();document.execCommand('copy');showToast('📋 Gekopieerd!');});
 }
 
@@ -579,8 +520,6 @@ function showToast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3500);
 }
-
-document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
 </script>
 </body>
 </html>
