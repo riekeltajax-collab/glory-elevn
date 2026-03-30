@@ -241,23 +241,138 @@
     /* ANIMATIONS */
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-    @media(max-width:900px){
-      header{padding:14px 20px}
+    /* ── MOBIELE CATEGORIE TEGELS ── */
+    .cat-section{display:none}
+    .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px}
+    .cat-tile{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer;border-radius:4px}
+    .cat-tile img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .cat-tile:hover img,.cat-tile:active img{transform:scale(1.06)}
+    .cat-tile-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,26,43,.85) 0%,rgba(11,26,43,.2) 60%)}
+    .cat-tile-label{position:absolute;bottom:0;left:0;right:0;padding:10px 8px;text-align:center}
+    .cat-tile-emoji{font-size:18px;display:block;margin-bottom:2px}
+    .cat-tile-name{font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;letter-spacing:1px;display:block}
+    .cat-tile.active .cat-tile-overlay{background:linear-gradient(to top,rgba(232,200,74,.7) 0%,rgba(232,200,74,.1) 60%)}
+    .cat-tile.active .cat-tile-name{color:var(--accent)}
+
+    /* FEATURED NIEUWSTE SHIRTS (MOBIEL) */
+    .mob-featured{display:none}
+    .mob-featured-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;margin-bottom:14px}
+    .mob-featured-scroll{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+    .mob-shirt-card{position:relative;overflow:hidden;cursor:pointer;background:#fff}
+    .mob-shirt-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+    .mob-shirt-info{padding:10px 10px 12px}
+    .mob-shirt-name{font-size:12px;font-weight:600;margin-bottom:3px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mob-shirt-price{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.5px}
+    .mob-shirt-badge{position:absolute;top:8px;left:8px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px}
+
+    /* MOBIEL SEARCH BAR */
+    .mob-search{display:none;align-items:center;gap:10px;background:#fff;border:1px solid #ddd;padding:11px 16px;margin-bottom:16px}
+    .mob-search svg{color:var(--muted);flex-shrink:0}
+    #mobSearch{border:none;outline:none;font-size:14px;font-family:'DM Sans',sans-serif;flex:1}
+
+    /* MOBIEL BOTTOM NAV */
+    .mob-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(11,26,43,.97);backdrop-filter:blur(10px);z-index:190;padding:8px 0 12px;border-top:1px solid rgba(255,255,255,.1)}
+    .mob-bottom-nav-inner{display:flex;justify-content:space-around;align-items:center}
+    .mob-nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px}
+    .mob-nav-icon{font-size:20px;line-height:1}
+    .mob-nav-label{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+    .mob-nav-btn.active .mob-nav-label{color:var(--accent)}
+
+    @media(max-width:768px){
+      /* HEADER */
+      header{padding:12px 16px}
       .search-wrap{display:none}
+      nav{gap:0}
       nav a:not(.nav-insta){display:none}
-      .shop-section,.insta-section{padding:60px 20px}
-      .featured{grid-template-columns:1fr;padding:60px 20px}
-      .feat-img{display:none}
-      .wa-strip{padding:40px 20px}
-      .insta-grid{grid-template-columns:repeat(3,1fr)}
-      footer{padding:30px 20px;flex-direction:column;text-align:center}
+      .nav-insta{padding:6px 12px;font-size:11px}
+
+      /* HERO — korter op mobiel */
+      .hero{min-height:65vh;padding:60px 20px 60px}
+      .hero h1{font-size:clamp(56px,18vw,96px)}
+      .hero-sub{font-size:14px;margin:16px auto 28px}
+      .hero-btns{gap:10px}
+      .btn-gold,.btn-ghost{padding:11px 22px;font-size:11px}
+
+      /* SALE BANNER */
+      .sale-banner{font-size:11px;padding:8px 40px 8px 16px;gap:6px}
+
+      /* SHOP SECTIE */
+      .shop-section{padding:20px 16px 80px}
+      .shop-header{margin-bottom:16px}
+      .section-title{font-size:36px}
+      .tab-bar{display:none} /* vervangen door category tiles */
+      .search-inline{display:none} /* vervangen door mob-search */
+
+      /* MOBIELE ELEMENTEN TONEN */
+      .cat-section{display:block;margin-bottom:4px}
+      .mob-featured{display:block}
+      .mob-search{display:flex}
+      .mob-bottom-nav{display:block}
+
+      /* GRID — 2 KOLOMMEN */
+      .products-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+      .prod-info{padding:10px}
+      .prod-info h3{font-size:12px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .price-now{font-size:20px}
+      .price-was{font-size:11px}
+      .prod-players{display:none} /* te druk op mobiel */
+      .view-btn{padding:8px;font-size:10px;letter-spacing:.5px}
+      .prod-club{font-size:9px}
+
+      /* FOTO's VOLLEDIG LADEN */
+      .prod-img{aspect-ratio:3/4}
+      .prod-img img{width:100%;height:100%;object-fit:cover}
+
+      /* CARD ACTIONS */
+      .card-actions{top:6px;right:6px}
+      .card-action-btn{width:28px;height:28px;font-size:13px}
+
+      /* BADGE */
+      .badge{font-size:8px;padding:3px 7px;top:6px;left:6px}
+
+      /* MODAL */
       .modal{grid-template-columns:1fr;max-height:95vh}
-      .modal-main-img{aspect-ratio:4/3}
+      .modal-main-img{aspect-ratio:1;width:100%}
+      .modal-body{padding:20px}
+      .modal-name{font-size:26px}
+      .modal-price-row .big{font-size:32px}
       .order-choice{grid-template-columns:1fr}
-      .over-ons{grid-template-columns:1fr;padding:60px 20px}
+      .modal-thumbs{gap:6px;padding:8px}
+      .modal-thumb{width:52px;height:52px}
+
+      /* FEATURED */
+      .featured{grid-template-columns:1fr;padding:40px 16px}
+      .feat-img{display:none}
+
+      /* INSTAGRAM */
+      .insta-section{padding:40px 16px}
+      .insta-grid{grid-template-columns:repeat(3,1fr);gap:3px}
+
+      /* WA STRIP */
+      .wa-strip{padding:28px 16px;flex-direction:column;align-items:flex-start}
+      .strip-btns{width:100%}
+      .btn-dark,.btn-dark-ig{flex:1;justify-content:center;padding:12px 10px;font-size:11px}
+
+      /* OVER ONS */
+      .over-ons{grid-template-columns:1fr;padding:40px 16px}
       .over-ons-img{display:none}
-      .over-ons-stats{grid-template-columns:repeat(3,1fr)}
-      .carousel-item{width:120px}
+      .over-ons-stats{grid-template-columns:repeat(3,1fr);gap:10px}
+      .stat-num{font-size:36px}
+
+      /* FOOTER */
+      footer{padding:24px 16px;flex-direction:column;text-align:center;gap:12px;padding-bottom:80px}
+
+      /* CAROUSEL */
+      .carousel-section{padding:40px 0}
+      .carousel-item{width:110px}
+
+      /* FLOAT WA — boven bottom nav */
+      .float-wa{bottom:72px;right:16px;width:50px;height:50px}
+      .float-wa svg{width:24px;height:24px}
+      .float-wa-tip{display:none}
+
+      /* TOAST */
+      .toast{bottom:80px;font-size:12px;padding:10px 18px}
     }
   </style>
 </head>
@@ -402,6 +517,56 @@
       <div class="result-count" id="resultCount"></div>
     </div>
   </div>
+
+  <!-- MOBIEL: nieuwste 3 shirts -->
+  <div class="mob-featured">
+    <div class="mob-featured-title">🔥 Nieuwste drops</div>
+    <div class="mob-featured-scroll" id="mobFeatured"></div>
+  </div>
+
+  <!-- MOBIEL: zoekbalk -->
+  <div class="mob-search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input id="mobSearch" type="text" placeholder="Zoek shirt of speler...">
+  </div>
+
+  <!-- MOBIEL: categorie tegels -->
+  <div class="cat-section">
+    <div class="cat-grid" id="catGrid">
+      <div class="cat-tile active" onclick="filterTab('all');setCatActive(this)" data-cat="all">
+        <img src="https://gloryelevn.com/cdn/shop/files/2D153630-6CC4-4041-8DC5-73828998AE72.jpg?v=1755884834&width=400" alt="Alles">
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-label"><span class="cat-tile-emoji">👕</span><span class="cat-tile-name">Alles</span></div>
+      </div>
+      <div class="cat-tile" onclick="filterTab('new');setCatActive(this)" data-cat="new">
+        <img src="https://gloryelevn.com/cdn/shop/files/8B9C7059-C2DD-4E17-B0AF-A50AA588E994.jpg?v=1757079685&width=400" alt="New">
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-label"><span class="cat-tile-emoji">🆕</span><span class="cat-tile-name">New</span></div>
+      </div>
+      <div class="cat-tile" onclick="filterTab('retro');setCatActive(this)" data-cat="retro">
+        <img src="https://gloryelevn.com/cdn/shop/files/AA3169D1-0225-468F-A61B-7A95BA6D4997.jpg?v=1755884834&width=400" alt="Retro">
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-label"><span class="cat-tile-emoji">⚡</span><span class="cat-tile-name">Retro</span></div>
+      </div>
+      <div class="cat-tile" onclick="filterTab('kids');setCatActive(this)" data-cat="kids">
+        <img src="https://gloryelevn.com/cdn/shop/files/29203AB4-F4C7-422A-9CF2-2D37B1E6A892.jpg?v=1756847474&width=400" alt="Kids">
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-label"><span class="cat-tile-emoji">👦</span><span class="cat-tile-name">Kids</span></div>
+      </div>
+      <div class="cat-tile" onclick="filterTab('training');setCatActive(this)" data-cat="training">
+        <img src="https://gloryelevn.com/cdn/shop/files/8AB4F727-AA7E-4F3C-A595-D9097BA38FFF.jpg?v=1761228348&width=400" alt="Training">
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-label"><span class="cat-tile-emoji">🧥</span><span class="cat-tile-name">Training</span></div>
+      </div>
+      <div class="cat-tile" onclick="filterTab('sale');setCatActive(this)" data-cat="sale">
+        <img src="https://gloryelevn.com/cdn/shop/files/40796C5C-4A0B-429C-BC78-C184874D742C.jpg?v=1756233941&width=400" alt="Sale">
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-label"><span class="cat-tile-emoji">🏷️</span><span class="cat-tile-name">Sale</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESKTOP: tab bar -->
   <div class="tab-bar" id="tabBar">
     <button class="tab-btn active" data-filter="all">Alles</button>
     <button class="tab-btn" data-filter="new">🆕 New</button>
@@ -411,8 +576,35 @@
     <button class="tab-btn" data-filter="interland">🌍 Interland</button>
     <button class="tab-btn" data-filter="sale">🏷️ Sale</button>
   </div>
+
   <div class="products-grid" id="productsGrid"></div>
 </section>
+
+<!-- MOBIEL BOTTOM NAV -->
+<nav class="mob-bottom-nav">
+  <div class="mob-bottom-nav-inner">
+    <button class="mob-nav-btn active" onclick="scrollToShop();filterTab('all');setCatActive(document.querySelector('.cat-tile[data-cat=all]'))">
+      <span class="mob-nav-icon">🏠</span>
+      <span class="mob-nav-label">Shop</span>
+    </button>
+    <button class="mob-nav-btn" onclick="scrollToShop();filterTab('new');setCatActive(document.querySelector('.cat-tile[data-cat=new]'))">
+      <span class="mob-nav-icon">🆕</span>
+      <span class="mob-nav-label">New</span>
+    </button>
+    <button class="mob-nav-btn" onclick="scrollToShop();filterTab('sale');setCatActive(document.querySelector('.cat-tile[data-cat=sale]'))">
+      <span class="mob-nav-icon">🏷️</span>
+      <span class="mob-nav-label">Sale</span>
+    </button>
+    <button class="mob-nav-btn" onclick="document.getElementById('over-ons').scrollIntoView({behavior:'smooth'})">
+      <span class="mob-nav-icon">👤</span>
+      <span class="mob-nav-label">Over Ons</span>
+    </button>
+    <button class="mob-nav-btn" onclick="window.open('https://wa.me/310631093840?text=Hallo%2C%20ik%20wil%20graag%20bestellen!','_blank')">
+      <span class="mob-nav-icon">💬</span>
+      <span class="mob-nav-label">Bestellen</span>
+    </button>
+  </div>
+</nav>
 
 <!-- FEATURED -->
 <section class="featured">
@@ -692,9 +884,42 @@ function buildCarousel(){
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeSizeGuide();}});
 
-// ── INIT ──────────────────────────────────
+// ── MOBIEL: nieuwste 3 shirts ─────────────
+function buildMobFeatured(){
+  const el = document.getElementById('mobFeatured');
+  if(!el || !products.length) return;
+  const newest = products.slice(0,3);
+  const bmap2={new:'badge-new',sale:'badge-sale',kids:'badge-kids',retro:'badge-retro',training:'badge-training',interland:'badge-interland'};
+  const blbl2={new:'Nieuw',sale:'Sale',kids:'Kids',retro:'Retro',training:'Training',interland:'Interland'};
+  el.innerHTML = newest.map((p,i) => `
+    <div class="mob-shirt-card" onclick="cardClick(this,${products.indexOf(p)})">
+      <img src="${p.fotos[0]}" alt="${p.naam}" loading="lazy">
+      <div class="mob-shirt-badge ${bmap2[p.badge]||'badge-new'}">${blbl2[p.badge]||'Nieuw'}</div>
+      <div class="mob-shirt-info">
+        <div class="mob-shirt-name">${p.naam}</div>
+        <div class="mob-shirt-price">${p.prijs}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── CATEGORIE TEGELS ──────────────────────
+function setCatActive(tile){
+  document.querySelectorAll('.cat-tile').forEach(t=>t.classList.remove('active'));
+  if(tile) tile.classList.add('active');
+}
+
+// ── MOBIEL ZOEKEN ─────────────────────────
+const mobSearchEl = document.getElementById('mobSearch');
+if(mobSearchEl) mobSearchEl.addEventListener('input', e => doSearch(e.target.value));
+
+// ── BOTTOM NAV ACTIVE STATE ───────────────
+function setBottomNavActive(btn){
+  document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
 render();
 buildCarousel();
+buildMobFeatured();
 setTimeout(()=>document.getElementById('loader').classList.add('done'),900);
 </script>
 </body>
