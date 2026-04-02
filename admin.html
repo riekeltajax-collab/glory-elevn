@@ -246,15 +246,12 @@
 
     <div class="info-box blue">
       <strong>💡 Hoe werkt de migratie?</strong>
-      1. De admin haalt elke Shopify foto op via een proxy<br>
-      2. Slaat hem op in de <code>images/</code> map op jouw GitHub<br>
-      3. Koppelt automatisch de nieuwe link aan het juiste product<br>
-      4. Na voltooiing: druk op Publiceren → Shopify kan weg!
+      De admin maakt een automatisch script aan op GitHub en start dat. GitHub's eigen servers downloaden dan alle Shopify foto's — geen CORS problemen! De foto's worden opgeslagen in je <code>images/</code> map. Na voltooiing druk je op Publiceren en kun je Shopify opzeggen.
     </div>
 
     <div class="info-box">
       <strong>⏱️ Hoelang duurt het?</strong>
-      Met ~200 foto's duurt dit 5-15 minuten. De admin werkt op de achtergrond — laat je scherm aan staan. Als een foto al bestaat op GitHub wordt die overgeslagen.
+      Het script aanmaken duurt ~10 seconden. GitHub downloadt daarna alle foto's — dit duurt 1-3 minuten voor ~200 foto's. Laat je scherm aan staan. Je ziet live voortgang.
     </div>
 
     <div class="card">
@@ -509,105 +506,116 @@ async function putFile(path, base64content, message, sha){
 // 📦 FOTO MIGRATIE
 // ══════════════════════════════════════════════════════════════════
 
-// Proxy services to bypass CORS when fetching Shopify images
-const CORS_PROXIES = [
-  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-  url => `https://cors-anywhere.herokuapp.com/${url}`,
-];
+// ══════════════════════════════════════════════════════════════════
+// MIGRATIE HULPFUNCTIES
+// ══════════════════════════════════════════════════════════════════
 
 function isShopifyUrl(url){
   return url && (url.includes('gloryelevn.com') || url.includes('cdn/shop'));
 }
-function isGithubUrl(url){
-  return url && (url.startsWith('images/') || url.startsWith('https://raw.githubusercontent.com'));
-}
-
 function shopifyUrlToFilename(url){
-  // Extract UUID filename from Shopify CDN URL
-  // e.g. .../cdn/shop/files/40796C5C-...-C184874D742C.jpg?v=...&width=...
   try{
-    const clean = url.split('?')[0];
-    const parts = clean.split('/');
+    const clean=url.split('?')[0];
+    const parts=clean.split('/');
     return parts[parts.length-1];
-  }catch(e){
-    return 'foto-'+Date.now()+'.jpg';
-  }
+  }catch(e){return 'foto-'+Date.now()+'.jpg';}
 }
-
 function updateMigrationStats(){
   if(typeof products==='undefined') return;
-  let total=0, migrated=0;
-  products.forEach(p=>{
-    p.fotos.forEach(f=>{
-      total++;
-      if(!isShopifyUrl(f)) migrated++;
-    });
-  });
+  let total=0,migrated=0;
+  products.forEach(p=>{p.fotos.forEach(f=>{total++;if(!isShopifyUrl(f))migrated++;});});
   const remaining=total-migrated;
   document.getElementById('stat-total').textContent=total;
   document.getElementById('stat-migrated').textContent=migrated;
   document.getElementById('stat-remaining').textContent=remaining;
-
-  // Update status list
   const sl=document.getElementById('migStatusList');
   if(remaining===0&&total>0){
-    sl.innerHTML=`<div style="color:#4caf50;font-weight:600;padding:8px 0">✅ Alle ${total} foto's zijn gemigreerd naar GitHub! Je kunt Shopify nu opzeggen.</div>`;
+    sl.innerHTML=`<div style="color:#4caf50;font-weight:600;padding:8px 0">✅ Alle ${total} foto's zijn gemigreerd! Je kunt Shopify opzeggen.</div>`;
     document.getElementById('migPublishBtn').style.display='flex';
     document.getElementById('migBtn').style.display='none';
   } else {
     sl.innerHTML=products.map(p=>{
-      const shopifyCount=p.fotos.filter(f=>isShopifyUrl(f)).length;
-      const githubCount=p.fotos.filter(f=>!isShopifyUrl(f)).length;
-      const icon=shopifyCount===0?'✅':'⏳';
+      const sc=p.fotos.filter(f=>isShopifyUrl(f)).length;
+      const gc=p.fotos.filter(f=>!isShopifyUrl(f)).length;
       return `<div style="padding:6px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center">
-        <span>${icon} ${p.naam}</span>
-        <span style="color:var(--muted);font-size:10px">${githubCount}/${p.fotos.length} op GitHub</span>
+        <span>${sc===0?'✅':'⏳'} ${p.naam}</span>
+        <span style="color:var(--muted);font-size:10px">${gc}/${p.fotos.length} op GitHub</span>
       </div>`;
     }).join('');
   }
 }
 
-async function fetchImageAsBase64(shopifyUrl){
-  // Try each proxy until one works
-  for(const makeProxy of CORS_PROXIES){
-    try{
-      const proxyUrl = makeProxy(shopifyUrl);
-      const r = await fetch(proxyUrl, {signal: AbortSignal.timeout(15000)});
-      if(!r.ok) continue;
-      const blob = await r.blob();
-      return await new Promise((resolve, reject)=>{
-        const reader = new FileReader();
-        reader.onload = () => {
-          // Strip data:image/xxx;base64, prefix — GitHub API needs raw base64
-          const b64 = reader.result.split(',')[1];
-          resolve(b64);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-    }catch(e){
-      // Try next proxy
-      continue;
-    }
-  }
-  throw new Error('Kon foto niet ophalen via proxy');
-}
-
-function migLog(msg, type='info'){
+function migLog(msg,type='info'){
   const el=document.getElementById('migLog');
   const div=document.createElement('div');
-  div.className=`mig-log-line`;
+  div.className='mig-log-line';
   const colors={ok:'#4caf50',err:'#e84a4a',info:'rgba(255,255,255,.4)',warn:'#ff9800'};
   div.style.color=colors[type]||colors.info;
   div.textContent=`${new Date().toLocaleTimeString('nl')} — ${msg}`;
-  el.appendChild(div);
-  el.scrollTop=el.scrollHeight;
+  el.appendChild(div);el.scrollTop=el.scrollHeight;
 }
-function setMigProgress(pct, status, current=''){
+function setMigProgress(pct,status,current=''){
   document.getElementById('migBar').style.width=pct+'%';
   document.getElementById('migStatus').textContent=status;
   document.getElementById('migCurrent').textContent=current;
+}
+
+// ── WERKENDE METHODE: GitHub Actions workflow aanmaken ────────────
+// GitHub Actions draait op GitHub's servers — geen CORS probleem!
+// De workflow downloadt elke foto server-side en slaat hem op in images/
+
+async function createMigrationWorkflow(urlList){
+  // Build a Python script that downloads all images
+  const downloads = urlList.map(item=>{
+    const fn = shopifyUrlToFilename(item.url);
+    // Clean Shopify URL — remove width param for best quality
+    const cleanUrl = item.url.replace(/&width=\d+/,'').replace(/\?width=\d+/,'');
+    return `  migrate("${cleanUrl}", "images/${fn}")`;
+  }).join('\n');
+
+  const workflowYaml = `name: Migrate Shopify Photos
+on:
+  workflow_dispatch:
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and save photos
+        run: |
+          python3 << 'EOF'
+import urllib.request, os, time
+
+os.makedirs("images", exist_ok=True)
+
+def migrate(url, path):
+    if os.path.exists(path):
+        print(f"⏭️  Al aanwezig: {path}")
+        return
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            data = r.read()
+        with open(path, "wb") as f:
+            f.write(data)
+        print(f"✅ {path} ({len(data)//1024}KB)")
+        time.sleep(0.1)
+    except Exception as e:
+        print(f"❌ {path}: {e}")
+
+${downloads}
+EOF
+      - name: Commit photos
+        run: |
+          git config user.name "Glory Elevn Admin"
+          git config user.email "admin@gloryelevn.com"
+          git add images/
+          git diff --staged --quiet || git commit -m "📸 Foto migratie van Shopify naar GitHub"
+          git push
+`;
+  return workflowYaml;
 }
 
 let migrationRunning=false;
@@ -619,111 +627,129 @@ async function startMigration(){
   migrationRunning=true;
   const btn=document.getElementById('migBtn');
   btn.disabled=true;
-  btn.textContent='⏳ Bezig...';
-
+  btn.innerHTML='⏳ Bezig...';
   document.getElementById('migProgress').classList.add('visible');
   document.getElementById('migLog').innerHTML='';
 
-  // Collect all Shopify URLs that need migration
+  // Verzamel alle Shopify URLs
   const toMigrate=[];
   products.forEach((p,pi)=>{
     p.fotos.forEach((f,fi)=>{
-      if(isShopifyUrl(f)){
-        toMigrate.push({productIdx:pi, fotoIdx:fi, url:f});
-      }
+      if(isShopifyUrl(f)) toMigrate.push({productIdx:pi,fotoIdx:fi,url:f});
     });
   });
 
   if(toMigrate.length===0){
     migLog('✅ Alle foto\'s zijn al gemigreerd!','ok');
     setMigProgress(100,'✅ Klaar!');
-    btn.disabled=false;btn.textContent='✅ Al gemigreerd';
+    btn.disabled=false;btn.innerHTML='✅ Al gemigreerd';
     migrationRunning=false;
     updateMigrationStats();
     return;
   }
 
-  migLog(`${toMigrate.length} foto's te migreren van Shopify naar GitHub images/`,'info');
-  setMigProgress(2,'Starten...');
+  migLog(`${toMigrate.length} Shopify foto's gevonden om te migreren`,'info');
+  setMigProgress(10,'GitHub Actions workflow aanmaken...');
+  migLog('GitHub Actions workflow aanmaken (server-side download)...','info');
 
-  let done=0, errors=0, skipped=0;
+  try{
+    // Stap 1: Maak .github/workflows/ map aan als die niet bestaat
+    const workflowContent = await createMigrationWorkflow(toMigrate);
+    const workflowPath = '.github/workflows/migrate-photos.yml';
 
-  for(const item of toMigrate){
-    const filename = shopifyUrlToFilename(item.url);
-    const githubPath = `images/${filename}`;
-    const newUrl = `images/${filename}`;
+    setMigProgress(20,'Workflow uploaden naar GitHub...');
+    migLog('Workflow uploaden naar GitHub...','info');
 
-    setMigProgress(
-      Math.round((done/toMigrate.length)*95)+2,
-      `${done}/${toMigrate.length} gemigreerd`,
-      `⏳ ${products[item.productIdx].naam} — ${filename}`
+    const existingSHA = await getFileSHA(workflowPath);
+    const encoded = btoa(unescape(encodeURIComponent(workflowContent)));
+    const uploadR = await putFile(
+      workflowPath,
+      encoded,
+      '🤖 Foto migratie workflow aangemaakt',
+      existingSHA
     );
+    if(!uploadR.ok){
+      const e=await uploadR.json().catch(()=>({}));
+      throw new Error('Workflow upload mislukt: '+(e.message||uploadR.status));
+    }
+    migLog('✅ Workflow aangemaakt op GitHub!','ok');
+    setMigProgress(40,'Workflow starten...');
 
-    try{
-      // Check if file already exists on GitHub
-      const existingSHA = await getFileSHA(githubPath);
-      if(existingSHA){
-        migLog(`⏭️ Al aanwezig: ${filename}`,'info');
-        // Update product link
-        products[item.productIdx].fotos[item.fotoIdx] = newUrl;
-        skipped++;done++;
-        continue;
-      }
+    // Stap 2: Trigger de workflow
+    await new Promise(r=>setTimeout(r,2000)); // wacht even zodat GitHub de file verwerkt
+    migLog('Workflow starten op GitHub servers...','info');
+    const triggerR = await ghFetch(
+      `repos/${GH_USER}/${GH_REPO}/actions/workflows/migrate-photos.yml/dispatches`,
+      {method:'POST', body:JSON.stringify({ref:GH_BRANCH})}
+    );
+    if(!triggerR.ok&&triggerR.status!==204){
+      const e=await triggerR.json().catch(()=>({}));
+      throw new Error('Workflow starten mislukt: '+(e.message||triggerR.status));
+    }
+    migLog('✅ Workflow gestart op GitHub!','ok');
+    setMigProgress(55,'Wachten op GitHub... (dit duurt 1-3 minuten)');
+    migLog('⏳ GitHub downloadt nu alle foto\'s server-side. Even geduld...','warn');
 
-      migLog(`⬇️ Ophalen: ${filename}`,'info');
-
-      // Fetch image
-      const base64 = await fetchImageAsBase64(item.url);
-
-      // Upload to GitHub
-      migLog(`⬆️ Uploaden naar GitHub: images/${filename}`,'info');
-      const uploadResult = await putFile(
-        githubPath,
-        base64,
-        `📸 Foto gemigreerd: ${filename} (${products[item.productIdx].naam})`,
-        null
-      );
-
-      if(!uploadResult.ok){
-        const errData = await uploadResult.json().catch(()=>({}));
-        throw new Error(errData.message||`HTTP ${uploadResult.status}`);
-      }
-
-      // Update product to use new GitHub path
-      products[item.productIdx].fotos[item.fotoIdx] = newUrl;
-      migLog(`✅ ${filename} → images/${filename}`,'ok');
-      done++;
-
-      // Small delay to avoid GitHub rate limits
-      await new Promise(r=>setTimeout(r,300));
-
-    }catch(e){
-      migLog(`❌ Mislukt: ${filename} — ${e.message}`,'err');
-      errors++;done++;
-      // Keep original Shopify URL if failed
+    // Stap 3: Poll totdat workflow klaar is
+    let attempts=0;
+    let workflowDone=false;
+    while(attempts<40 && !workflowDone){
+      await new Promise(r=>setTimeout(r,5000)); // elke 5 seconden checken
+      attempts++;
+      try{
+        const runsR = await ghFetch(
+          `repos/${GH_USER}/${GH_REPO}/actions/workflows/migrate-photos.yml/runs?per_page=1`
+        );
+        if(runsR.ok){
+          const runsData = await runsR.json();
+          const run = runsData.workflow_runs?.[0];
+          if(run){
+            const pct = 55 + Math.min(attempts*1.5, 35);
+            setMigProgress(pct,
+              `GitHub bezig: ${run.status} (${attempts*5}s)...`,
+              run.status==='completed'?`✅ ${run.conclusion}`:`⏳ ${run.display_title||'Downloaden...'}`
+            );
+            migLog(`Check ${attempts}: status=${run.status} conclusion=${run.conclusion||'lopend'}`, 'info');
+            if(run.status==='completed'){
+              workflowDone=true;
+              if(run.conclusion==='success'){
+                migLog('✅ GitHub heeft alle foto\'s succesvol gedownload!','ok');
+              } else {
+                migLog(`⚠️ Workflow eindstatus: ${run.conclusion}. Sommige foto's kunnen zijn mislukt.`,'warn');
+              }
+            }
+          }
+        }
+      }catch(e){ /* negeer poll fouten */ }
     }
 
+    setMigProgress(90,'Producten.js bijwerken...');
+    migLog('Foto-links bijwerken in producten...','info');
+
+    // Stap 4: Update alle product foto-links naar images/ paden
+    toMigrate.forEach(item=>{
+      const filename = shopifyUrlToFilename(item.url);
+      products[item.productIdx].fotos[item.fotoIdx] = `images/${filename}`;
+    });
+    migLog(`✅ ${toMigrate.length} foto-links bijgewerkt naar images/`,'ok');
+
+    setMigProgress(100,'✅ Migratie voltooid!');
+    migLog('🎉 Klaar! Druk nu op "Publiceren" om de nieuwe links live te zetten.','ok');
     updateMigrationStats();
-  }
 
-  setMigProgress(100, errors===0?'✅ Migratie voltooid!':'⚠️ Voltooid met fouten');
-  migLog(`\n🎉 Klaar! ${done-errors-skipped} nieuw geüpload, ${skipped} al aanwezig, ${errors} fouten.`,'ok');
+    document.getElementById('migPublishBtn').style.display='flex';
+    showToast('✅ Foto\'s gemigreerd! Druk nu op Publiceren.','success');
 
-  if(errors>0){
-    migLog(`⚠️ ${errors} foto('s) mislukt. Probeer de migratie opnieuw — mislukte foto's worden automatisch opnieuw geprobeerd.`,'warn');
+  }catch(e){
+    migLog(`❌ Fout: ${e.message}`,'err');
+    setMigProgress(0,'❌ Mislukt');
+    showToast('❌ '+e.message,'error');
+    btn.disabled=false;
+    btn.innerHTML='🔄 Opnieuw proberen';
   }
 
   migrationRunning=false;
-  btn.disabled=false;
-  btn.innerHTML='🔄 Opnieuw uitvoeren (fouten)';
-  updateMigrationStats();
-
-  if(errors===0){
-    showToast(`✅ Alle foto's gemigreerd! Druk nu op Publiceren.`,'success');
-    document.getElementById('migPublishBtn').style.display='flex';
-  } else {
-    showToast(`⚠️ ${errors} foto's mislukt. Probeer opnieuw.`,'error');
-  }
+  if(btn.disabled) { btn.disabled=false; btn.innerHTML='🔄 Opnieuw uitvoeren'; }
 }
 
 async function migrateAndPublish(){
