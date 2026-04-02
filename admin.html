@@ -11,7 +11,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:var(--dark);min-height:100vh}
 
-    /* LOGIN */
+    /* ── LOGIN ── */
     #loginScreen{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:32px}
     #loginScreen.hidden{display:none}
     .login-logo{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--accent);letter-spacing:4px}
@@ -24,62 +24,63 @@
     .btn-login{width:100%;padding:13px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
     .login-error{font-size:12px;color:var(--red);min-height:18px;margin-top:8px;font-weight:500}
 
-    /* APP */
+    /* ── APP ── */
     #adminApp{display:none}
     #adminApp.visible{display:block}
 
-    /* TOPBAR */
+    /* ── TOPBAR ── */
     .topbar{background:var(--dark);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
     .topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:3px}
     .topbar-right{display:flex;align-items:center;gap:12px}
     .topbar-right a{color:rgba(255,255,255,.6);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none}
     .btn-logout{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-size:11px;padding:6px 12px;cursor:pointer;font-family:'DM Sans',sans-serif}
 
-    /* NAV TABS */
+    /* ── TABS ── */
     .nav-tabs{display:flex;background:#fff;border-bottom:2px solid #e8e4de;overflow-x:auto;-webkit-overflow-scrolling:touch}
     .nav-tab{padding:14px 20px;border:none;background:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .2s,border-color .2s}
     .nav-tab.active{color:var(--dark);border-color:var(--dark)}
 
-    /* PAGES */
-    .page{display:none;padding:20px}
+    /* ── PAGES ── */
+    .page{display:none;padding:20px;max-width:680px;margin:0 auto}
     .page.active{display:block}
     .page-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;margin-bottom:6px}
     .page-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
 
-    /* CARDS */
+    /* ── CARDS ── */
     .card{background:#fff;padding:20px;margin-bottom:16px;border:1px solid #e8e4de}
-    .card-title{font-size:13px;font-weight:700;margin-bottom:16px;letter-spacing:.5px}
+    .card-title{font-size:13px;font-weight:700;margin-bottom:16px;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
 
-    /* FORM */
+    /* ── FORM ── */
     .field{margin-bottom:16px}
     .field label{display:block;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
     .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #ddd;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;border-radius:0;background:#fff}
     .field input:focus,.field select:focus{border-color:var(--dark)}
     .field small{font-size:11px;color:var(--muted);margin-top:5px;display:block;line-height:1.5}
 
-    /* FOTO UPLOAD AREA */
-    .photo-upload-area{border:2px dashed #ddd;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;background:#fafafa}
-    .photo-upload-area:hover,.photo-upload-area.dragover{border-color:var(--dark);background:#f0ede8}
+    /* ── FOTO UPLOAD ── */
+    .photo-upload-area{border:2px dashed #ddd;padding:20px;text-align:center;cursor:pointer;position:relative;background:#fafafa;transition:border-color .2s}
+    .photo-upload-area:hover{border-color:var(--dark)}
     .photo-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-    .photo-upload-icon{font-size:36px;margin-bottom:8px}
-    .photo-upload-text{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:4px}
-    .photo-upload-sub{font-size:11px;color:var(--muted)}
-
-    /* FOTO PREVIEW GRID */
+    .photo-upload-icon{font-size:32px;margin-bottom:6px}
+    .photo-upload-text{font-size:13px;font-weight:600}
+    .photo-upload-sub{font-size:11px;color:var(--muted);margin-top:3px}
     .photo-previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-    .photo-preview{position:relative;aspect-ratio:1;background:#e8e4de;overflow:hidden}
+    .photo-preview{position:relative;aspect-ratio:1;overflow:hidden}
     .photo-preview img{width:100%;height:100%;object-fit:cover}
-    .photo-preview .remove-photo{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;border:none;width:22px;height:22px;border-radius:50%;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-weight:bold}
-    .photo-preview .photo-order{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;font-weight:700;padding:2px 6px}
+    .photo-preview .rm{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;border:none;width:22px;height:22px;border-radius:50%;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:bold}
+    .photo-preview .ph-num{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;font-weight:700;padding:2px 6px}
 
-    /* BUTTONS */
-    .btn-primary{width:100%;padding:14px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
-    .btn-accent{width:100%;padding:14px;background:var(--accent);color:var(--dark);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+    /* ── BUTTONS ── */
+    .btn-primary{width:100%;padding:14px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;transition:opacity .2s}
+    .btn-primary:hover{opacity:.85}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+    .btn-accent{width:100%;padding:16px;background:var(--accent);color:var(--dark);font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:10px}
+    .btn-accent:hover{opacity:.88}
+    .btn-accent:disabled{opacity:.4;cursor:not-allowed}
     .btn-sm{padding:8px 14px;background:var(--dark);color:#fff;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
     .btn-red{padding:8px 14px;background:var(--red);color:#fff;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-outline{width:100%;padding:14px;background:#fff;color:var(--dark);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:2px solid var(--dark);cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
 
-    /* PRODUCT LIST */
+    /* ── PRODUCT LIST ── */
     .product-list{display:flex;flex-direction:column;gap:10px}
     .product-row{background:#fff;border:1px solid #e8e4de;overflow:hidden}
     .product-row-header{display:flex;align-items:center;gap:12px;padding:12px}
@@ -91,35 +92,56 @@
     .edit-form{display:none;padding:16px;background:#f9f8f6;border-top:1px solid #e8e4de}
     .edit-form.open{display:block}
 
-    /* EXPORT */
-    .code-area{width:100%;font-size:11px;font-family:'Courier New',monospace;padding:12px;border:1px solid #ddd;resize:none;background:#f9f8f6;line-height:1.5;min-height:150px}
+    /* ── PUBLISH BUTTON ── */
+    .publish-hero{background:var(--dark);padding:28px;text-align:center;margin-bottom:16px}
+    .publish-hero h2{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:2px;margin-bottom:6px}
+    .publish-hero p{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px}
+    .btn-publish{width:100%;padding:18px;background:var(--accent);color:var(--dark);font-weight:700;font-size:16px;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:12px;transition:opacity .2s}
+    .btn-publish:hover{opacity:.88}
+    .btn-publish:disabled{opacity:.4;cursor:not-allowed}
+    .btn-publish svg{flex-shrink:0}
+
+    /* PROGRESS BAR */
+    .progress-wrap{display:none;margin-top:16px}
+    .progress-wrap.visible{display:block}
+    .progress-bar-bg{background:rgba(255,255,255,.1);height:6px;border-radius:3px;overflow:hidden}
+    .progress-bar-fill{height:100%;background:var(--accent);width:0%;transition:width .4s}
+    .progress-status{font-size:12px;color:rgba(255,255,255,.5);margin-top:8px;text-align:center}
+
+    /* STATUS LOGBOEK */
+    .publish-log{background:#0a1520;border:1px solid rgba(255,255,255,.08);padding:14px;margin-top:12px;max-height:200px;overflow-y:auto;display:none}
+    .publish-log.visible{display:block}
+    .log-line{font-size:11px;font-family:'Courier New',monospace;padding:2px 0;line-height:1.6}
+    .log-ok{color:#4caf50}
+    .log-err{color:#e84a4a}
+    .log-info{color:rgba(255,255,255,.45)}
+
+    /* TOKEN SECTIE */
+    .token-status{display:flex;align-items:center;gap:10px;padding:12px;background:#f0ede8;border:1px solid #ddd;margin-bottom:16px}
+    .token-dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0}
+    .token-dot.ok{background:#4caf50}
+    .token-dot.err{background:var(--red)}
+    .token-text{font-size:12px;flex:1}
+    .token-btn{background:none;border:1px solid #ddd;padding:6px 12px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
 
     /* INFO BOX */
     .info-box{background:#fff8e6;border-left:4px solid var(--accent);padding:14px 16px;font-size:13px;line-height:1.7;margin-bottom:16px}
     .info-box strong{display:block;margin-bottom:4px}
-
-    /* STEPS */
-    .step{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #eee}
-    .step:last-child{border-bottom:none}
-    .step-num{width:32px;height:32px;min-width:32px;background:var(--dark);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px}
-    .step-body h4{font-size:13px;font-weight:600;margin-bottom:3px}
-    .step-body p{font-size:12px;color:var(--muted);line-height:1.6}
-    .step-body code{background:#f0ede8;padding:1px 5px;font-size:11px}
+    .info-box.green{background:#e8f5e9;border-color:#4caf50}
+    .info-box.red{background:#ffebee;border-color:var(--red)}
 
     /* TOAST */
-    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--dark);color:#fff;padding:12px 24px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--dark);color:#fff;padding:12px 24px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center;border-left:4px solid var(--accent)}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-    /* PROGRESS */
-    .upload-progress{margin-top:8px;font-size:12px;color:var(--muted);text-align:center;display:none}
-    .upload-progress.visible{display:block}
+    .toast.error{border-color:var(--red)}
+    .toast.success{border-color:#4caf50}
   </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
 
-<!-- LOGIN -->
+<!-- ── LOGIN ── -->
 <div id="loginScreen">
   <div class="login-logo">Glory Elevn</div>
   <div class="login-box">
@@ -134,7 +156,7 @@
   </div>
 </div>
 
-<!-- ADMIN APP -->
+<!-- ── ADMIN APP ── -->
 <div id="adminApp">
   <div class="topbar">
     <div class="topbar-logo">Glory Elevn</div>
@@ -145,43 +167,76 @@
   </div>
 
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('add',this)">➕ Nieuw</button>
+    <button class="nav-tab active" onclick="showPage('publish',this)">🚀 Publiceer</button>
+    <button class="nav-tab" onclick="showPage('add',this)">➕ Nieuw product</button>
     <button class="nav-tab" onclick="showPage('list',this)">📋 Producten</button>
-    <button class="nav-tab" onclick="showPage('export',this)">💾 Publiceer</button>
-    <button class="nav-tab" onclick="showPage('howto',this)">📖 Uitleg</button>
+    <button class="nav-tab" onclick="showPage('settings',this)">⚙️ Instellingen</button>
+  </div>
+
+  <!-- ══ PUBLICEER ══ -->
+  <div class="page active" id="page-publish">
+
+    <div style="padding:20px;max-width:680px;margin:0 auto">
+
+      <!-- Token status banner -->
+      <div class="token-status" id="tokenStatus">
+        <div class="token-dot" id="tokenDot"></div>
+        <span class="token-text" id="tokenText">GitHub token niet ingesteld</span>
+        <button class="token-btn" onclick="showPage('settings',document.querySelector('[onclick*=settings]'))">Instellen →</button>
+      </div>
+
+      <!-- GROTE PUBLICEER KNOP -->
+      <div class="publish-hero">
+        <h2>🚀 Live Publiceren</h2>
+        <p>Alle wijzigingen in één klik naar je website</p>
+        <button class="btn-publish" id="publishBtn" onclick="publishToGitHub()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Publiceer naar gloryelevn.com
+        </button>
+
+        <!-- Progress -->
+        <div class="progress-wrap" id="progressWrap">
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
+          <div class="progress-status" id="progressStatus">Bezig...</div>
+        </div>
+
+        <!-- Log -->
+        <div class="publish-log" id="publishLog"></div>
+      </div>
+
+      <div class="info-box">
+        <strong>Wat wordt er gepubliceerd?</strong>
+        Alle producten die je in "Producten" hebt — inclusief nieuwe producten, prijswijzigingen en foto-aanpassingen — worden direct live gezet op je website. Dit duurt ongeveer 10-30 seconden.
+      </div>
+
+      <div class="info-box" style="background:#e8f0fe;border-color:#4285f4">
+        <strong>💡 Hoe werkt het?</strong>
+        De admin stuurt je producten direct naar GitHub via de officiële GitHub API. Je website wordt daarna automatisch bijgewerkt. Je hebt hier je GitHub token voor nodig (in ⚙️ Instellingen).
+      </div>
+    </div>
   </div>
 
   <!-- ══ NIEUW PRODUCT ══ -->
-  <div class="page active" id="page-add">
+  <div class="page" id="page-add">
     <div class="page-title">➕ Nieuw product</div>
-    <div class="page-sub">Vul in en kies foto's direct uit je galerij.</div>
+    <div class="page-sub">Vul in en kies foto's direct uit je galerij. Tik daarna op 🚀 Publiceer.</div>
 
     <div class="card">
       <div class="card-title">📸 Foto's kiezen</div>
       <div class="photo-upload-area" id="uploadArea">
-        <input type="file" accept="image/*" multiple onchange="handlePhotos(this.files)" capture="environment">
+        <input type="file" accept="image/*" multiple onchange="handlePhotos(this.files,newProductPhotos,'photoPreviews')">
         <div class="photo-upload-icon">📷</div>
         <div class="photo-upload-text">Tik hier om foto's te kiezen</div>
         <div class="photo-upload-sub">Kies direct uit je iPhone galerij · meerdere tegelijk</div>
       </div>
       <div class="photo-previews" id="photoPreviews"></div>
-      <div class="upload-progress" id="uploadProgress">Foto's worden verwerkt...</div>
     </div>
 
     <div class="card">
       <div class="card-title">📝 Product info</div>
-      <div class="field">
-        <label>Naam van het shirt *</label>
-        <input id="f-naam" type="text" placeholder="bijv. Ajax home 25/26">
-      </div>
-      <div class="field">
-        <label>Prijs *</label>
-        <input id="f-prijs" type="text" placeholder="€45">
-      </div>
-      <div class="field">
-        <label>Originele prijs (alleen bij sale)</label>
-        <input id="f-sale" type="text" placeholder="€80  —  leeg laten als geen sale">
-      </div>
+      <div class="field"><label>Naam *</label><input id="f-naam" type="text" placeholder="bijv. Ajax home 25/26"></div>
+      <div class="field"><label>Prijs *</label><input id="f-prijs" type="text" placeholder="€45"></div>
+      <div class="field"><label>Originele prijs (sale)</label><input id="f-sale" type="text" placeholder="€80  —  leeg laten als geen sale"></div>
       <div class="field">
         <label>Categorie *</label>
         <select id="f-cat">
@@ -192,105 +247,67 @@
           <option value="interland">🌍 Interland</option>
         </select>
       </div>
-      <div class="field">
-        <label>Maten (komma-gescheiden)</label>
-        <input id="f-maten" type="text" placeholder="S, M, L, XL, XXL">
-        <small>Kids: 128, 140, 152, 164, 176</small>
-      </div>
-      <div class="field">
-        <label>Spelers / legendes (komma-gescheiden)</label>
-        <input id="f-spelers" type="text" placeholder="Neymar, Ronaldo, Messi">
-      </div>
+      <div class="field"><label>Maten</label><input id="f-maten" type="text" placeholder="S, M, L, XL, XXL"><small>Kids: 128, 140, 152, 164, 176</small></div>
+      <div class="field"><label>Spelers (komma-gescheiden)</label><input id="f-spelers" type="text" placeholder="Neymar, Ronaldo, Messi"></div>
     </div>
 
-    <button class="btn-primary" onclick="addProduct()">➕ Product toevoegen</button>
-    <button class="btn-accent" onclick="addAndExport()">➕ Toevoegen + direct publiceren</button>
+    <button class="btn-primary" onclick="addProduct()">➕ Product toevoegen aan lijst</button>
+    <button class="btn-accent" onclick="addAndPublish()">
+      ➕ Toevoegen + 🚀 Direct publiceren
+    </button>
   </div>
 
   <!-- ══ PRODUCTEN LIJST ══ -->
   <div class="page" id="page-list">
-    <div class="page-title">📋 Alle producten</div>
-    <div class="page-sub">Tik op <strong>Bewerk</strong> om naam, prijs of foto's aan te passen.</div>
+    <div class="page-title">📋 Producten</div>
+    <div class="page-sub" id="listSub">Tik op ✏️ om te bewerken. Wijzigingen gaan live via 🚀 Publiceer.</div>
     <div class="product-list" id="productList"></div>
   </div>
 
-  <!-- ══ PUBLICEER ══ -->
-  <div class="page" id="page-export">
-    <div class="page-title">💾 Publiceer</div>
-    <div class="page-sub">Zet je wijzigingen live op de site in 3 stappen.</div>
-
-    <div class="info-box">
-      <strong>⚡ Hoe werkt het?</strong>
-      Genereer de code → kopieer → plak in <code>producten.js</code> op GitHub → commit. Klaar!
-    </div>
+  <!-- ══ INSTELLINGEN ══ -->
+  <div class="page" id="page-settings">
+    <div class="page-title">⚙️ Instellingen</div>
+    <div class="page-sub">Vul hier eenmalig je GitHub token in voor automatisch publiceren.</div>
 
     <div class="card">
-      <div class="card-title">Stap 1 — Genereer code</div>
-      <button class="btn-primary" onclick="generateCode()">🔄 Genereer code</button>
-      <textarea class="code-area" id="codeArea" readonly style="margin-top:12px" placeholder="Klik hierboven..."></textarea>
-      <button class="btn-accent" onclick="copyCode()" style="margin-top:8px">📋 Kopieer naar klembord</button>
-    </div>
+      <div class="card-title">🔑 GitHub Token</div>
 
-    <div class="card">
-      <div class="card-title">Stap 2 & 3 — Zet live op GitHub</div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <h4>Open producten.js op GitHub</h4>
-          <p>Ga naar <code>github.com/riekeltajax-collab/glory-elevn</code> → tik op <code>producten.js</code> → tik op het ✏️ potlood</p>
+      <div class="info-box" id="tokenInfoBox">
+        <strong>Hoe maak je een token aan?</strong>
+        1. Ga naar github.com → Inloggen<br>
+        2. Profielfoto → Settings → Developer settings<br>
+        3. Personal access tokens → Tokens (classic)<br>
+        4. Generate new token (classic)<br>
+        5. Note: "Glory Elevn Admin" · Expiration: No expiration<br>
+        6. Vink ✅ <strong>repo</strong> aan → Generate token<br>
+        7. Kopieer de token (begint met <code>ghp_</code>) en plak hem hieronder
+      </div>
+
+      <div class="field">
+        <label>GitHub Personal Access Token</label>
+        <div class="pw-wrap" style="border:1px solid #ddd">
+          <input type="password" id="tokenInput" placeholder="ghp_..." style="flex:1;padding:11px 12px;border:none;outline:none;font-size:13px;font-family:monospace">
+          <button class="pw-eye" onclick="toggleToken()">👁️</button>
         </div>
+        <small>⚠️ Bewaar dit token veilig. Hij wordt alleen lokaal opgeslagen op jouw apparaat.</small>
       </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <h4>Vervang alles en commit</h4>
-          <p>Selecteer alle tekst (lang indrukken → Alles selecteren) → plak de gekopieerde code → tik <strong>"Commit changes"</strong> → nog een keer <strong>"Commit changes"</strong></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="background:#e8f5e9;border-color:#a5d6a7">
-      <div class="card-title">✅ Klaar!</div>
-      <p style="font-size:13px;color:#2e7d32;line-height:1.7">Na het committen is je site binnen 1-2 minuten bijgewerkt. Ververs de pagina om het te controleren.</p>
-    </div>
-  </div>
-
-  <!-- ══ UITLEG ══ -->
-  <div class="page" id="page-howto">
-    <div class="page-title">📖 Uitleg</div>
-
-    <div class="card">
-      <div class="card-title">📸 Eigen foto's toevoegen aan bestaand product</div>
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-body"><h4>Ga naar "Producten"</h4><p>Tik op 📋 Producten in de navigatie bovenaan.</p></div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-body"><h4>Tik op "Bewerk"</h4><p>Zoek het shirt, tik op de Bewerk knop. Het formulier klapt open.</p></div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-body"><h4>Kies nieuwe foto's</h4><p>Tik op het foto-upload vlak → kies foto's uit je galerij. De oude foto's worden vervangen.</p></div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-body"><h4>Sla op en publiceer</h4><p>Tik "Opslaan" → ga naar 💾 Publiceer → genereer → kopieer → plak in GitHub → commit.</p></div>
-      </div>
+      <button class="btn-primary" onclick="saveToken()">💾 Token opslaan</button>
+      <button class="btn-sm" onclick="testToken()" style="margin-top:8px;width:100%">🔍 Token testen</button>
     </div>
 
     <div class="card">
-      <div class="card-title">⚠️ Belangrijk over foto's</div>
-      <div class="info-box" style="margin-bottom:0">
-        <strong>Foto's worden opgeslagen als link</strong>
-        Als je een foto kiest uit je galerij, wordt die omgezet naar een tijdelijke link. Deze werkt alleen zolang je de admin pagina open hebt.<br><br>
-        <strong>Voor permanente foto's op je site:</strong> Upload de foto's ook naar je GitHub <code>images/</code> map. Gebruik dan bij "Foto URL" de GitHub link: <code>images/jouw-foto.jpg</code>
-      </div>
+      <div class="card-title">📁 GitHub Repository</div>
+      <div class="field"><label>GitHub gebruikersnaam</label><input id="s-user" type="text" value="riekeltajax-collab"></div>
+      <div class="field"><label>Repository naam</label><input id="s-repo" type="text" value="glory-elevn"></div>
+      <div class="field"><label>Branch</label><input id="s-branch" type="text" value="main"></div>
+      <button class="btn-primary" onclick="saveSettings()">💾 Opslaan</button>
     </div>
 
     <div class="card">
-      <div class="card-title">🔐 Wachtwoord veranderen</div>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7">Open <code>admin.html</code> op GitHub → zoek naar <code>const ADMIN_PASSWORD</code> → verander de waarde → commit.</p>
+      <div class="card-title">🔐 Beheer wachtwoord</div>
+      <div class="field"><label>Huidig wachtwoord</label><input type="password" id="s-pw-old" placeholder="Huidig wachtwoord"></div>
+      <div class="field"><label>Nieuw wachtwoord</label><input type="password" id="s-pw-new" placeholder="Nieuw wachtwoord"></div>
+      <button class="btn-primary" onclick="changePassword()">🔒 Wachtwoord wijzigen</button>
     </div>
   </div>
 
@@ -298,17 +315,29 @@
 
 <script src="producten.js"></script>
 <script>
-const ADMIN_PASSWORD = 'glory2025'; // ← Verander dit naar jouw wachtwoord
+// ── CONFIGURATIE ──────────────────────────────────────────────────
+const ADMIN_PASSWORD_KEY = 'ge_admin_pw';
+let ADMIN_PASSWORD = localStorage.getItem(ADMIN_PASSWORD_KEY) || 'glory2025';
 
-// ── LOGIN ──────────────────────────────────
+// GitHub instellingen
+let GH_USER   = localStorage.getItem('ge_gh_user')   || 'riekeltajax-collab';
+let GH_REPO   = localStorage.getItem('ge_gh_repo')   || 'glory-elevn';
+let GH_BRANCH = localStorage.getItem('ge_gh_branch') || 'main';
+let GH_TOKEN  = localStorage.getItem('ge_gh_token')  || '';
+
+let newProductPhotos = [];
+let editPhotos = {};
+
+// ── LOGIN ─────────────────────────────────────────────────────────
 function checkPw(){
-  if(document.getElementById('pwInput').value===ADMIN_PASSWORD){
+  if(document.getElementById('pwInput').value === ADMIN_PASSWORD){
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('adminApp').classList.add('visible');
     sessionStorage.setItem('ge_admin','1');
+    initAdmin();
   } else {
-    document.getElementById('loginError').textContent='Verkeerd wachtwoord.';
-    document.getElementById('pwInput').value='';
+    document.getElementById('loginError').textContent = 'Verkeerd wachtwoord.';
+    document.getElementById('pwInput').value = '';
   }
 }
 function togglePw(){const i=document.getElementById('pwInput');i.type=i.type==='password'?'text':'password';}
@@ -317,102 +346,159 @@ document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='En
 if(sessionStorage.getItem('ge_admin')==='1'){
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('adminApp').classList.add('visible');
+  initAdmin();
 }
 
-// ── NAVIGATIE ──────────────────────────────
+function initAdmin(){
+  updateTokenStatus();
+  // Prefill settings
+  document.getElementById('s-user').value   = GH_USER;
+  document.getElementById('s-repo').value   = GH_REPO;
+  document.getElementById('s-branch').value = GH_BRANCH;
+  if(GH_TOKEN) document.getElementById('tokenInput').value = GH_TOKEN;
+}
+
+// ── NAVIGATIE ─────────────────────────────────────────────────────
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  btn.classList.add('active');
-  if(name==='list')renderList();
+  if(btn) btn.classList.add('active');
+  if(name==='list') renderList();
+  if(name==='publish') updateTokenStatus();
 }
 
-// ── FOTO UPLOAD ────────────────────────────
-let newProductPhotos = []; // base64 of url strings for new product
-let editPhotos = {};       // idx -> array of photos for edit forms
-
-function handlePhotos(files, targetArr, previewEl) {
-  // targetArr = array to push into, previewEl = element to show previews
-  if(!files||!files.length) return;
-  const arr = targetArr || newProductPhotos;
-  const el  = previewEl  || document.getElementById('photoPreviews');
-  const progress = document.getElementById('uploadProgress');
-  if(progress) { progress.classList.add('visible'); progress.textContent = `0 / ${files.length} verwerkt...`; }
-  let done = 0;
-  Array.from(files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      arr.push(e.target.result);
-      done++;
-      if(progress) progress.textContent = `${done} / ${files.length} verwerkt...`;
-      if(done===files.length){
-        if(progress) progress.classList.remove('visible');
-        renderPhotoPreviews(arr, el);
-      }
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function renderPhotoPreviews(arr, el) {
-  el.innerHTML = arr.map((src, i) => `
-    <div class="photo-preview">
-      <img src="${src}" alt="Foto ${i+1}">
-      <div class="photo-order">Foto ${i+1}</div>
-      <button class="remove-photo" onclick="removePhoto(${i},event)">✕</button>
-    </div>`).join('');
-}
-
-function removePhoto(idx, e) {
-  // Determine which array we're working with
-  const btn = e.target;
-  const previewGrid = btn.closest('.photo-previews');
-  // find which edit form or new form
-  const editForm = btn.closest('.edit-form');
-  if(editForm) {
-    const rowIdx = parseInt(editForm.dataset.idx);
-    editPhotos[rowIdx].splice(idx,1);
-    renderPhotoPreviews(editPhotos[rowIdx], previewGrid);
+// ── TOKEN STATUS ──────────────────────────────────────────────────
+function updateTokenStatus(){
+  const dot  = document.getElementById('tokenDot');
+  const text = document.getElementById('tokenText');
+  const btn  = document.getElementById('publishBtn');
+  if(GH_TOKEN){
+    dot.classList.add('ok');
+    dot.classList.remove('err');
+    text.textContent = `✅ Token ingesteld — klaar om te publiceren`;
+    btn.disabled = false;
   } else {
-    newProductPhotos.splice(idx,1);
-    renderPhotoPreviews(newProductPhotos, previewGrid);
+    dot.classList.remove('ok');
+    dot.classList.add('err');
+    text.textContent = '⚠️ Geen token — stel in via ⚙️ Instellingen';
+    btn.disabled = true;
   }
 }
 
-// ── PRODUCT TOEVOEGEN ──────────────────────
+// ── TOKEN OPSLAAN ─────────────────────────────────────────────────
+function saveToken(){
+  const t = document.getElementById('tokenInput').value.trim();
+  if(!t){showToast('⚠️ Voer een token in','error');return;}
+  GH_TOKEN = t;
+  localStorage.setItem('ge_gh_token', t);
+  updateTokenStatus();
+  showToast('✅ Token opgeslagen!','success');
+  document.getElementById('tokenInfoBox').style.display='none';
+}
+function toggleToken(){const i=document.getElementById('tokenInput');i.type=i.type==='password'?'text':'password';}
+
+async function testToken(){
+  if(!GH_TOKEN){showToast('⚠️ Geen token ingesteld','error');return;}
+  showToast('🔍 Token wordt getest...');
+  try{
+    const r = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}`,{
+      headers:{'Authorization':`token ${GH_TOKEN}`,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(r.ok){showToast('✅ Token werkt! Repository gevonden.','success');}
+    else{showToast(`❌ Token fout: ${r.status} ${r.statusText}`,'error');}
+  }catch(e){showToast('❌ Verbindingsfout: '+e.message,'error');}
+}
+
+// ── INSTELLINGEN OPSLAAN ──────────────────────────────────────────
+function saveSettings(){
+  GH_USER   = document.getElementById('s-user').value.trim();
+  GH_REPO   = document.getElementById('s-repo').value.trim();
+  GH_BRANCH = document.getElementById('s-branch').value.trim();
+  localStorage.setItem('ge_gh_user',   GH_USER);
+  localStorage.setItem('ge_gh_repo',   GH_REPO);
+  localStorage.setItem('ge_gh_branch', GH_BRANCH);
+  showToast('✅ Instellingen opgeslagen!','success');
+}
+
+function changePassword(){
+  const old = document.getElementById('s-pw-old').value;
+  const nw  = document.getElementById('s-pw-new').value;
+  if(old !== ADMIN_PASSWORD){showToast('❌ Huidig wachtwoord klopt niet','error');return;}
+  if(!nw){showToast('⚠️ Nieuw wachtwoord mag niet leeg zijn','error');return;}
+  ADMIN_PASSWORD = nw;
+  localStorage.setItem(ADMIN_PASSWORD_KEY, nw);
+  showToast('✅ Wachtwoord gewijzigd!','success');
+  document.getElementById('s-pw-old').value='';
+  document.getElementById('s-pw-new').value='';
+}
+
+// ── FOTO UPLOAD ───────────────────────────────────────────────────
+function handlePhotos(files, arr, previewId){
+  if(!files||!files.length) return;
+  let done=0;
+  Array.from(files).forEach(file=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      arr.push(e.target.result);
+      done++;
+      if(done===files.length) renderPreviews(arr, previewId);
+    };
+    r.readAsDataURL(file);
+  });
+}
+function renderPreviews(arr, previewId){
+  const el=document.getElementById(previewId);
+  if(!el) return;
+  el.innerHTML=arr.map((src,i)=>`
+    <div class="photo-preview">
+      <img src="${src}" alt="">
+      <div class="ph-num">Foto ${i+1}</div>
+      <button class="rm" onclick="removePhoto(${i},'${previewId}')">✕</button>
+    </div>`).join('');
+}
+function removePhoto(idx, previewId){
+  // figure out which array
+  if(previewId==='photoPreviews'){
+    newProductPhotos.splice(idx,1);
+    renderPreviews(newProductPhotos, previewId);
+  } else {
+    const rowIdx = parseInt(previewId.replace('ep-prev-',''));
+    editPhotos[rowIdx].splice(idx,1);
+    renderPreviews(editPhotos[rowIdx], previewId);
+  }
+}
+
+// ── PRODUCT TOEVOEGEN ─────────────────────────────────────────────
 function addProduct(){
-  const naam  = document.getElementById('f-naam').value.trim();
-  const prijs = document.getElementById('f-prijs').value.trim();
-  if(!naam||!prijs){showToast('⚠️ Vul naam en prijs in');return;}
-  if(!newProductPhotos.length){showToast('⚠️ Voeg minimaal 1 foto toe');return;}
-  const sale    = document.getElementById('f-sale').value.trim();
-  const cat     = document.getElementById('f-cat').value;
-  const matenRaw= document.getElementById('f-maten').value.trim();
-  const spelersRaw = document.getElementById('f-spelers').value.trim();
-  const maten   = matenRaw  ? matenRaw.split(',').map(s=>s.trim()).filter(Boolean)  : ['S','M','L','XL','XXL'];
-  const spelers = spelersRaw? spelersRaw.split(',').map(s=>s.trim()).filter(Boolean) : [];
-  const badge   = sale ? 'sale' : cat;
-  products.unshift({naam,prijs,sale,cat,badge,maten,spelers,fotos:[...newProductPhotos]});
-  // Reset form
+  const naam=document.getElementById('f-naam').value.trim();
+  const prijs=document.getElementById('f-prijs').value.trim();
+  if(!naam||!prijs){showToast('⚠️ Vul naam en prijs in','error');return;}
+  if(!newProductPhotos.length){showToast('⚠️ Voeg minimaal 1 foto toe','error');return;}
+  const sale=document.getElementById('f-sale').value.trim();
+  const cat=document.getElementById('f-cat').value;
+  const matenRaw=document.getElementById('f-maten').value.trim();
+  const spelersRaw=document.getElementById('f-spelers').value.trim();
+  const maten=matenRaw?matenRaw.split(',').map(s=>s.trim()).filter(Boolean):['S','M','L','XL','XXL'];
+  const spelers=spelersRaw?spelersRaw.split(',').map(s=>s.trim()).filter(Boolean):[];
+  products.unshift({naam,prijs,sale,cat,badge:sale?'sale':cat,maten,spelers,fotos:[...newProductPhotos]});
   ['f-naam','f-prijs','f-sale','f-maten','f-spelers'].forEach(id=>document.getElementById(id).value='');
   newProductPhotos=[];
   document.getElementById('photoPreviews').innerHTML='';
-  showToast(`✅ "${naam}" toegevoegd!`);
+  showToast(`✅ "${naam}" toegevoegd!`,'success');
+  return true;
 }
 
-function addAndExport(){
-  addProduct();
-  setTimeout(()=>{
-    showPage('export', document.querySelector('[onclick*="export"]'));
-    setTimeout(generateCode,300);
-  },200);
+async function addAndPublish(){
+  if(!addProduct()) return;
+  await publishToGitHub();
 }
 
-// ── PRODUCTEN LIJST ────────────────────────
+// ── PRODUCTEN LIJST ───────────────────────────────────────────────
 function renderList(){
   const el=document.getElementById('productList');
   if(!products.length){el.innerHTML='<p style="padding:20px;color:var(--muted)">Geen producten.</p>';return;}
+  document.getElementById('listSub').textContent=`${products.length} producten in totaal — tik ✏️ om te bewerken.`;
   el.innerHTML=products.map((p,i)=>`
     <div class="product-row">
       <div class="product-row-header">
@@ -429,96 +515,213 @@ function renderList(){
       <div class="edit-form" id="edit-${i}" data-idx="${i}">
         <div class="field"><label>Naam</label><input id="en-${i}" value="${p.naam.replace(/"/g,'&quot;')}"></div>
         <div class="field"><label>Prijs</label><input id="ep-${i}" value="${p.prijs}"></div>
-        <div class="field"><label>Originele prijs (sale)</label><input id="es-${i}" value="${p.sale||''}"></div>
-        <div class="field"><label>Categorie</label>
-          <select id="ec-${i}">${['new','retro','kids','training','interland'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}</select>
-        </div>
+        <div class="field"><label>Sale prijs</label><input id="es-${i}" value="${p.sale||''}"></div>
+        <div class="field"><label>Categorie</label><select id="ec-${i}">${['new','retro','kids','training','interland'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}</select></div>
         <div class="field"><label>Maten</label><input id="em-${i}" value="${p.maten.join(', ')}"></div>
         <div class="field"><label>Spelers</label><input id="esl-${i}" value="${p.spelers.join(', ')}"></div>
         <div class="field">
-          <label>📸 Foto's wijzigen</label>
+          <label>📸 Foto's vervangen</label>
           <div class="photo-upload-area" style="margin-bottom:8px">
             <input type="file" accept="image/*" multiple onchange="handleEditPhotos(${i},this.files)">
-            <div class="photo-upload-icon" style="font-size:24px">📷</div>
-            <div class="photo-upload-text" style="font-size:12px">Tik om nieuwe foto's te kiezen</div>
-            <div class="photo-upload-sub">Huidige foto's worden vervangen</div>
+            <div class="photo-upload-icon" style="font-size:22px">📷</div>
+            <div class="photo-upload-text" style="font-size:12px">Nieuwe foto's kiezen</div>
           </div>
-          <div class="photo-previews" id="ep-prev-${i}">${p.fotos.map((f,fi)=>`<div class="photo-preview"><img src="${f}" alt=""><div class="photo-order">Foto ${fi+1}</div></div>`).join('')}</div>
+          <div class="photo-previews" id="ep-prev-${i}">${p.fotos.map((f,fi)=>`<div class="photo-preview"><img src="${f}" alt=""><div class="ph-num">Foto ${fi+1}</div></div>`).join('')}</div>
         </div>
-        <button class="btn-sm" onclick="saveEdit(${i})">💾 Opslaan</button>
-        <button class="btn-sm" style="background:#888;margin-left:6px" onclick="toggleEdit(${i})">Annuleer</button>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn-sm" style="flex:1" onclick="saveEdit(${i})">💾 Opslaan</button>
+          <button class="btn-sm" style="background:#888;flex:1" onclick="toggleEdit(${i})">Annuleer</button>
+        </div>
       </div>
     </div>`).join('');
-  // Init editPhotos with current fotos
-  products.forEach((p,i)=>{ editPhotos[i]=[...p.fotos]; });
+  products.forEach((p,i)=>{editPhotos[i]=[...p.fotos];});
 }
 
-function handleEditPhotos(idx, files){
+function handleEditPhotos(idx,files){
   editPhotos[idx]=[];
-  handlePhotos(files, editPhotos[idx], document.getElementById('ep-prev-'+idx));
+  handlePhotos(files, editPhotos[idx], `ep-prev-${idx}`);
 }
-
 function toggleEdit(i){
   const el=document.getElementById('edit-'+i);
   el.classList.toggle('open');
   if(el.classList.contains('open')) editPhotos[i]=[...products[i].fotos];
 }
-
 function saveEdit(i){
   const cat=document.getElementById('ec-'+i).value;
   const sale=document.getElementById('es-'+i).value.trim();
   products[i]={
-    naam:    document.getElementById('en-'+i).value.trim(),
-    prijs:   document.getElementById('ep-'+i).value.trim(),
-    sale,
-    cat,
-    badge:   sale?'sale':cat,
-    maten:   document.getElementById('em-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
-    spelers: document.getElementById('esl-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
-    fotos:   editPhotos[i]||products[i].fotos,
+    naam:document.getElementById('en-'+i).value.trim(),
+    prijs:document.getElementById('ep-'+i).value.trim(),
+    sale,cat,badge:sale?'sale':cat,
+    maten:document.getElementById('em-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
+    spelers:document.getElementById('esl-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
+    fotos:editPhotos[i]||products[i].fotos,
   };
-  showToast(`✅ "${products[i].naam}" opgeslagen!`);
+  showToast(`✅ "${products[i].naam}" opgeslagen!`,'success');
   renderList();
 }
-
 function delProduct(i){
-  if(!confirm(`"${products[i].naam}" verwijderen?`))return;
+  if(!confirm(`"${products[i].naam}" verwijderen?`)) return;
   const naam=products[i].naam;
   products.splice(i,1);
   renderList();
   showToast(`🗑️ "${naam}" verwijderd`);
 }
 
-// ── CODE GENEREREN ─────────────────────────
-function generateCode(){
-  // For base64 photos: warn user
-  const hasBase64 = products.some(p=>p.fotos.some(f=>f.startsWith('data:')));
-  if(hasBase64){
-    showToast('⚠️ Sommige foto\'s zijn tijdelijk. Zie uitleg voor permanente foto\'s.');
-  }
-  const lines=products.map(p=>{
-    const fotosStr=p.fotos.map(f=>{
-      if(f.startsWith('data:')) return `'/* UPLOAD DEZE FOTO NAAR images/ MAP OP GITHUB */'`;
-      return `'${f}'`;
-    }).join(', ');
-    return `  {naam:'${p.naam.replace(/'/g,"\\'")}',prijs:'${p.prijs}',sale:'${p.sale||''}',cat:'${p.cat}',badge:'${p.badge}',maten:[${p.maten.map(m=>`'${m}'`).join(',')}],spelers:[${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],fotos:[${fotosStr}]}`;
+// ── 🚀 PUBLICEER NAAR GITHUB ──────────────────────────────────────
+function buildProductsJS(){
+  const lines = products.map(p=>{
+    // Base64 foto's kunnen niet opgeslagen worden — markeer ze
+    const fotos = p.fotos.map(f=>{
+      if(f.startsWith('data:image')){
+        // Sla base64 op als tijdelijke URL-placeholder
+        return `'__BASE64__'`;
+      }
+      return `'${f.replace(/'/g,"\\'")}'`;
+    });
+    const hasBase64 = p.fotos.some(f=>f.startsWith('data:image'));
+    return [
+      `  {`,
+      `    naam:'${p.naam.replace(/'/g,"\\'")}',`,
+      `    prijs:'${p.prijs}',`,
+      `    sale:'${p.sale||''}',`,
+      `    cat:'${p.cat}',`,
+      `    badge:'${p.badge}',`,
+      `    maten:[${p.maten.map(m=>`'${m}'`).join(',')}],`,
+      `    spelers:[${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],`,
+      `    fotos:[${fotos.join(',')}]${hasBase64?' /* ⚠️ Upload foto naar images/ map en vervang __BASE64__ door het pad */':''}`,
+      `  }`,
+    ].join('\n');
   });
-  document.getElementById('codeArea').value=`const products = [\n${lines.join(',\n')}\n];`;
-  showToast('✅ Code gegenereerd!');
+  return `const products = [\n${lines.join(',\n')}\n];\n`;
 }
 
-function copyCode(){
-  const ta=document.getElementById('codeArea');
-  if(!ta.value.trim()){generateCode();return;}
-  navigator.clipboard.writeText(ta.value)
-    .then(()=>showToast('📋 Gekopieerd! Plak in producten.js op GitHub.'))
-    .catch(()=>{ta.select();document.execCommand('copy');showToast('📋 Gekopieerd!');});
+function log(msg, type='info'){
+  const el = document.getElementById('publishLog');
+  el.classList.add('visible');
+  const div = document.createElement('div');
+  div.className = `log-line log-${type}`;
+  div.textContent = `${new Date().toLocaleTimeString('nl')} — ${msg}`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
 }
 
-// ── TOAST ──────────────────────────────────
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
+function setProgress(pct, status){
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('progressStatus').textContent = status;
+}
+
+async function getFileSHA(path){
+  const r = await fetch(
+    `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`,
+    {headers:{'Authorization':`token ${GH_TOKEN}`,'Accept':'application/vnd.github.v3+json'}}
+  );
+  if(r.ok){const d=await r.json();return d.sha;}
+  return null;
+}
+
+async function putFile(path, content, message, sha){
+  const body = {
+    message,
+    content: btoa(unescape(encodeURIComponent(content))),
+    branch: GH_BRANCH,
+  };
+  if(sha) body.sha = sha;
+  const r = await fetch(
+    `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${path}`,
+    {
+      method:'PUT',
+      headers:{
+        'Authorization':`token ${GH_TOKEN}`,
+        'Accept':'application/vnd.github.v3+json',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+  );
+  return r;
+}
+
+async function publishToGitHub(){
+  if(!GH_TOKEN){
+    showToast('⚠️ Geen GitHub token ingesteld','error');
+    showPage('settings', document.querySelector('[onclick*=settings]'));
+    return;
+  }
+
+  const btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Bezig met publiceren...';
+
+  // Reset log & progress
+  document.getElementById('publishLog').innerHTML='';
+  document.getElementById('publishLog').classList.add('visible');
+  document.getElementById('progressWrap').classList.add('visible');
+  setProgress(5,'Verbinding maken met GitHub...');
+
+  try {
+    // Stap 1 — Check repo toegang
+    log('Verbinding maken met GitHub...','info');
+    const repoCheck = await fetch(
+      `https://api.github.com/repos/${GH_USER}/${GH_REPO}`,
+      {headers:{'Authorization':`token ${GH_TOKEN}`,'Accept':'application/vnd.github.v3+json'}}
+    );
+    if(!repoCheck.ok){
+      throw new Error(`Repository niet gevonden of geen toegang (${repoCheck.status}). Controleer je token en repository naam.`);
+    }
+    log('✅ Repository gevonden!','ok');
+    setProgress(25,'producten.js ophalen...');
+
+    // Stap 2 — Haal huidige SHA op van producten.js
+    log('Huidige versie van producten.js ophalen...','info');
+    const sha = await getFileSHA('producten.js');
+    if(sha){log('✅ producten.js gevonden (SHA: '+sha.substring(0,8)+'...)','ok');}
+    else{log('ℹ️ producten.js bestaat nog niet — wordt aangemaakt','info');}
+    setProgress(50,'producten.js uploaden...');
+
+    // Stap 3 — Upload producten.js
+    log(`${products.length} producten worden gepubliceerd...`,'info');
+    const content = buildProductsJS();
+    const now = new Date().toLocaleString('nl-NL');
+    const uploadResult = await putFile(
+      'producten.js',
+      content,
+      `✅ Glory Elevn producten bijgewerkt — ${now} (${products.length} producten)`,
+      sha
+    );
+
+    if(!uploadResult.ok){
+      const errData = await uploadResult.json();
+      throw new Error(`Upload mislukt: ${errData.message||uploadResult.status}`);
+    }
+
+    log(`✅ producten.js succesvol gepubliceerd!`,'ok');
+    setProgress(90,'Afronden...');
+
+    // Stap 4 — Klaar
+    setProgress(100,'✅ Gepubliceerd!');
+    log(`🎉 Klaar! ${products.length} producten zijn live op je website.`,'ok');
+    log('ℹ️ Je website wordt binnen 1-2 minuten bijgewerkt door GitHub Pages.','info');
+
+    showToast(`🚀 Gepubliceerd! ${products.length} producten zijn live.`,'success');
+
+  } catch(err){
+    log(`❌ Fout: ${err.message}`,'err');
+    setProgress(0,'❌ Publiceren mislukt');
+    showToast('❌ '+err.message,'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Publiceer naar gloryelevn.com`;
+    updateTokenStatus();
+  }
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg, type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(type?' '+type:'');
+  setTimeout(()=>t.classList.remove('show'),4000);
 }
 </script>
 </body>
