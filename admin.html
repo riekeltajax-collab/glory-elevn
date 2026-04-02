@@ -220,7 +220,7 @@
 
     <div class="migration-hero">
       <h2>📦 Foto Migratie</h2>
-      <p>Verplaats alle foto's van Shopify naar GitHub. Na voltooiing kun je Shopify opzeggen — alle foto's staan dan permanent op jouw eigen GitHub repository.</p>
+      <p>Verplaats alle foto's van Shopify naar GitHub. Na voltooiing kun je Shopify opzeggen.</p>
 
       <div class="migration-stats">
         <div class="mstat"><div class="mstat-num" id="stat-total">-</div><div class="mstat-label">Foto's totaal</div></div>
@@ -228,11 +228,29 @@
         <div class="mstat"><div class="mstat-num" id="stat-remaining">-</div><div class="mstat-label">Resterend</div></div>
       </div>
 
-      <button class="btn-blue" id="migBtn" onclick="startMigration()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-        Start volledige foto migratie
-      </button>
-      <button class="btn-accent" id="migPublishBtn" onclick="migrateAndPublish()" style="display:none">
+      <!-- STAP 1 -->
+      <div id="step1wrap">
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">Stap 1 van 3</div>
+        <button class="btn-blue" id="migBtn" onclick="step1_createWorkflow()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          Script aanmaken op GitHub
+        </button>
+      </div>
+
+      <!-- STAP 2 -->
+      <div id="step2wrap" style="display:none;margin-top:12px">
+        <div class="info-box green" style="margin-bottom:8px">
+          <strong>✅ Script staat op GitHub!</strong>
+          Wacht nu 10 seconden en tik dan op "Start downloaden". GitHub heeft even tijd nodig om het script te herkennen.
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">Stap 2 van 3</div>
+        <button class="btn-blue" id="step2Btn" onclick="step2_triggerWorkflow()">
+          ▶️ Start downloaden van foto's
+        </button>
+      </div>
+
+      <!-- STAP 3 -->
+      <button class="btn-accent" id="migPublishBtn" onclick="migrateAndPublish()" style="display:none;margin-top:12px">
         ✅ Migratie klaar — Nu publiceren!
       </button>
 
@@ -246,17 +264,19 @@
 
     <div class="info-box blue">
       <strong>💡 Hoe werkt de migratie?</strong>
-      De admin maakt een automatisch script aan op GitHub en start dat. GitHub's eigen servers downloaden dan alle Shopify foto's — geen CORS problemen! De foto's worden opgeslagen in je <code>images/</code> map. Na voltooiing druk je op Publiceren en kun je Shopify opzeggen.
+      Stap 1: Admin maakt een downloadscript aan op GitHub.<br>
+      Stap 2: GitHub's eigen servers downloaden alle Shopify foto's (geen CORS!).<br>
+      Stap 3: Publiceren — daarna kun je Shopify opzeggen.
     </div>
 
     <div class="info-box">
       <strong>⏱️ Hoelang duurt het?</strong>
-      Het script aanmaken duurt ~10 seconden. GitHub downloadt daarna alle foto's — dit duurt 1-3 minuten voor ~200 foto's. Laat je scherm aan staan. Je ziet live voortgang.
+      Stap 1 duurt ~5 seconden. Stap 2 duurt 1-3 minuten voor ~200 foto's. Je ziet live voortgang.
     </div>
 
     <div class="card">
       <div class="card-title">📊 Status per product</div>
-      <div id="migStatusList" style="font-size:12px;color:var(--muted)">Klik "Start migratie" om te beginnen.</div>
+      <div id="migStatusList" style="font-size:12px;color:var(--muted)">Klik "Script aanmaken" om te beginnen.</div>
     </div>
   </div>
 
@@ -618,151 +638,109 @@ EOF
   return workflowYaml;
 }
 
-let migrationRunning=false;
+let toMigrateGlobal=[];
 
-async function startMigration(){
+async function step1_createWorkflow(){
   if(!GH_TOKEN){showToast('⚠️ Stel eerst je GitHub token in','error');return;}
-  if(migrationRunning){showToast('⚠️ Migratie is al bezig');return;}
-
-  migrationRunning=true;
   const btn=document.getElementById('migBtn');
-  btn.disabled=true;
-  btn.innerHTML='⏳ Bezig...';
+  btn.disabled=true;btn.innerHTML='⏳ Script aanmaken...';
   document.getElementById('migProgress').classList.add('visible');
   document.getElementById('migLog').innerHTML='';
+  setMigProgress(5,'Foto\'s tellen...');
 
-  // Verzamel alle Shopify URLs
-  const toMigrate=[];
-  products.forEach((p,pi)=>{
-    p.fotos.forEach((f,fi)=>{
-      if(isShopifyUrl(f)) toMigrate.push({productIdx:pi,fotoIdx:fi,url:f});
-    });
-  });
+  toMigrateGlobal=[];
+  products.forEach((p,pi)=>{p.fotos.forEach((f,fi)=>{if(isShopifyUrl(f))toMigrateGlobal.push({productIdx:pi,fotoIdx:fi,url:f});});});
 
-  if(toMigrate.length===0){
+  if(toMigrateGlobal.length===0){
     migLog('✅ Alle foto\'s zijn al gemigreerd!','ok');
     setMigProgress(100,'✅ Klaar!');
     btn.disabled=false;btn.innerHTML='✅ Al gemigreerd';
-    migrationRunning=false;
-    updateMigrationStats();
-    return;
+    updateMigrationStats();return;
   }
 
-  migLog(`${toMigrate.length} Shopify foto's gevonden om te migreren`,'info');
-  setMigProgress(10,'GitHub Actions workflow aanmaken...');
-  migLog('GitHub Actions workflow aanmaken (server-side download)...','info');
+  migLog(`${toMigrateGlobal.length} Shopify foto's gevonden`,'info');
+  setMigProgress(20,'Script uploaden naar GitHub...');
 
   try{
-    // Stap 1: Maak .github/workflows/ map aan als die niet bestaat
-    const workflowContent = await createMigrationWorkflow(toMigrate);
-    const workflowPath = '.github/workflows/migrate-photos.yml';
+    const workflowContent=await createMigrationWorkflow(toMigrateGlobal);
+    const workflowPath='.github/workflows/migrate-photos.yml';
+    const existingSHA=await getFileSHA(workflowPath);
+    const encoded=btoa(unescape(encodeURIComponent(workflowContent)));
+    const uploadR=await putFile(workflowPath,encoded,'🤖 Foto migratie script',existingSHA);
+    if(!uploadR.ok){const e=await uploadR.json().catch(()=>({}));throw new Error('Upload mislukt: '+(e.message||uploadR.status));}
+    migLog('✅ Script staat op GitHub!','ok');
+    setMigProgress(40,'Klaar — wacht 10 sec en tik Stap 2');
+    migLog('⚠️ Wacht nu minstens 10 seconden voordat je op Stap 2 tikt!','warn');
+    document.getElementById('step2wrap').style.display='block';
+    document.getElementById('step1wrap').style.display='none';
+    showToast('✅ Script aangemaakt! Wacht 10 sec en tik Stap 2.','success');
+  }catch(e){
+    migLog('❌ '+e.message,'err');setMigProgress(0,'❌ Mislukt');showToast('❌ '+e.message,'error');
+    btn.disabled=false;btn.innerHTML='🔄 Opnieuw proberen';
+  }
+}
 
-    setMigProgress(20,'Workflow uploaden naar GitHub...');
-    migLog('Workflow uploaden naar GitHub...','info');
+async function step2_triggerWorkflow(){
+  if(!GH_TOKEN){showToast('⚠️ Geen token','error');return;}
+  const btn=document.getElementById('step2Btn');
+  btn.disabled=true;btn.innerHTML='⏳ Starten...';
+  setMigProgress(45,'Workflow starten...');
+  migLog('Workflow starten op GitHub servers...','info');
 
-    const existingSHA = await getFileSHA(workflowPath);
-    const encoded = btoa(unescape(encodeURIComponent(workflowContent)));
-    const uploadR = await putFile(
-      workflowPath,
-      encoded,
-      '🤖 Foto migratie workflow aangemaakt',
-      existingSHA
+  try{
+    const triggerR=await ghFetch(
+      `repos/${GH_USER}/${GH_REPO}/actions/workflows/migrate-photos.yml/dispatches`,
+      {method:'POST',body:JSON.stringify({ref:GH_BRANCH})}
     );
-    if(!uploadR.ok){
-      const e=await uploadR.json().catch(()=>({}));
-      throw new Error('Workflow upload mislukt: '+(e.message||uploadR.status));
-    }
-    migLog('✅ Workflow aangemaakt op GitHub!','ok');
-    setMigProgress(35,'Wachten tot GitHub workflow herkent...');
-    migLog('Even wachten zodat GitHub de workflow registreert (8 sec)...','warn');
-
-    // GitHub needs time to register a NEW workflow file before it can be triggered
-    await new Promise(r=>setTimeout(r,8000));
-
-    setMigProgress(45,'Workflow starten...');
-    migLog('Workflow starten op GitHub servers...','info');
-
-    // Try triggering up to 3 times with increasing delays
-    let triggerOk = false;
-    for(let attempt=1; attempt<=3; attempt++){
-      const triggerR = await ghFetch(
-        `repos/${GH_USER}/${GH_REPO}/actions/workflows/migrate-photos.yml/dispatches`,
-        {method:'POST', body:JSON.stringify({ref:GH_BRANCH})}
-      );
-      if(triggerR.ok || triggerR.status===204){
-        triggerOk=true;
-        break;
+    if(!triggerR.ok&&triggerR.status!==204){
+      const e=await triggerR.json().catch(()=>({}));
+      if((e.message||'').toLowerCase().includes('workflow')){
+        migLog('GitHub herkent het script nog niet. Wacht nog 15 sec en probeer opnieuw.','warn');
+        btn.disabled=false;btn.innerHTML='▶️ Probeer opnieuw';
+        showToast('⏳ Wacht nog 15 seconden en probeer opnieuw','');
+        return;
       }
-      const errData = await triggerR.json().catch(()=>({}));
-      migLog(`Poging ${attempt} mislukt (${errData.message||triggerR.status}), opnieuw proberen...`,'warn');
-      await new Promise(r=>setTimeout(r,5000));
+      throw new Error(e.message||triggerR.status);
     }
-    if(!triggerOk) throw new Error('Workflow kon niet worden gestart na 3 pogingen. Controleer of "workflow" permissie is ingeschakeld op je GitHub token.');
-    migLog('✅ Workflow gestart op GitHub!','ok');
-    setMigProgress(55,'Wachten op GitHub... (dit duurt 1-3 minuten)');
-    migLog('⏳ GitHub downloadt nu alle foto\'s server-side. Even geduld...','warn');
+    migLog('✅ GitHub is gestart met downloaden!','ok');
+    setMigProgress(55,'Wachten op GitHub... (1-3 minuten)');
+    migLog('⏳ GitHub downloadt nu alle foto\'s. Even geduld...','info');
+    btn.innerHTML='⏳ GitHub bezig...';
 
-    // Stap 3: Poll totdat workflow klaar is
-    let attempts=0;
-    let workflowDone=false;
-    while(attempts<40 && !workflowDone){
-      await new Promise(r=>setTimeout(r,5000)); // elke 5 seconden checken
-      attempts++;
+    await new Promise(r=>setTimeout(r,5000));
+    let attempts=0,done=false;
+    while(attempts<60&&!done){
+      await new Promise(r=>setTimeout(r,5000));attempts++;
       try{
-        const runsR = await ghFetch(
-          `repos/${GH_USER}/${GH_REPO}/actions/workflows/migrate-photos.yml/runs?per_page=1`
-        );
+        const runsR=await ghFetch(`repos/${GH_USER}/${GH_REPO}/actions/workflows/migrate-photos.yml/runs?per_page=1`);
         if(runsR.ok){
-          const runsData = await runsR.json();
-          const run = runsData.workflow_runs?.[0];
+          const d=await runsR.json();const run=d.workflow_runs?.[0];
           if(run){
-            const pct = 55 + Math.min(attempts*1.5, 35);
-            setMigProgress(pct,
-              `GitHub bezig: ${run.status} (${attempts*5}s)...`,
-              run.status==='completed'?`✅ ${run.conclusion}`:`⏳ ${run.display_title||'Downloaden...'}`
-            );
-            migLog(`Check ${attempts}: status=${run.status} conclusion=${run.conclusion||'lopend'}`, 'info');
-            if(run.status==='completed'){
-              workflowDone=true;
-              if(run.conclusion==='success'){
-                migLog('✅ GitHub heeft alle foto\'s succesvol gedownload!','ok');
-              } else {
-                migLog(`⚠️ Workflow eindstatus: ${run.conclusion}. Sommige foto's kunnen zijn mislukt.`,'warn');
-              }
-            }
+            setMigProgress(Math.min(55+attempts*0.7,90),`GitHub: ${run.status} (${attempts*5}s)`,run.status==='completed'?`✅ ${run.conclusion}`:`⏳ Downloaden...`);
+            if(run.status==='completed'){done=true;migLog(`Workflow klaar: ${run.conclusion}`,'ok');}
           }
         }
-      }catch(e){ /* negeer poll fouten */ }
+      }catch(e){}
     }
 
-    setMigProgress(90,'Producten.js bijwerken...');
-    migLog('Foto-links bijwerken in producten...','info');
-
-    // Stap 4: Update alle product foto-links naar images/ paden
-    toMigrate.forEach(item=>{
-      const filename = shopifyUrlToFilename(item.url);
-      products[item.productIdx].fotos[item.fotoIdx] = `images/${filename}`;
+    setMigProgress(92,'Foto-links bijwerken...');
+    toMigrateGlobal.forEach(item=>{
+      products[item.productIdx].fotos[item.fotoIdx]=`images/${shopifyUrlToFilename(item.url)}`;
     });
-    migLog(`✅ ${toMigrate.length} foto-links bijgewerkt naar images/`,'ok');
-
+    migLog(`✅ ${toMigrateGlobal.length} foto-links bijgewerkt`,'ok');
     setMigProgress(100,'✅ Migratie voltooid!');
-    migLog('🎉 Klaar! Druk nu op "Publiceren" om de nieuwe links live te zetten.','ok');
+    migLog('🎉 Klaar! Druk nu op Publiceren.','ok');
     updateMigrationStats();
-
+    document.getElementById('step2wrap').style.display='none';
     document.getElementById('migPublishBtn').style.display='flex';
-    showToast('✅ Foto\'s gemigreerd! Druk nu op Publiceren.','success');
-
+    showToast('✅ Alle foto\'s gemigreerd!','success');
   }catch(e){
-    migLog(`❌ Fout: ${e.message}`,'err');
-    setMigProgress(0,'❌ Mislukt');
-    showToast('❌ '+e.message,'error');
-    btn.disabled=false;
-    btn.innerHTML='🔄 Opnieuw proberen';
+    migLog('❌ '+e.message,'err');setMigProgress(0,'❌ Mislukt');showToast('❌ '+e.message,'error');
+    btn.disabled=false;btn.innerHTML='▶️ Opnieuw proberen';
   }
-
-  migrationRunning=false;
-  if(btn.disabled) { btn.disabled=false; btn.innerHTML='🔄 Opnieuw uitvoeren'; }
 }
+
+async function startMigration(){await step1_createWorkflow();}
 
 async function migrateAndPublish(){
   await publishToGitHub();
