@@ -36,8 +36,8 @@
     .btn-logout{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-size:11px;padding:6px 12px;cursor:pointer;font-family:'DM Sans',sans-serif}
 
     /* ── TABS ── */
-    .nav-tabs{display:flex;background:#fff;border-bottom:2px solid #e8e4de;overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .nav-tab{padding:14px 20px;border:none;background:none;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .2s,border-color .2s}
+    .nav-tabs{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:2px solid #e8e4de}
+    .nav-tab{padding:12px 4px;border:none;background:none;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .2s,border-color .2s;text-align:center}
     .nav-tab.active{color:var(--dark);border-color:var(--dark)}
 
     /* ── PAGES ── */
@@ -168,7 +168,7 @@
 
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('publish',this)">🚀 Publiceer</button>
-    <button class="nav-tab" onclick="showPage('add',this)">➕ Nieuw product</button>
+    <button class="nav-tab" onclick="showPage('add',this)">➕ Nieuw</button>
     <button class="nav-tab" onclick="showPage('list',this)">📋 Producten</button>
     <button class="nav-tab" onclick="showPage('settings',this)">⚙️ Instellingen</button>
   </div>
