@@ -813,7 +813,7 @@ function renderList(){
   el.innerHTML=products.map((p,i)=>`
     <div class="product-row">
       <div class="product-row-header">
-        <img class="product-thumb" src="${p.fotos[0]}" alt="" onerror="this.style.background='#eee'">
+        <img class="product-thumb" src="${p.fotos[0].startsWith('http')?p.fotos[0]:'https://raw.githubusercontent.com/riekeltajax-collab/glory-elevn/main/'+p.fotos[0]}" alt="" onerror="this.style.background='#eee'">
         <div class="product-info">
           <h4>${p.naam}</h4>
           <p>${p.prijs}${p.sale?' · was '+p.sale:''} · ${p.cat}</p>
