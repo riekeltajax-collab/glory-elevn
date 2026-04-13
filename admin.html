@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Glory Elevn — Beheer</title>
-  <meta name="robots" content="noindex, nofollow">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{--dark:#0b1a2b;--accent:#e8c84a;--light:#f7f5f0;--muted:#888;--green:#25D366;--red:#e84a4a;--blue:#4285f4}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -18,26 +18,24 @@
     .login-box{background:#fff;padding:40px;width:100%;max-width:360px;text-align:center}
     .login-box h2{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;margin-bottom:6px}
     .login-box p{font-size:13px;color:var(--muted);margin-bottom:24px}
-    .pw-wrap{display:flex;border:1px solid #ddd;overflow:hidden;margin-bottom:12px}
+    .pw-wrap{display:flex;border:1px solid #ddd;margin-bottom:12px}
     .pw-wrap input{flex:1;padding:12px 14px;border:none;outline:none;font-size:14px;font-family:'DM Sans',sans-serif}
     .pw-eye{padding:0 14px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px}
     .btn-login{width:100%;padding:13px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .login-error{font-size:12px;color:var(--red);min-height:18px;margin-top:8px;font-weight:500}
+    .login-error{font-size:12px;color:var(--red);min-height:18px;margin-top:8px}
 
     /* APP */
     #adminApp{display:none}
     #adminApp.visible{display:block}
-
-    /* TOPBAR */
-    .topbar{background:var(--dark);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+    .topbar{background:var(--dark);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
     .topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:3px}
-    .topbar-right{display:flex;align-items:center;gap:12px}
-    .topbar-right a{color:rgba(255,255,255,.6);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none}
-    .btn-logout{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-size:11px;padding:6px 12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+    .topbar-right{display:flex;gap:12px;align-items:center}
+    .topbar-right a{color:rgba(255,255,255,.6);font-size:11px;text-decoration:none;text-transform:uppercase;letter-spacing:1px}
+    .btn-logout{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-size:11px;padding:5px 10px;cursor:pointer;font-family:'DM Sans',sans-serif}
 
     /* TABS */
     .nav-tabs{display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-bottom:2px solid #e8e4de}
-    .nav-tab{padding:10px 4px;border:none;background:none;font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .2s,border-color .2s;text-align:center;line-height:1.4}
+    .nav-tab{padding:11px 4px;border:none;background:none;font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;text-align:center;line-height:1.4;transition:color .2s,border-color .2s}
     .nav-tab.active{color:var(--dark);border-color:var(--dark)}
 
     /* PAGES */
@@ -48,69 +46,59 @@
 
     /* CARDS */
     .card{background:#fff;padding:18px;margin-bottom:14px;border:1px solid #e8e4de}
-    .card-title{font-size:12px;font-weight:700;margin-bottom:14px;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
+    .card-title{font-size:12px;font-weight:700;margin-bottom:14px;letter-spacing:.5px}
 
     /* FORM */
     .field{margin-bottom:14px}
     .field label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-    .field input,.field select{width:100%;padding:10px 12px;border:1px solid #ddd;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;border-radius:0;background:#fff}
+    .field input,.field select{width:100%;padding:10px 12px;border:1px solid #ddd;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;border-radius:0;background:#fff;-webkit-appearance:none}
     .field input:focus,.field select:focus{border-color:var(--dark)}
     .field small{font-size:11px;color:var(--muted);margin-top:4px;display:block;line-height:1.5}
 
     /* FOTO UPLOAD */
-    .photo-upload-area{border:2px dashed #ddd;padding:18px;text-align:center;cursor:pointer;position:relative;background:#fafafa;transition:border-color .2s}
-    .photo-upload-area:hover{border-color:var(--dark)}
-    .photo-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-    .photo-previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-    .photo-preview{position:relative;aspect-ratio:1;overflow:hidden}
-    .photo-preview img{width:100%;height:100%;object-fit:cover}
-    .photo-preview .rm{position:absolute;top:3px;right:3px;background:var(--red);color:#fff;border:none;width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:bold}
-    .photo-preview .ph-num{position:absolute;bottom:3px;left:3px;background:rgba(0,0,0,.6);color:#fff;font-size:9px;font-weight:700;padding:2px 5px}
+    .photo-drop-zone{border:2px dashed #ccc;padding:24px;text-align:center;cursor:pointer;position:relative;background:#fafafa;transition:all .2s}
+    .photo-drop-zone:hover,.photo-drop-zone.dragging{border-color:var(--dark);background:#f0ede8}
+    .photo-drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .photo-drop-zone-icon{font-size:32px;margin-bottom:8px}
+    .photo-drop-zone-text{font-size:13px;font-weight:600;color:var(--dark)}
+    .photo-drop-zone-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+    /* FOTO GRID */
+    .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .photo-item{position:relative;aspect-ratio:1;background:#eee;overflow:hidden;border:2px solid #eee}
+    .photo-item img{width:100%;height:100%;object-fit:cover;display:block}
+    .photo-item.uploading{border-color:var(--accent)}
+    .photo-item.done{border-color:#4caf50}
+    .photo-item.error{border-color:var(--red)}
+    .photo-item-status{position:absolute;bottom:0;left:0;right:0;padding:4px;font-size:9px;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:1px}
+    .photo-item.uploading .photo-item-status{background:var(--accent);color:var(--dark)}
+    .photo-item.done .photo-item-status{background:#4caf50;color:#fff}
+    .photo-item.error .photo-item-status{background:var(--red);color:#fff}
+    .photo-item-remove{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:bold;line-height:1}
 
     /* BUTTONS */
     .btn-primary{width:100%;padding:13px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;transition:opacity .2s}
     .btn-primary:disabled{opacity:.4;cursor:not-allowed}
-    .btn-accent{width:100%;padding:15px;background:var(--accent);color:var(--dark);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-accent{width:100%;padding:15px;background:var(--accent);color:var(--dark);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s}
     .btn-accent:disabled{opacity:.4;cursor:not-allowed}
     .btn-sm{padding:7px 12px;background:var(--dark);color:#fff;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
     .btn-red{padding:7px 12px;background:var(--red);color:#fff;font-size:11px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-blue{width:100%;padding:13px;background:var(--blue);color:#fff;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
-    .btn-blue:disabled{opacity:.4;cursor:not-allowed}
 
-    /* PUBLISH HERO */
+    /* PUBLISH */
     .publish-hero{background:var(--dark);padding:24px;text-align:center;margin-bottom:14px}
     .publish-hero h2{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#fff;letter-spacing:2px;margin-bottom:4px}
     .publish-hero p{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:18px}
     .btn-publish{width:100%;padding:16px;background:var(--accent);color:var(--dark);font-weight:700;font-size:15px;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .2s}
     .btn-publish:disabled{opacity:.4;cursor:not-allowed}
-
-    /* PROGRESS */
     .progress-wrap{display:none;margin-top:14px}
     .progress-wrap.visible{display:block}
     .progress-bar-bg{background:rgba(255,255,255,.12);height:5px;border-radius:3px;overflow:hidden}
     .progress-bar-fill{height:100%;background:var(--accent);width:0%;transition:width .3s}
     .progress-status{font-size:11px;color:rgba(255,255,255,.45);margin-top:6px;text-align:center}
-    .publish-log{background:#0a1520;border:1px solid rgba(255,255,255,.08);padding:12px;margin-top:10px;max-height:180px;overflow-y:auto;display:none;border-radius:2px}
-    .publish-log.visible{display:block}
+    .pub-log{background:#0a1520;border:1px solid rgba(255,255,255,.08);padding:12px;margin-top:10px;max-height:180px;overflow-y:auto;display:none}
+    .pub-log.visible{display:block}
     .log-line{font-size:10px;font-family:'Courier New',monospace;padding:1px 0;line-height:1.7}
     .log-ok{color:#4caf50}.log-err{color:#e84a4a}.log-info{color:rgba(255,255,255,.4)}.log-warn{color:#ff9800}
-
-    /* MIGRATION */
-    .migration-hero{background:linear-gradient(135deg,#1a3a2a,#0b1a2b);padding:24px;margin-bottom:14px;border:1px solid rgba(76,175,80,.3)}
-    .migration-hero h2{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;letter-spacing:2px;margin-bottom:4px}
-    .migration-hero p{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:16px}
-    .migration-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-    .mstat{background:rgba(255,255,255,.06);padding:12px;text-align:center;border:1px solid rgba(255,255,255,.08)}
-    .mstat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);line-height:1}
-    .mstat-label{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
-    .migration-progress{background:rgba(0,0,0,.3);padding:16px;margin-top:14px;display:none}
-    .migration-progress.visible{display:block}
-    .mig-prog-bar-bg{background:rgba(255,255,255,.1);height:8px;border-radius:4px;overflow:hidden;margin:8px 0}
-    .mig-prog-bar-fill{height:100%;background:linear-gradient(to right,#4caf50,var(--accent));width:0%;transition:width .4s}
-    .mig-status{font-size:11px;color:rgba(255,255,255,.5);text-align:center}
-    .mig-current{font-size:12px;color:#fff;text-align:center;margin-top:6px;min-height:18px}
-    .mig-log{background:#050d15;padding:10px;max-height:200px;overflow-y:auto;margin-top:10px;border:1px solid rgba(255,255,255,.05)}
-    .mig-log-line{font-size:10px;font-family:'Courier New',monospace;padding:1px 0;line-height:1.7}
 
     /* PRODUCT LIST */
     .product-list{display:flex;flex-direction:column;gap:8px}
@@ -123,27 +111,28 @@
     .product-actions{display:flex;gap:5px;flex-shrink:0}
     .edit-form{display:none;padding:14px;background:#f9f8f6;border-top:1px solid #e8e4de}
     .edit-form.open{display:block}
-    .photo-migrated{background:#e8f5e9;border:1px solid #a5d6a7;padding:4px 8px;font-size:10px;color:#2e7d32;display:inline-block;margin-top:4px}
+    .foto-status-badge{font-size:9px;font-weight:700;padding:2px 6px;display:inline-block;margin-top:3px}
+    .foto-ok{background:#e8f5e9;color:#2e7d32}
+    .foto-warn{background:#fff3e0;color:#e65100}
 
-    /* TOKEN STATUS */
-    .token-status{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f0ede8;border:1px solid #ddd;margin-bottom:14px}
+    /* TOKEN */
+    .token-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f0ede8;border:1px solid #ddd;margin-bottom:14px}
     .token-dot{width:9px;height:9px;border-radius:50%;background:#ccc;flex-shrink:0}
     .token-dot.ok{background:#4caf50}.token-dot.err{background:var(--red)}
     .token-text{font-size:11px;flex:1}
-    .token-btn{background:none;border:1px solid #ddd;padding:5px 10px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+    .token-link{background:none;border:1px solid #ddd;padding:5px 10px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
 
-    /* INFO BOXES */
+    /* INFO */
     .info-box{background:#fff8e6;border-left:4px solid var(--accent);padding:12px 14px;font-size:12px;line-height:1.7;margin-bottom:14px}
     .info-box strong{display:block;margin-bottom:3px;font-size:13px}
-    .info-box.green{background:#e8f5e9;border-color:#4caf50}
-    .info-box.red{background:#ffebee;border-color:var(--red)}
     .info-box.blue{background:#e8f0fe;border-color:var(--blue)}
+    .info-box.green{background:#e8f5e9;border-color:#4caf50}
 
     /* TOAST */
     .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--dark);color:#fff;padding:11px 22px;font-size:12px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;max-width:92vw;text-align:center;border-left:4px solid var(--accent)}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    .toast.error{border-color:var(--red)}
-    .toast.success{border-color:#4caf50}
+    .toast.err{border-color:var(--red)}
+    .toast.ok{border-color:#4caf50}
   </style>
 </head>
 <body>
@@ -161,11 +150,11 @@
       <button class="pw-eye" onclick="togglePw()">👁️</button>
     </div>
     <button class="btn-login" onclick="checkPw()">Inloggen →</button>
-    <div class="login-error" id="loginError"></div>
+    <div class="login-error" id="loginErr"></div>
   </div>
 </div>
 
-<!-- ADMIN APP -->
+<!-- APP -->
 <div id="adminApp">
   <div class="topbar">
     <div class="topbar-logo">Glory Elevn</div>
@@ -177,193 +166,141 @@
 
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('publish',this)">🚀<br>Publiceer</button>
-    <button class="nav-tab" onclick="showPage('migrate',this)">📦<br>Migratie</button>
     <button class="nav-tab" onclick="showPage('add',this)">➕<br>Nieuw</button>
     <button class="nav-tab" onclick="showPage('list',this)">📋<br>Producten</button>
+    <button class="nav-tab" onclick="showPage('migrate',this)">📦<br>Migratie</button>
     <button class="nav-tab" onclick="showPage('settings',this)">⚙️<br>Instellingen</button>
   </div>
 
-  <!-- ══════════════════════════════════════
-       🚀 PUBLICEER
-  ══════════════════════════════════════ -->
+  <!-- PUBLICEER -->
   <div class="page active" id="page-publish">
-    <div class="token-status" id="tokenStatus">
+    <div class="token-bar" id="tokenBar">
       <div class="token-dot" id="tokenDot"></div>
-      <span class="token-text" id="tokenText">Token niet ingesteld</span>
-      <button class="token-btn" onclick="showPage('settings',document.querySelectorAll('.nav-tab')[4])">Instellen →</button>
+      <span class="token-text" id="tokenText">Laden...</span>
+      <button class="token-link" onclick="showPage('settings',document.querySelectorAll('.nav-tab')[4])">Instellen →</button>
     </div>
-
     <div class="publish-hero">
       <h2>🚀 Live Publiceren</h2>
-      <p>Alle wijzigingen in één klik naar je website</p>
-      <button class="btn-publish" id="publishBtn" onclick="publishToGitHub()" disabled>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      <p>Alle producten direct live op je website</p>
+      <button class="btn-publish" id="publishBtn" onclick="publishAll()" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
         Publiceer naar gloryelevn.com
       </button>
-      <div class="progress-wrap" id="progressWrap">
-        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
-        <div class="progress-status" id="progressStatus"></div>
+      <div class="progress-wrap" id="progWrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progBar"></div></div>
+        <div class="progress-status" id="progStatus"></div>
       </div>
-      <div class="publish-log" id="publishLog"></div>
+      <div class="pub-log" id="pubLog"></div>
     </div>
-
     <div class="info-box">
       <strong>Wat wordt er gepubliceerd?</strong>
-      Alle producten inclusief de bijgewerkte foto-links worden direct live gezet. Na de foto-migratie (📦 Migratie tab) staan alle foto's op GitHub en kun je Shopify opzeggen.
+      Alle producten inclusief eigen foto's worden direct live gezet. Nieuwe foto's worden automatisch eerst geüpload naar GitHub.
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════
-       📦 MIGRATIE — SHOPIFY → GITHUB
-  ══════════════════════════════════════ -->
-  <div class="page" id="page-migrate">
-
-    <div class="migration-hero">
-      <h2>📦 Foto Migratie</h2>
-      <p>Verplaats alle foto's van Shopify naar GitHub. Na voltooiing kun je Shopify opzeggen.</p>
-
-      <div class="migration-stats">
-        <div class="mstat"><div class="mstat-num" id="stat-total">-</div><div class="mstat-label">Foto's totaal</div></div>
-        <div class="mstat"><div class="mstat-num" id="stat-migrated">-</div><div class="mstat-label">Gemigreerd</div></div>
-        <div class="mstat"><div class="mstat-num" id="stat-remaining">-</div><div class="mstat-label">Resterend</div></div>
-      </div>
-
-      <!-- STAP 1 -->
-      <div id="step1wrap">
-        <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">Eén druk op de knop</div>
-        <button class="btn-blue" id="migBtn" onclick="step1_createWorkflow()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-          Start foto migratie
-        </button>
-      </div>
-
-      <!-- WACHT STATUS -->
-      <div id="step2wrap" style="display:none;margin-top:12px">
-        <div class="info-box green" style="margin-bottom:8px">
-          <strong>✅ Migratie gestart op GitHub!</strong>
-          GitHub downloadt nu alle foto's op de achtergrond. Dit duurt 1-3 minuten. De voortgang wordt hieronder live bijgewerkt.
-        </div>
-      </div>
-
-      <!-- STAP 3 -->
-      <button class="btn-accent" id="migPublishBtn" onclick="migrateAndPublish()" style="display:none;margin-top:12px">
-        ✅ Migratie klaar — Nu publiceren!
-      </button>
-
-      <div class="migration-progress" id="migProgress">
-        <div class="mig-status" id="migStatus">Bezig...</div>
-        <div class="mig-prog-bar-bg"><div class="mig-prog-bar-fill" id="migBar"></div></div>
-        <div class="mig-current" id="migCurrent"></div>
-        <div class="mig-log" id="migLog"></div>
-      </div>
-    </div>
-
-    <div class="info-box blue">
-      <strong>💡 Hoe werkt de migratie?</strong>
-      Stap 1: Admin maakt een downloadscript aan op GitHub.<br>
-      Stap 2: GitHub's eigen servers downloaden alle Shopify foto's (geen CORS!).<br>
-      Stap 3: Publiceren — daarna kun je Shopify opzeggen.
-    </div>
-
-    <div class="info-box">
-      <strong>⏱️ Hoelang duurt het?</strong>
-      Stap 1 duurt ~5 seconden. Stap 2 duurt 1-3 minuten voor ~200 foto's. Je ziet live voortgang.
-    </div>
-
-    <div class="card">
-      <div class="card-title">📊 Status per product</div>
-      <div id="migStatusList" style="font-size:12px;color:var(--muted)">Klik "Script aanmaken" om te beginnen.</div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════
-       ➕ NIEUW PRODUCT
-  ══════════════════════════════════════ -->
+  <!-- NIEUW PRODUCT -->
   <div class="page" id="page-add">
     <div class="page-title">➕ Nieuw product</div>
-    <div class="page-sub">Vul in en kies foto's. Tik daarna op 🚀 Publiceer.</div>
+    <div class="page-sub">Kies foto's — die worden <strong>direct geüpload naar GitHub</strong>. Vul dan de info in en publiceer.</div>
 
     <div class="card">
-      <div class="card-title">📸 Foto's</div>
-      <div class="photo-upload-area">
-        <input type="file" accept="image/*" multiple onchange="handlePhotos(this.files,newProductPhotos,'photoPreviews')">
-        <div style="font-size:28px;margin-bottom:6px">📷</div>
-        <div style="font-size:13px;font-weight:600">Tik om foto's te kiezen</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:3px">Direct uit je iPhone galerij</div>
+      <div class="card-title">📸 Foto's kiezen &amp; uploaden</div>
+      <div id="noTokenWarning" class="info-box" style="display:none;background:#ffebee;border-color:var(--red)">
+        <strong>⚠️ Geen GitHub token</strong>Stel eerst je token in via ⚙️ Instellingen, anders kunnen foto's niet worden geüpload.
       </div>
-      <div class="photo-previews" id="photoPreviews"></div>
+      <div class="photo-drop-zone" id="dropZone">
+        <input type="file" accept="image/*" multiple id="fotoInput" onchange="handleFotoKiezen(this.files)">
+        <div class="photo-drop-zone-icon">📷</div>
+        <div class="photo-drop-zone-text">Tik om foto's te kiezen</div>
+        <div class="photo-drop-zone-sub">iPhone galerij, PC downloads, overal vandaan · meerdere tegelijk</div>
+      </div>
+      <div class="photo-grid" id="fotoGrid"></div>
+      <div id="fotoUploadStatus" style="font-size:12px;color:var(--muted);margin-top:8px;min-height:16px;text-align:center"></div>
     </div>
 
     <div class="card">
       <div class="card-title">📝 Product info</div>
-      <div class="field"><label>Naam *</label><input id="f-naam" type="text" placeholder="bijv. Ajax home 25/26"></div>
+      <div class="field"><label>Naam *</label><input id="f-naam" type="text" placeholder="bijv. NL Shirt WK 2026"></div>
       <div class="field"><label>Prijs *</label><input id="f-prijs" type="text" placeholder="€45"></div>
-      <div class="field"><label>Originele prijs (sale)</label><input id="f-sale" type="text" placeholder="€80 — leeg laten als geen sale"></div>
+      <div class="field"><label>Originele prijs (alleen bij sale)</label><input id="f-sale" type="text" placeholder="€80 — leeg laten als geen sale"></div>
       <div class="field">
         <label>Categorie *</label>
         <select id="f-cat">
           <option value="new">New arrivals</option>
+          <option value="interland">Interland</option>
           <option value="retro">Retro / Classics</option>
           <option value="kids">Kids</option>
           <option value="training">Trainingspakken</option>
-          <option value="interland">Interland</option>
         </select>
       </div>
       <div class="field"><label>Maten</label><input id="f-maten" type="text" placeholder="S, M, L, XL, XXL"><small>Kids: 128, 140, 152, 164, 176</small></div>
-      <div class="field"><label>Spelers</label><input id="f-spelers" type="text" placeholder="Neymar, Ronaldo, Messi"></div>
+      <div class="field"><label>Spelers (komma-gescheiden)</label><input id="f-spelers" type="text" placeholder="Brobbey, Weghorst, Gakpo"></div>
     </div>
 
-    <button class="btn-primary" onclick="addProduct()">➕ Product toevoegen</button>
-    <button class="btn-accent" onclick="addAndPublish()">➕ Toevoegen + 🚀 Direct publiceren</button>
+    <button class="btn-primary" onclick="addProduct(false)" id="addBtn">➕ Product toevoegen aan lijst</button>
+    <button class="btn-accent" onclick="addProduct(true)" id="addPublishBtn">
+      ➕ Toevoegen + 🚀 Direct publiceren
+    </button>
+    <div id="addStatus" style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center;min-height:18px"></div>
   </div>
 
-  <!-- ══════════════════════════════════════
-       📋 PRODUCTEN
-  ══════════════════════════════════════ -->
+  <!-- PRODUCTEN LIJST -->
   <div class="page" id="page-list">
     <div class="page-title">📋 Producten</div>
-    <div class="page-sub" id="listSub">Bewerk producten hieronder.</div>
+    <div class="page-sub" id="listSub">Alle producten — tik ✏️ om te bewerken.</div>
     <div class="product-list" id="productList"></div>
   </div>
 
-  <!-- ══════════════════════════════════════
-       ⚙️ INSTELLINGEN
-  ══════════════════════════════════════ -->
+  <!-- MIGRATIE -->
+  <div class="page" id="page-migrate">
+    <div class="page-title">📦 Foto Migratie</div>
+    <div class="page-sub">Verplaats Shopify foto's naar GitHub zodat je Shopify kunt opzeggen.</div>
+    <div class="info-box blue">
+      <strong>💡 Hoe werkt het?</strong>
+      Een GitHub Actions script downloadt alle Shopify foto's automatisch. Daarna zijn alle foto's op jouw GitHub en kun je Shopify opzeggen.
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Status</div>
+      <div id="migStats" style="font-size:13px;color:var(--muted);margin-bottom:14px">Laden...</div>
+      <button class="btn-primary" id="migBtn" onclick="startMigration()">📦 Start foto migratie</button>
+      <button class="btn-accent" id="migPubBtn" onclick="publishAll()" style="display:none">✅ Klaar — Nu publiceren!</button>
+      <div id="migLog" style="background:#0a1520;padding:10px;margin-top:10px;max-height:200px;overflow-y:auto;display:none;font-size:10px;font-family:monospace"></div>
+    </div>
+  </div>
+
+  <!-- INSTELLINGEN -->
   <div class="page" id="page-settings">
     <div class="page-title">⚙️ Instellingen</div>
     <div class="page-sub">Stel eenmalig je GitHub token in.</div>
-
     <div class="card">
       <div class="card-title">🔑 GitHub Token</div>
-      <div class="info-box" id="tokenInfoBox">
-        <strong>Token aanmaken:</strong>
+      <div class="info-box">
+        <strong>Token aanmaken (eenmalig):</strong>
         1. github.com → inloggen → profielfoto → Settings<br>
         2. Developer settings → Personal access tokens → Tokens (classic)<br>
         3. Generate new token (classic)<br>
         4. Note: "Glory Elevn" · Expiration: No expiration<br>
-        5. Vink ✅ <strong>repo</strong> aan → Generate token<br>
-        6. Kopieer token (begint met <code>ghp_</code>) → plak hieronder
+        5. Vink ✅ <strong>repo</strong> en ✅ <strong>workflow</strong> aan → Generate<br>
+        6. Kopieer token (begint met <code>ghp_</code>) en plak hieronder
       </div>
       <div class="field">
         <label>Personal Access Token</label>
         <div class="pw-wrap" style="border:1px solid #ddd">
           <input type="password" id="tokenInput" placeholder="ghp_..." style="flex:1;padding:10px 12px;border:none;outline:none;font-size:13px;font-family:monospace">
-          <button class="pw-eye" onclick="toggleToken()">👁️</button>
+          <button class="pw-eye" onclick="document.getElementById('tokenInput').type=document.getElementById('tokenInput').type==='password'?'text':'password'">👁️</button>
         </div>
-        <small>Wordt alleen lokaal opgeslagen op jouw apparaat.</small>
+        <small>Alleen lokaal opgeslagen op dit apparaat.</small>
       </div>
       <button class="btn-primary" onclick="saveToken()">💾 Token opslaan</button>
-      <button class="btn-sm" onclick="testToken()" style="margin-top:8px;width:100%;padding:10px">🔍 Token testen</button>
+      <button class="btn-sm" style="width:100%;margin-top:8px;padding:10px" onclick="testToken()">🔍 Token testen</button>
     </div>
-
     <div class="card">
       <div class="card-title">📁 Repository</div>
       <div class="field"><label>GitHub gebruikersnaam</label><input id="s-user" type="text"></div>
       <div class="field"><label>Repository naam</label><input id="s-repo" type="text"></div>
       <div class="field"><label>Branch</label><input id="s-branch" type="text"></div>
-      <button class="btn-primary" onclick="saveSettings()">💾 Opslaan</button>
+      <button class="btn-primary" onclick="saveRepoSettings()">💾 Opslaan</button>
     </div>
-
     <div class="card">
       <div class="card-title">🔐 Wachtwoord</div>
       <div class="field"><label>Huidig wachtwoord</label><input type="password" id="s-pw-old"></div>
@@ -371,145 +308,145 @@
       <button class="btn-primary" onclick="changePassword()">🔒 Wijzigen</button>
     </div>
   </div>
-</div>
+</div><!-- /adminApp -->
 
 <script src="producten.js"></script>
 <script>
-// ══════════════════════════════════════════════════════════════════
+'use strict';
+// ═══════════════════════════════════════════════════════
 // CONFIG
-// ══════════════════════════════════════════════════════════════════
-const PW_KEY = 'ge_admin_pw';
-let ADMIN_PASSWORD = localStorage.getItem(PW_KEY) || 'glory2025';
-let GH_USER   = localStorage.getItem('ge_gh_user')   || 'riekeltajax-collab';
-let GH_REPO   = localStorage.getItem('ge_gh_repo')   || 'glory-elevn';
-let GH_BRANCH = localStorage.getItem('ge_gh_branch') || 'main';
-let GH_TOKEN  = localStorage.getItem('ge_gh_token')  || '';
+// ═══════════════════════════════════════════════════════
+const PW_KEY='ge_pw';
+let ADMIN_PW = localStorage.getItem(PW_KEY)||'glory2025';
+let GH_USER   = localStorage.getItem('ge_user')  ||'riekeltajax-collab';
+let GH_REPO   = localStorage.getItem('ge_repo')  ||'glory-elevn';
+let GH_BRANCH = localStorage.getItem('ge_branch')||'main';
+let GH_TOKEN  = localStorage.getItem('ge_token') ||'';
 
-// foto arrays worden gedeclareerd in de foto-upload sectie hieronder
+// Foto-lijst voor nieuw product — bevat {url, name} objecten (al geüpload)
+let newFotos = [];  // [{url:'https://raw.github...', name:'foto.jpg'}, ...]
+let editFotos = {}; // idx -> [{url, name}]
 
-// ══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // LOGIN
-// ══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function checkPw(){
-  if(document.getElementById('pwInput').value===ADMIN_PASSWORD){
+  if(document.getElementById('pwInput').value===ADMIN_PW){
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('adminApp').classList.add('visible');
-    sessionStorage.setItem('ge_admin','1');
-    initAdmin();
+    sessionStorage.setItem('ge_ok','1');
+    initApp();
   } else {
-    document.getElementById('loginError').textContent='Verkeerd wachtwoord.';
+    document.getElementById('loginErr').textContent='Verkeerd wachtwoord.';
     document.getElementById('pwInput').value='';
   }
 }
 function togglePw(){const i=document.getElementById('pwInput');i.type=i.type==='password'?'text':'password';}
-function logout(){sessionStorage.removeItem('ge_admin');location.reload();}
+function logout(){sessionStorage.removeItem('ge_ok');location.reload();}
 document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
-if(sessionStorage.getItem('ge_admin')==='1'){
+if(sessionStorage.getItem('ge_ok')==='1'){
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('adminApp').classList.add('visible');
-  initAdmin();
-}
-function initAdmin(){
-  updateTokenStatus();
-  document.getElementById('s-user').value   = GH_USER;
-  document.getElementById('s-repo').value   = GH_REPO;
-  document.getElementById('s-branch').value = GH_BRANCH;
-  if(GH_TOKEN) document.getElementById('tokenInput').value = GH_TOKEN;
-  updateMigrationStats();
+  initApp();
 }
 
-// ══════════════════════════════════════════════════════════════════
+function initApp(){
+  updateTokenUI();
+  document.getElementById('s-user').value=GH_USER;
+  document.getElementById('s-repo').value=GH_REPO;
+  document.getElementById('s-branch').value=GH_BRANCH;
+  if(GH_TOKEN) document.getElementById('tokenInput').value=GH_TOKEN;
+  updateMigStats();
+}
+
+// ═══════════════════════════════════════════════════════
 // NAVIGATIE
-// ══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   if(btn) btn.classList.add('active');
   if(name==='list') renderList();
-  if(name==='publish'||name==='migrate') updateTokenStatus();
-  if(name==='migrate') updateMigrationStats();
+  if(name==='publish'||name==='add') updateTokenUI();
+  if(name==='migrate') updateMigStats();
 }
 
-// ══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // TOKEN & SETTINGS
-// ══════════════════════════════════════════════════════════════════
-function updateTokenStatus(){
+// ═══════════════════════════════════════════════════════
+function updateTokenUI(){
   const dot=document.getElementById('tokenDot');
   const txt=document.getElementById('tokenText');
-  const btn=document.getElementById('publishBtn');
-  const mig=document.getElementById('migBtn');
+  const pubBtn=document.getElementById('publishBtn');
+  const warn=document.getElementById('noTokenWarning');
   if(GH_TOKEN){
     dot.className='token-dot ok';
     txt.textContent='✅ Token ingesteld — klaar om te publiceren';
-    btn.disabled=false;
-    if(mig) mig.disabled=false;
+    pubBtn.disabled=false;
+    if(warn) warn.style.display='none';
   } else {
     dot.className='token-dot err';
     txt.textContent='⚠️ Geen token — stel in via ⚙️ Instellingen';
-    btn.disabled=true;
-    if(mig) mig.disabled=true;
+    pubBtn.disabled=true;
+    if(warn) warn.style.display='block';
   }
 }
 function saveToken(){
   const t=document.getElementById('tokenInput').value.trim();
-  if(!t){showToast('⚠️ Voer een token in','error');return;}
-  GH_TOKEN=t;localStorage.setItem('ge_gh_token',t);
-  updateTokenStatus();showToast('✅ Token opgeslagen!','success');
-  document.getElementById('tokenInfoBox').style.display='none';
+  if(!t){toast('⚠️ Voer een token in','err');return;}
+  GH_TOKEN=t;localStorage.setItem('ge_token',t);
+  updateTokenUI();toast('✅ Token opgeslagen!','ok');
 }
-function toggleToken(){const i=document.getElementById('tokenInput');i.type=i.type==='password'?'text':'password';}
 async function testToken(){
-  if(!GH_TOKEN){showToast('⚠️ Geen token','error');return;}
-  showToast('🔍 Testen...');
-  try{
-    const r=await ghFetch(`repos/${GH_USER}/${GH_REPO}`);
-    if(r.ok) showToast('✅ Token werkt! Repository gevonden.','success');
-    else showToast(`❌ Fout ${r.status}. Controleer token en repository naam.`,'error');
-  }catch(e){showToast('❌ '+e.message,'error');}
+  if(!GH_TOKEN){toast('⚠️ Geen token','err');return;}
+  toast('🔍 Testen...');
+  const r=await ghFetch(`repos/${GH_USER}/${GH_REPO}`);
+  if(r.ok) toast('✅ Token werkt!','ok');
+  else toast(`❌ Fout ${r.status} — controleer token en repository naam`,'err');
 }
-function saveSettings(){
+function saveRepoSettings(){
   GH_USER=document.getElementById('s-user').value.trim();
   GH_REPO=document.getElementById('s-repo').value.trim();
   GH_BRANCH=document.getElementById('s-branch').value.trim();
-  localStorage.setItem('ge_gh_user',GH_USER);
-  localStorage.setItem('ge_gh_repo',GH_REPO);
-  localStorage.setItem('ge_gh_branch',GH_BRANCH);
-  showToast('✅ Opgeslagen!','success');
+  localStorage.setItem('ge_user',GH_USER);
+  localStorage.setItem('ge_repo',GH_REPO);
+  localStorage.setItem('ge_branch',GH_BRANCH);
+  toast('✅ Opgeslagen!','ok');
 }
 function changePassword(){
   const old=document.getElementById('s-pw-old').value;
   const nw=document.getElementById('s-pw-new').value;
-  if(old!==ADMIN_PASSWORD){showToast('❌ Huidig wachtwoord klopt niet','error');return;}
-  if(!nw){showToast('⚠️ Nieuw wachtwoord mag niet leeg zijn','error');return;}
-  ADMIN_PASSWORD=nw;localStorage.setItem(PW_KEY,nw);
-  showToast('✅ Wachtwoord gewijzigd!','success');
+  if(old!==ADMIN_PW){toast('❌ Huidig wachtwoord klopt niet','err');return;}
+  if(!nw){toast('⚠️ Nieuw wachtwoord mag niet leeg zijn','err');return;}
+  ADMIN_PW=nw;localStorage.setItem(PW_KEY,nw);
+  toast('✅ Wachtwoord gewijzigd!','ok');
   document.getElementById('s-pw-old').value='';
   document.getElementById('s-pw-new').value='';
 }
 
-// ══════════════════════════════════════════════════════════════════
-// GITHUB API HELPERS
-// ══════════════════════════════════════════════════════════════════
-function ghFetch(path, options={}){
+// ═══════════════════════════════════════════════════════
+// GITHUB API
+// ═══════════════════════════════════════════════════════
+function ghFetch(path,opts={}){
   return fetch(`https://api.github.com/${path}`,{
-    ...options,
+    ...opts,
     headers:{
       'Authorization':`token ${GH_TOKEN}`,
       'Accept':'application/vnd.github.v3+json',
       'Content-Type':'application/json',
-      ...(options.headers||{})
+      ...(opts.headers||{})
     }
   });
 }
-async function getFileSHA(path){
+async function ghGetSHA(path){
   try{
     const r=await ghFetch(`repos/${GH_USER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`);
     if(r.ok){const d=await r.json();return d.sha;}
   }catch(e){}
   return null;
 }
-async function putFile(path, base64content, message, sha){
+async function ghPutFile(path,base64content,message,sha){
   const body={message,content:base64content,branch:GH_BRANCH};
   if(sha) body.sha=sha;
   return ghFetch(`repos/${GH_USER}/${GH_REPO}/contents/${path}`,{
@@ -517,78 +454,384 @@ async function putFile(path, base64content, message, sha){
   });
 }
 
-// ══════════════════════════════════════════════════════════════════
-// 📦 FOTO MIGRATIE
-// ══════════════════════════════════════════════════════════════════
-
-// ══════════════════════════════════════════════════════════════════
-// MIGRATIE HULPFUNCTIES
-// ══════════════════════════════════════════════════════════════════
-
-function isShopifyUrl(url){
-  return url && (url.includes('gloryelevn.com') || url.includes('cdn/shop'));
+// ═══════════════════════════════════════════════════════
+// FOTO UPLOAD — DIRECT NAAR GITHUB BIJ KIEZEN
+// ═══════════════════════════════════════════════════════
+function fileToBase64(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>res(e.target.result.split(',')[1]);
+    r.onerror=rej;
+    r.readAsDataURL(file);
+  });
 }
-function shopifyUrlToFilename(url){
-  try{
-    const clean=url.split('?')[0];
-    const parts=clean.split('/');
-    return parts[parts.length-1];
-  }catch(e){return 'foto-'+Date.now()+'.jpg';}
+
+function safeFilename(file){
+  const ts=Date.now();
+  const ext=file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg';
+  const base=file.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]/g,'-').substring(0,30);
+  return `${base}-${ts}.${ext}`;
 }
-function updateMigrationStats(){
-  if(typeof products==='undefined') return;
-  let total=0,migrated=0;
-  products.forEach(p=>{p.fotos.forEach(f=>{total++;if(!isShopifyUrl(f))migrated++;});});
-  const remaining=total-migrated;
-  document.getElementById('stat-total').textContent=total;
-  document.getElementById('stat-migrated').textContent=migrated;
-  document.getElementById('stat-remaining').textContent=remaining;
-  const sl=document.getElementById('migStatusList');
-  if(remaining===0&&total>0){
-    sl.innerHTML=`<div style="color:#4caf50;font-weight:600;padding:8px 0">✅ Alle ${total} foto's zijn gemigreerd! Je kunt Shopify opzeggen.</div>`;
-    document.getElementById('migPublishBtn').style.display='flex';
-    document.getElementById('migBtn').style.display='none';
-  } else {
-    sl.innerHTML=products.map(p=>{
-      const sc=p.fotos.filter(f=>isShopifyUrl(f)).length;
-      const gc=p.fotos.filter(f=>!isShopifyUrl(f)).length;
-      return `<div style="padding:6px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center">
-        <span>${sc===0?'✅':'⏳'} ${p.naam}</span>
-        <span style="color:var(--muted);font-size:10px">${gc}/${p.fotos.length} op GitHub</span>
-      </div>`;
-    }).join('');
+
+async function uploadFotoToGitHub(file){
+  if(!GH_TOKEN) throw new Error('Geen token ingesteld');
+  const filename=safeFilename(file);
+  const path=`images/${filename}`;
+  const base64=await fileToBase64(file);
+  const sha=await ghGetSHA(path);
+  const r=await ghPutFile(path,base64,`📸 ${filename}`,sha);
+  if(!r.ok){
+    const e=await r.json().catch(()=>({}));
+    throw new Error(e.message||`HTTP ${r.status}`);
+  }
+  // Return de raw GitHub URL — altijd werkend
+  return `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${path}`;
+}
+
+async function handleFotoKiezen(files){
+  if(!files||!files.length) return;
+  const grid=document.getElementById('fotoGrid');
+  const statusEl=document.getElementById('fotoUploadStatus');
+
+  if(!GH_TOKEN){
+    toast('⚠️ Stel eerst je GitHub token in via ⚙️ Instellingen','err');
+    return;
+  }
+
+  const fileArr=Array.from(files);
+  statusEl.textContent=`0/${fileArr.length} foto's uploaden...`;
+
+  for(let i=0;i<fileArr.length;i++){
+    const file=fileArr[i];
+    const idx=newFotos.length;
+
+    // Voeg item toe aan grid met "uploading" status
+    const preview=URL.createObjectURL(file);
+    const div=document.createElement('div');
+    div.className='photo-item uploading';
+    div.id=`fotoitem-${idx}`;
+    div.innerHTML=`<img src="${preview}" alt=""><div class="photo-item-status">Uploaden...</div>`;
+    grid.appendChild(div);
+
+    // Placeholder toevoegen
+    newFotos.push(null);
+
+    try{
+      statusEl.textContent=`${i+1}/${fileArr.length} uploaden: ${file.name}`;
+      const url=await uploadFotoToGitHub(file);
+
+      // Succes
+      newFotos[idx]={url,name:file.name};
+      div.className='photo-item done';
+      div.innerHTML=`<img src="${url}" alt="" onerror="this.src='${preview}'">
+        <div class="photo-item-status">✅ Klaar</div>
+        <button class="photo-item-remove" onclick="removeFoto(${idx})">✕</button>`;
+
+    }catch(e){
+      // Mislukt
+      newFotos[idx]=null;
+      div.className='photo-item error';
+      div.innerHTML=`<img src="${preview}" alt="">
+        <div class="photo-item-status">❌ Mislukt</div>`;
+      toast(`❌ Foto upload mislukt: ${e.message}`,'err');
+    }
+
+    statusEl.textContent=`${i+1}/${fileArr.length} verwerkt`;
+  }
+
+  // Filter nulls
+  const done=newFotos.filter(Boolean).length;
+  statusEl.textContent=done>0?`✅ ${done} foto${done!==1?'\'s':''} succesvol geüpload naar GitHub`:'';
+  // Reset file input
+  document.getElementById('fotoInput').value='';
+}
+
+function removeFoto(idx){
+  newFotos[idx]=null;
+  const el=document.getElementById(`fotoitem-${idx}`);
+  if(el) el.remove();
+}
+
+function getGeldigeFotos(){
+  return newFotos.filter(Boolean);
+}
+
+// ═══════════════════════════════════════════════════════
+// PRODUCT TOEVOEGEN
+// ═══════════════════════════════════════════════════════
+async function addProduct(publishDirect){
+  const naam=document.getElementById('f-naam').value.trim();
+  const prijs=document.getElementById('f-prijs').value.trim();
+  const statusEl=document.getElementById('addStatus');
+
+  if(!naam||!prijs){toast('⚠️ Vul naam en prijs in','err');return;}
+
+  const geldigeFotos=getGeldigeFotos();
+  if(!geldigeFotos.length){toast('⚠️ Voeg minimaal 1 foto toe en wacht tot uploaden klaar is','err');return;}
+
+  // Check of er nog foto's bezig zijn
+  const bezig=newFotos.filter(f=>f===null&&document.querySelector('.photo-item.uploading'));
+  if(bezig.length){toast('⚠️ Wacht tot alle foto\'s zijn geüpload','err');return;}
+
+  const sale=document.getElementById('f-sale').value.trim();
+  const cat=document.getElementById('f-cat').value;
+  const maten=document.getElementById('f-maten').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const spelers=document.getElementById('f-spelers').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!maten.length) maten.push('S','M','L','XL','XXL');
+
+  // Foto URLs — al geüpload naar GitHub, gewoon de URL's gebruiken
+  const fotoUrls=geldigeFotos.map(f=>f.url);
+
+  products.unshift({naam,prijs,sale,cat,badge:sale?'sale':cat,maten,spelers,fotos:fotoUrls});
+
+  // Reset
+  ['f-naam','f-prijs','f-sale','f-maten','f-spelers'].forEach(id=>document.getElementById(id).value='');
+  newFotos=[];
+  document.getElementById('fotoGrid').innerHTML='';
+  document.getElementById('fotoUploadStatus').textContent='';
+  statusEl.textContent='';
+
+  toast(`✅ "${naam}" toegevoegd!`,'ok');
+
+  if(publishDirect) await publishAll();
+}
+
+// ═══════════════════════════════════════════════════════
+// PRODUCTEN LIJST
+// ═══════════════════════════════════════════════════════
+function thumbUrl(foto){
+  if(!foto) return '';
+  if(typeof foto==='string'){
+    if(foto.startsWith('http')) return foto;
+    return `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${foto}`;
+  }
+  return foto.url||'';
+}
+
+function renderList(){
+  const el=document.getElementById('productList');
+  if(!products||!products.length){el.innerHTML='<p style="padding:20px;color:var(--muted)">Geen producten.</p>';return;}
+  document.getElementById('listSub').textContent=`${products.length} producten totaal`;
+  el.innerHTML=products.map((p,i)=>{
+    const thumb=thumbUrl(p.fotos&&p.fotos[0]?p.fotos[0]:'');
+    const hasShopify=p.fotos&&p.fotos.some(f=>typeof f==='string'&&f.includes('gloryelevn.com'));
+    return `<div class="product-row">
+      <div class="product-row-header">
+        <img class="product-thumb" src="${thumb}" alt="" onerror="this.style.background='#ddd'">
+        <div class="product-info">
+          <h4>${p.naam}</h4>
+          <p>${p.prijs}${p.sale?' · was '+p.sale:''} · ${p.cat}</p>
+          <span class="foto-status-badge ${hasShopify?'foto-warn':'foto-ok'}">${hasShopify?'⚠️ Shopify foto\'s':'✅ GitHub foto\'s'}</span>
+        </div>
+        <div class="product-actions">
+          <button class="btn-sm" onclick="toggleEdit(${i})">✏️</button>
+          <button class="btn-red" onclick="delProduct(${i})">✕</button>
+        </div>
+      </div>
+      <div class="edit-form" id="edit-${i}">
+        <div class="field"><label>Naam</label><input id="en-${i}" value="${p.naam.replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Prijs</label><input id="ep-${i}" value="${p.prijs}"></div>
+        <div class="field"><label>Sale prijs</label><input id="es-${i}" value="${p.sale||''}"></div>
+        <div class="field"><label>Categorie</label>
+          <select id="ec-${i}">${['new','interland','retro','kids','training'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}</select>
+        </div>
+        <div class="field"><label>Maten</label><input id="em-${i}" value="${p.maten.join(', ')}"></div>
+        <div class="field"><label>Spelers</label><input id="esl-${i}" value="${p.spelers.join(', ')}"></div>
+        <div class="field">
+          <label>Foto's vervangen (worden direct geüpload)</label>
+          <div class="photo-drop-zone" style="padding:14px">
+            <input type="file" accept="image/*" multiple onchange="handleEditFotos(${i},this.files)">
+            <div style="font-size:11px;font-weight:600">📷 Nieuwe foto's kiezen</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:3px">Worden direct geüpload naar GitHub</div>
+          </div>
+          <div id="edit-grid-${i}" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px">
+            ${p.fotos.map((f,fi)=>`<div style="aspect-ratio:1;overflow:hidden;background:#eee"><img src="${thumbUrl(f)}" style="width:100%;height:100%;object-fit:cover" alt="" onerror="this.style.display='none'"></div>`).join('')}
+          </div>
+          <div id="edit-status-${i}" style="font-size:11px;color:var(--muted);margin-top:6px"></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn-sm" style="flex:1" onclick="saveEdit(${i})">💾 Opslaan</button>
+          <button class="btn-sm" style="background:#888;flex:1" onclick="toggleEdit(${i})">Annuleer</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  products.forEach((p,i)=>{editFotos[i]=[...p.fotos.map(f=>({url:thumbUrl(f),name:''}))];});
+}
+
+async function handleEditFotos(idx,files){
+  if(!files||!files.length) return;
+  if(!GH_TOKEN){toast('⚠️ Geen token','err');return;}
+  const statusEl=document.getElementById(`edit-status-${idx}`);
+  const grid=document.getElementById(`edit-grid-${idx}`);
+  const fileArr=Array.from(files);
+  const newUrls=[];
+  statusEl.textContent=`0/${fileArr.length} uploaden...`;
+  for(let i=0;i<fileArr.length;i++){
+    const file=fileArr[i];
+    try{
+      statusEl.textContent=`${i+1}/${fileArr.length}: ${file.name}`;
+      const url=await uploadFotoToGitHub(file);
+      newUrls.push(url);
+      statusEl.textContent=`✅ ${i+1}/${fileArr.length} geüpload`;
+    }catch(e){
+      toast(`❌ ${file.name}: ${e.message}`,'err');
+    }
+  }
+  if(newUrls.length){
+    editFotos[idx]=newUrls.map(u=>({url:u,name:''}));
+    grid.innerHTML=newUrls.map(u=>`<div style="aspect-ratio:1;overflow:hidden;background:#eee;border:2px solid #4caf50"><img src="${u}" style="width:100%;height:100%;object-fit:cover" alt=""></div>`).join('');
+    statusEl.textContent=`✅ ${newUrls.length} foto's geüpload en klaar om op te slaan`;
   }
 }
 
-function migLog(msg,type='info'){
+function toggleEdit(i){document.getElementById('edit-'+i).classList.toggle('open');}
+function saveEdit(i){
+  const cat=document.getElementById('ec-'+i).value;
+  const sale=document.getElementById('es-'+i).value.trim();
+  // Gebruik nieuw geüploade foto's als die er zijn, anders de bestaande
+  const newEF=editFotos[i]||[];
+  const hasNewUploads=newEF.length&&newEF[0]&&newEF[0].url&&newEF[0].url.includes('raw.githubusercontent.com');
+  products[i]={
+    naam:document.getElementById('en-'+i).value.trim(),
+    prijs:document.getElementById('ep-'+i).value.trim(),
+    sale,cat,badge:sale?'sale':cat,
+    maten:document.getElementById('em-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
+    spelers:document.getElementById('esl-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
+    fotos:hasNewUploads?newEF.map(f=>f.url):products[i].fotos,
+  };
+  toggleEdit(i);
+  toast(`✅ "${products[i].naam}" opgeslagen!`,'ok');
+  renderList();
+}
+function delProduct(i){
+  if(!confirm(`"${products[i].naam}" verwijderen?`)) return;
+  const n=products[i].naam;products.splice(i,1);renderList();
+  toast(`🗑️ "${n}" verwijderd`);
+}
+
+// ═══════════════════════════════════════════════════════
+// PUBLICEREN
+// ═══════════════════════════════════════════════════════
+function buildJS(){
+  const lines=products.map(p=>{
+    const fotos=p.fotos.map(f=>{
+      const url=typeof f==='object'?f.url:f;
+      if(!url||url.startsWith('data:')||url==='__BASE64_UPLOAD_NEEDED__') return null;
+      return `'${url.replace(/'/g,"\\'")}'`;
+    }).filter(Boolean);
+    if(!fotos.length) return null;
+    return `  {naam:'${p.naam.replace(/'/g,"\\'")}',prijs:'${p.prijs}',sale:'${p.sale||''}',cat:'${p.cat}',badge:'${p.badge}',maten:[${p.maten.map(m=>`'${m}'`).join(',')}],spelers:[${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],fotos:[${fotos.join(',')}]}`;
+  }).filter(Boolean);
+  return `const products = [\n${lines.join(',\n')}\n];\n`;
+}
+
+function pubLog(msg,type='info'){
+  const el=document.getElementById('pubLog');
+  el.classList.add('visible');
+  const d=document.createElement('div');
+  d.className=`log-line log-${type}`;
+  d.textContent=`${new Date().toLocaleTimeString('nl')} — ${msg}`;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function setProgress(pct,status){
+  document.getElementById('progBar').style.width=pct+'%';
+  document.getElementById('progStatus').textContent=status;
+}
+
+async function publishAll(){
+  if(!GH_TOKEN){toast('⚠️ Geen token — stel in via ⚙️ Instellingen','err');return;}
+  const btn=document.getElementById('publishBtn');
+  btn.disabled=true;btn.textContent='⏳ Publiceren...';
+  document.getElementById('pubLog').innerHTML='';
+  document.getElementById('pubLog').classList.add('visible');
+  document.getElementById('progWrap').classList.add('visible');
+  setProgress(5,'Verbinding maken...');
+
+  try{
+    pubLog('Verbinding maken met GitHub...','info');
+    const check=await ghFetch(`repos/${GH_USER}/${GH_REPO}`);
+    if(!check.ok) throw new Error(`Repository niet gevonden (${check.status}) — controleer Repository naam in Instellingen`);
+    pubLog('✅ Repository gevonden!','ok');
+    setProgress(30,'producten.js ophalen...');
+    const sha=await ghGetSHA('producten.js');
+    setProgress(60,'producten.js uploaden...');
+    pubLog(`${products.length} producten publiceren...`,'info');
+    const content=buildJS();
+    const encoded=btoa(unescape(encodeURIComponent(content)));
+    const r=await ghPutFile('producten.js',encoded,`Glory Elevn — ${products.length} producten`,sha);
+    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||r.status);}
+    pubLog('✅ producten.js gepubliceerd!','ok');
+    setProgress(100,'✅ Live!');
+    pubLog(`🎉 ${products.length} producten zijn live op je website.`,'ok');
+    toast(`🚀 ${products.length} producten live!`,'ok');
+  }catch(e){
+    pubLog(`❌ ${e.message}`,'err');
+    setProgress(0,'❌ Mislukt');
+    toast('❌ '+e.message,'err');
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Publiceer naar gloryelevn.com';
+    updateTokenUI();
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// MIGRATIE
+// ═══════════════════════════════════════════════════════
+function isShopify(url){return typeof url==='string'&&url.includes('gloryelevn.com');}
+function shopifyFilename(url){
+  try{return url.split('?')[0].split('/').pop();}catch(e){return `foto-${Date.now()}.jpg`;}
+}
+function updateMigStats(){
+  if(typeof products==='undefined') return;
+  let total=0,mig=0;
+  products.forEach(p=>{if(p.fotos)p.fotos.forEach(f=>{total++;if(!isShopify(f))mig++;});});
+  const rem=total-mig;
+  document.getElementById('migStats').innerHTML=
+    `<strong>${total}</strong> foto's totaal &nbsp;·&nbsp; <strong style="color:#4caf50">${mig}</strong> op GitHub &nbsp;·&nbsp; <strong style="color:${rem?'#e65100':'#4caf50'}">${rem}</strong> nog te migreren${rem===0&&total>0?' — ✅ Klaar! Je kunt Shopify opzeggen.':''}`;
+  if(rem===0&&total>0){
+    document.getElementById('migBtn').style.display='none';
+    document.getElementById('migPubBtn').style.display='flex';
+  }
+}
+function migLog(msg,color='rgba(255,255,255,.4)'){
   const el=document.getElementById('migLog');
-  const div=document.createElement('div');
-  div.className='mig-log-line';
-  const colors={ok:'#4caf50',err:'#e84a4a',info:'rgba(255,255,255,.4)',warn:'#ff9800'};
-  div.style.color=colors[type]||colors.info;
-  div.textContent=`${new Date().toLocaleTimeString('nl')} — ${msg}`;
-  el.appendChild(div);el.scrollTop=el.scrollHeight;
+  el.style.display='block';
+  const d=document.createElement('div');
+  d.style.cssText=`font-size:10px;font-family:monospace;color:${color};padding:1px 0;line-height:1.7`;
+  d.textContent=`${new Date().toLocaleTimeString('nl')} — ${msg}`;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
 }
-function setMigProgress(pct,status,current=''){
-  document.getElementById('migBar').style.width=pct+'%';
-  document.getElementById('migStatus').textContent=status;
-  document.getElementById('migCurrent').textContent=current;
-}
+async function startMigration(){
+  if(!GH_TOKEN){toast('⚠️ Geen token','err');return;}
+  const btn=document.getElementById('migBtn');
+  btn.disabled=true;btn.textContent='⏳ Bezig...';
 
-// ── WERKENDE METHODE: GitHub Actions workflow aanmaken ────────────
-// GitHub Actions draait op GitHub's servers — geen CORS probleem!
-// De workflow downloadt elke foto server-side en slaat hem op in images/
+  // Bouw lijst van te migreren URLs
+  const toMig=[];
+  products.forEach((p,pi)=>{
+    if(p.fotos)p.fotos.forEach((f,fi)=>{
+      if(isShopify(f)) toMig.push({pi,fi,url:f});
+    });
+  });
 
-async function createMigrationWorkflow(urlList){
-  // Stap 1: Sla alle URLs op in een apart tekstbestand (geen YAML-problemen)
-  const urlLines = urlList.map(item=>{
-    const fn = shopifyUrlToFilename(item.url);
-    const cleanUrl = item.url.replace(/&width=\d+/,'').replace(/\?width=\d+/,'');
+  if(!toMig.length){
+    migLog('✅ Alle foto\'s zijn al gemigreerd!','#4caf50');
+    updateMigStats();btn.disabled=false;return;
+  }
+
+  migLog(`${toMig.length} Shopify foto's te migreren via GitHub Actions...`);
+
+  // Bouw urls.txt
+  const urlLines=toMig.map(item=>{
+    const fn=shopifyFilename(item.url);
+    const cleanUrl=item.url.replace(/&width=\d+/,'').replace(/\?width=\d+/,'');
     return `${cleanUrl}|images/${fn}`;
   }).join('\n');
 
-  // Stap 2: Workflow leest het tekstbestand — geen speciale tekens in YAML
-  const workflowYaml = `name: Migrate Shopify Photos
+  // Bouw workflow YAML — URLs in apart bestand, geen YAML-injectie
+  const yaml=`name: Migrate Shopify Photos
 on:
   push:
     paths:
@@ -606,22 +849,22 @@ jobs:
 import urllib.request, os, time
 os.makedirs("images", exist_ok=True)
 with open(".github/workflows/urls.txt") as f:
-    lines = [l.strip() for l in f if l.strip()]
+    lines=[l.strip() for l in f if l.strip() and '|' in l]
 for line in lines:
-    url, path = line.split("|", 1)
+    url,path=line.split("|",1)
     if os.path.exists(path):
-        print("skip " + path)
+        print("skip "+path)
         continue
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=30) as r:
-            data = r.read()
-        with open(path, "wb") as f2:
-            f2.write(data)
-        print("ok " + path + " " + str(len(data)//1024) + "KB")
+        req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0"})
+        with urllib.request.urlopen(req,timeout=30) as r:
+            data=r.read()
+        with open(path,"wb") as fh:
+            fh.write(data)
+        print("ok "+path+" "+str(len(data)//1024)+"KB")
         time.sleep(0.1)
     except Exception as e:
-        print("fail " + path + " " + str(e))
+        print("fail "+path+": "+str(e))
 PYEOF
       - name: Commit
         run: |
@@ -631,461 +874,62 @@ PYEOF
           git diff --staged --quiet || git commit -m "Foto migratie Shopify naar GitHub"
           git push
 `;
-  return { workflowYaml, urlLines };
-}
-
-let toMigrateGlobal=[];
-
-async function step1_createWorkflow(){
-  if(!GH_TOKEN){showToast('⚠️ Stel eerst je GitHub token in','error');return;}
-  const btn=document.getElementById('migBtn');
-  btn.disabled=true;btn.innerHTML='⏳ Bezig...';
-  document.getElementById('migProgress').classList.add('visible');
-  document.getElementById('migLog').innerHTML='';
-  setMigProgress(5,'Foto\'s tellen...');
-
-  // Verzamel alle Shopify URLs
-  toMigrateGlobal=[];
-  products.forEach((p,pi)=>{p.fotos.forEach((f,fi)=>{if(isShopifyUrl(f))toMigrateGlobal.push({productIdx:pi,fotoIdx:fi,url:f});});});
-
-  if(toMigrateGlobal.length===0){
-    migLog('✅ Alle foto\'s zijn al gemigreerd!','ok');
-    setMigProgress(100,'✅ Klaar!');
-    btn.disabled=false;btn.innerHTML='✅ Al gemigreerd';
-    updateMigrationStats();return;
-  }
-
-  migLog(`${toMigrateGlobal.length} Shopify foto's gevonden`,'info');
-  setMigProgress(15,'Script uploaden naar GitHub...');
-  migLog('Migratiescript uploaden — start automatisch na commit...','info');
 
   try{
-    // Genereer workflow + URL lijst
-    const {workflowYaml, urlLines} = await createMigrationWorkflow(toMigrateGlobal);
-    const workflowPath = '.github/workflows/migrate-photos.yml';
-    const urlsPath = '.github/workflows/urls.txt';
+    // Upload urls.txt
+    migLog('urls.txt uploaden...','rgba(255,255,255,.4)');
+    const urlsSHA=await ghGetSHA('.github/workflows/urls.txt');
+    const urlsR=await ghPutFile('.github/workflows/urls.txt',btoa(unescape(encodeURIComponent(urlLines))),'Foto URL lijst',urlsSHA);
+    if(!urlsR.ok){const e=await urlsR.json().catch(()=>({}));throw new Error('urls.txt: '+(e.message||urlsR.status));}
+    migLog('✅ urls.txt opgeslagen','#4caf50');
 
-    // Stap A: Upload urls.txt eerst (geen trigger)
-    setMigProgress(15,'URL-lijst uploaden...');
-    migLog(`${toMigrateGlobal.length} foto-URLs opslaan in urls.txt...`,'info');
-    const urlsSHA = await getFileSHA(urlsPath);
-    const urlsEncoded = btoa(unescape(encodeURIComponent(urlLines)));
-    const urlsR = await putFile(urlsPath, urlsEncoded, 'Foto URL lijst', urlsSHA);
-    if(!urlsR.ok){const e=await urlsR.json().catch(()=>({}));throw new Error('URLs upload mislukt: '+(e.message||urlsR.status));}
-    migLog('✅ URL-lijst opgeslagen!','ok');
+    // Upload workflow — triggert automatisch via push
+    migLog('Migratiescript uploaden (start automatisch)...','rgba(255,255,255,.4)');
+    const ymSHA=await ghGetSHA('.github/workflows/migrate-photos.yml');
+    const ymR=await ghPutFile('.github/workflows/migrate-photos.yml',btoa(unescape(encodeURIComponent(yaml))),`Migratie ${new Date().toLocaleTimeString('nl')}`,ymSHA);
+    if(!ymR.ok){const e=await ymR.json().catch(()=>({}));throw new Error('Workflow: '+(e.message||ymR.status));}
+    migLog('✅ Script geüpload! GitHub start automatisch met downloaden...','#4caf50');
+    migLog('⏳ Wacht 2-3 minuten en controleer Actions tab op GitHub...','#ff9800');
 
-    // Stap B: Upload workflow — triggert automatisch via push
-    setMigProgress(25,'Migratiescript uploaden (start automatisch)...');
-    migLog('Migratiescript uploaden naar GitHub...','info');
-    const existingSHA = await getFileSHA(workflowPath);
-    const encoded = btoa(unescape(encodeURIComponent(workflowYaml)));
-    const uploadR = await putFile(workflowPath, encoded, `Foto migratie gestart ${new Date().toLocaleTimeString('nl')}`, existingSHA);
-    if(!uploadR.ok){const e=await uploadR.json().catch(()=>({}));throw new Error('Script upload mislukt: '+(e.message||uploadR.status));}
-
-    migLog('✅ Script geüpload! GitHub start automatisch met downloaden...','ok');
-    setMigProgress(30,'Wachten op GitHub Actions... (automatisch gestart)');
-    migLog('⏳ GitHub downloadt nu alle foto\'s. Dit duurt 1-3 minuten...','info');
-
-    document.getElementById('step1wrap').style.display='none';
-    document.getElementById('step2wrap').style.display='block';
-
-    // Poll workflow status — wacht even zodat de run aangemaakt wordt
-    await new Promise(r=>setTimeout(r,8000));
-    let attempts=0, done=false;
-    while(attempts<80 && !done){
-      await new Promise(r=>setTimeout(r,5000));
-      attempts++;
+    // Poll for completion
+    await new Promise(r=>setTimeout(r,10000));
+    let done=false,attempts=0;
+    while(!done&&attempts<60){
+      await new Promise(r=>setTimeout(r,5000));attempts++;
       try{
-        const runsR=await ghFetch(`repos/${GH_USER}/${GH_REPO}/actions/runs?per_page=5`);
+        const runsR=await ghFetch(`repos/${GH_USER}/${GH_REPO}/actions/runs?per_page=3`);
         if(runsR.ok){
           const d=await runsR.json();
-          // Zoek de meest recente migrate-photos run
-          const run=d.workflow_runs?.find(r=>r.name==='Migrate Shopify Photos'||r.path?.includes('migrate-photos'));
+          const run=d.workflow_runs?.find(r=>r.name==='Migrate Shopify Photos');
           if(run){
-            const pct=Math.min(30+attempts*0.8,90);
-            setMigProgress(pct,
-              `GitHub: ${run.status} (${attempts*5}s)`,
-              run.status==='completed'?`✅ ${run.conclusion}`:`⏳ Foto's downloaden...`
-            );
-            if(run.status==='in_progress'||run.status==='queued'){
-              migLog(`✅ GitHub is actief bezig! Status: ${run.status}`,'ok');
-            }
+            migLog(`GitHub: ${run.status}${run.conclusion?' ('+run.conclusion+')':''}`,run.status==='completed'?'#4caf50':'rgba(255,255,255,.4)');
             if(run.status==='completed'){
               done=true;
-              if(run.conclusion==='success'){migLog('✅ Alle foto\'s succesvol gedownload door GitHub!','ok');}
-              else{migLog(`⚠️ Workflow klaar met status: ${run.conclusion}. Mogelijk zijn sommige foto's mislukt.`,'warn');}
+              // Update alle Shopify URLs naar GitHub paths
+              toMig.forEach(item=>{
+                const fn=shopifyFilename(item.url);
+                products[item.pi].fotos[item.fi]=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/images/${fn}`;
+              });
+              migLog(`✅ ${toMig.length} foto-links bijgewerkt naar GitHub URLs`,'#4caf50');
+              updateMigStats();
+              toast('✅ Migratie klaar! Druk op Publiceren.','ok');
             }
-          } else if(attempts<=3){
-            migLog(`Wachten op GitHub Actions start... (${attempts*5}s)`,'info');
           }
         }
       }catch(e){}
     }
-
-    // Update product links
-    setMigProgress(93,'Foto-links bijwerken in producten...');
-    toMigrateGlobal.forEach(item=>{
-      products[item.productIdx].fotos[item.fotoIdx]=`images/${shopifyUrlToFilename(item.url)}`;
-    });
-    migLog(`✅ ${toMigrateGlobal.length} foto-links bijgewerkt naar images/`,'ok');
-    setMigProgress(100,'✅ Migratie voltooid!');
-    migLog('🎉 Klaar! Druk nu op Publiceren om de nieuwe links live te zetten.','ok');
-    updateMigrationStats();
-    document.getElementById('step2wrap').style.display='none';
-    document.getElementById('migPublishBtn').style.display='flex';
-    showToast('✅ Foto\'s gemigreerd! Druk op Publiceren.','success');
-
+    if(!done) migLog('⚠️ Timeout — check GitHub Actions handmatig','#ff9800');
   }catch(e){
-    migLog('❌ '+e.message,'err');
-    setMigProgress(0,'❌ Mislukt');
-    showToast('❌ '+e.message,'error');
-    btn.disabled=false;btn.innerHTML='🔄 Opnieuw proberen';
-    document.getElementById('step1wrap').style.display='block';
-    document.getElementById('step2wrap').style.display='none';
+    migLog('❌ '+e.message,'#e84a4a');
+    toast('❌ '+e.message,'err');
   }
+  btn.disabled=false;btn.textContent='🔄 Opnieuw proberen';
 }
 
-async function step2_triggerWorkflow(){} // niet meer nodig
-async function startMigration(){await step1_createWorkflow();}
-
-// ══════════════════════════════════════════════════════════════════
-// FOTO UPLOAD → DIRECT NAAR GITHUB
-// ══════════════════════════════════════════════════════════════════
-
-// Sla foto's op als base64 tijdelijk, upload later bij publiceren
-let newProductPhotos = []; // array van {base64, filename, githubUrl}
-let editPhotos = {};
-
-function sanitizeFilename(naam, index){
-  // Maak een veilige bestandsnaam van de productnaam
-  const safe = naam.toLowerCase()
-    .replace(/[^a-z0-9]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .substring(0, 40);
-  return `${safe}-${Date.now()}-${index}.jpg`;
-}
-
-function handlePhotos(files, arr, previewId){
-  if(!files||!files.length) return;
-  let done=0;
-  Array.from(files).forEach((file, i)=>{
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const base64full = e.target.result; // data:image/jpeg;base64,...
-      const base64 = base64full.split(',')[1];
-      const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
-      const filename = `foto-${Date.now()}-${i}.${ext}`;
-      arr.push({
-        base64full,        // voor preview
-        base64,            // voor GitHub upload
-        filename,
-        githubUrl: null,   // wordt ingevuld na upload
-      });
-      done++;
-      if(done===files.length) renderPreviews(arr, previewId);
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function renderPreviews(arr, previewId){
-  const el=document.getElementById(previewId);
-  if(!el) return;
-  el.innerHTML=arr.map((item,i)=>`
-    <div class="photo-preview">
-      <img src="${item.base64full||item}" alt="">
-      <div class="ph-num">${item.githubUrl?'✅ Klaar':'⏳ Uploaden...'}</div>
-      <button class="rm" onclick="removePhoto(${i},'${previewId}')">✕</button>
-    </div>`).join('');
-}
-
-function removePhoto(idx, previewId){
-  if(previewId==='photoPreviews'){
-    newProductPhotos.splice(idx,1);
-    renderPreviews(newProductPhotos,'photoPreviews');
-  } else {
-    const ri=parseInt(previewId.replace('ep-prev-',''));
-    editPhotos[ri].splice(idx,1);
-    renderPreviews(editPhotos[ri],previewId);
-  }
-}
-
-// Upload één foto naar GitHub images/ map
-async function uploadFotoToGitHub(fotoObj, naam){
-  if(!GH_TOKEN) throw new Error('Geen GitHub token ingesteld');
-  if(fotoObj.githubUrl) return fotoObj.githubUrl; // al geüpload
-
-  const filename = fotoObj.filename || sanitizeFilename(naam||'foto', Date.now());
-  const path = `images/${filename}`;
-
-  // Check of bestand al bestaat
-  const sha = await getFileSHA(path);
-
-  const r = await ghFetch(`repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      message: `📸 Foto toegevoegd: ${filename}`,
-      content: fotoObj.base64,
-      branch: GH_BRANCH,
-      ...(sha ? {sha} : {})
-    })
-  });
-
-  if(!r.ok){
-    const e = await r.json().catch(()=>({}));
-    throw new Error(`Foto upload mislukt: ${e.message||r.status}`);
-  }
-
-  // Return de raw GitHub URL
-  const url = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/images/${filename}`;
-  fotoObj.githubUrl = url;
-  return url;
-}
-
-// Upload alle foto's in een array en return de GitHub URLs
-async function uploadAllFotos(arr, naam, statusEl){
-  const urls = [];
-  for(let i=0; i<arr.length; i++){
-    const item = arr[i];
-    // Al een echte URL (bestaande foto) — gewoon gebruiken
-    if(typeof item === 'string'){
-      urls.push(item);
-      continue;
-    }
-    if(item.githubUrl){
-      urls.push(item.githubUrl);
-      continue;
-    }
-    // Nog uploaden
-    if(statusEl) statusEl.textContent = `📸 Foto ${i+1}/${arr.length} uploaden naar GitHub...`;
-    try {
-      const url = await uploadFotoToGitHub(item, naam);
-      urls.push(url);
-      // Update preview
-      const previews = document.querySelectorAll('.photo-preview .ph-num');
-      if(previews[i]) previews[i].textContent = '✅ Klaar';
-    } catch(e){
-      showToast(`⚠️ Foto ${i+1} upload mislukt: ${e.message}`, 'error');
-      // Behoud base64 als fallback zodat product niet verloren gaat
-      if(item.base64full) urls.push(item.base64full);
-    }
-  }
-  return urls;
-}
-
-// ══════════════════════════════════════════════════════════════════
-// PRODUCT TOEVOEGEN
-// ══════════════════════════════════════════════════════════════════
-function addProduct(){
-  const naam=document.getElementById('f-naam').value.trim();
-  const prijs=document.getElementById('f-prijs').value.trim();
-  if(!naam||!prijs){showToast('⚠️ Vul naam en prijs in','error');return false;}
-  if(!newProductPhotos.length){showToast('⚠️ Voeg minimaal 1 foto toe','error');return false;}
-  const sale=document.getElementById('f-sale').value.trim();
-  const cat=document.getElementById('f-cat').value;
-  const maten=document.getElementById('f-maten').value.trim().split(',').map(s=>s.trim()).filter(Boolean);
-  const spelers=document.getElementById('f-spelers').value.trim().split(',').map(s=>s.trim()).filter(Boolean);
-  if(!maten.length) maten.push('S','M','L','XL','XXL');
-  // Sla tijdelijk op met foto-objecten — worden geüpload bij publishToGitHub()
-  products.unshift({naam,prijs,sale,cat,badge:sale?'sale':cat,maten,spelers,fotos:[...newProductPhotos]});
-  ['f-naam','f-prijs','f-sale','f-maten','f-spelers'].forEach(id=>document.getElementById(id).value='');
-  newProductPhotos=[];document.getElementById('photoPreviews').innerHTML='';
-  showToast(`✅ "${naam}" toegevoegd! Druk op 🚀 Publiceer om foto's te uploaden.`,'success');
-  return true;
-}
-async function addAndPublish(){if(addProduct()) await publishToGitHub();}
-
-// ══════════════════════════════════════════════════════════════════
-// PRODUCTEN LIJST
-// ══════════════════════════════════════════════════════════════════
-function renderList(){
-  const el=document.getElementById('productList');
-  if(!products.length){el.innerHTML='<p style="padding:20px;color:var(--muted)">Geen producten.</p>';return;}
-  document.getElementById('listSub').textContent=`${products.length} producten`;
-  el.innerHTML=products.map((p,i)=>`
-    <div class="product-row">
-      <div class="product-row-header">
-        <img class="product-thumb" src="${p.fotos[0].startsWith('http')?p.fotos[0]:'https://raw.githubusercontent.com/riekeltajax-collab/glory-elevn/main/'+p.fotos[0]}" alt="" onerror="this.style.background='#eee'">
-        <div class="product-info">
-          <h4>${p.naam}</h4>
-          <p>${p.prijs}${p.sale?' · was '+p.sale:''} · ${p.cat}</p>
-          ${p.fotos.some(f=>isShopifyUrl(f))?'<span style="font-size:9px;color:#e65100;font-weight:600">⚠️ Shopify foto\'s — migreer eerst</span>':'<span style="font-size:9px;color:#4caf50;font-weight:600">✅ GitHub foto\'s</span>'}
-        </div>
-        <div class="product-actions">
-          <button class="btn-sm" onclick="toggleEdit(${i})">✏️</button>
-          <button class="btn-red" onclick="delProduct(${i})">✕</button>
-        </div>
-      </div>
-      <div class="edit-form" id="edit-${i}">
-        <div class="field"><label>Naam</label><input id="en-${i}" value="${p.naam.replace(/"/g,'&quot;')}"></div>
-        <div class="field"><label>Prijs</label><input id="ep-${i}" value="${p.prijs}"></div>
-        <div class="field"><label>Sale prijs</label><input id="es-${i}" value="${p.sale||''}"></div>
-        <div class="field"><label>Categorie</label><select id="ec-${i}">${['new','retro','kids','training','interland'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}</select></div>
-        <div class="field"><label>Maten</label><input id="em-${i}" value="${p.maten.join(', ')}"></div>
-        <div class="field"><label>Spelers</label><input id="esl-${i}" value="${p.spelers.join(', ')}"></div>
-        <div class="field">
-          <label>Foto's vervangen</label>
-          <div class="photo-upload-area" style="padding:12px">
-            <input type="file" accept="image/*" multiple onchange="handleEditPhotos(${i},this.files)">
-            <div style="font-size:11px;font-weight:600">📷 Nieuwe foto's kiezen</div>
-          </div>
-          <div class="photo-previews" id="ep-prev-${i}">${p.fotos.map((f,fi)=>`<div class="photo-preview"><img src="${f}" alt=""><div class="ph-num">Foto ${fi+1}</div></div>`).join('')}</div>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="btn-sm" style="flex:1" onclick="saveEdit(${i})">💾 Opslaan</button>
-          <button class="btn-sm" style="background:#888;flex:1" onclick="toggleEdit(${i})">Annuleer</button>
-        </div>
-      </div>
-    </div>`).join('');
-  products.forEach((p,i)=>{editPhotos[i]=[...p.fotos];});
-}
-function handleEditPhotos(idx,files){
-  editPhotos[idx]=[];
-  handlePhotos(files,editPhotos[idx],`ep-prev-${idx}`);
-}function toggleEdit(i){document.getElementById('edit-'+i).classList.toggle('open');}
-function saveEdit(i){
-  const cat=document.getElementById('ec-'+i).value;
-  const sale=document.getElementById('es-'+i).value.trim();
-  products[i]={
-    naam:document.getElementById('en-'+i).value.trim(),
-    prijs:document.getElementById('ep-'+i).value.trim(),
-    sale,cat,badge:sale?'sale':cat,
-    maten:document.getElementById('em-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
-    spelers:document.getElementById('esl-'+i).value.split(',').map(s=>s.trim()).filter(Boolean),
-    fotos:editPhotos[i]||products[i].fotos,
-  };
-  showToast(`✅ "${products[i].naam}" opgeslagen!`,'success');
-  renderList();
-}
-function delProduct(i){
-  if(!confirm(`"${products[i].naam}" verwijderen?`)) return;
-  const n=products[i].naam;products.splice(i,1);renderList();showToast(`🗑️ "${n}" verwijderd`);
-}
-
-// ══════════════════════════════════════════════════════════════════
-// 🚀 PUBLICEREN
-// ══════════════════════════════════════════════════════════════════
-function buildProductsJS(){
-  const lines=products.map(p=>{
-    const fotos=p.fotos.map(f=>{
-      // Foto-object dat nog niet geüpload is — gebruik placeholder
-      if(typeof f==='object' && f.base64) return `'__FOTO_NOG_NIET_GEUPLOAD__'`;
-      // Foto-object dat al geüpload is
-      if(typeof f==='object' && f.githubUrl) return `'${f.githubUrl}'`;
-      // Normale string URL
-      if(typeof f==='string' && f) return `'${f.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}'`;
-      return null;
-    }).filter(Boolean);
-    return `  {naam:'${p.naam.replace(/'/g,"\\'")}',prijs:'${p.prijs}',sale:'${p.sale||''}',cat:'${p.cat}',badge:'${p.badge}',maten:[${p.maten.map(m=>`'${m}'`).join(',')}],spelers:[${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],fotos:[${fotos.join(',')}]}`;
-  });
-  return `const products = [\n${lines.join(',\n')}\n];\n`;
-}
-
-function pubLog(msg,type='info'){
-  const el=document.getElementById('publishLog');
-  el.classList.add('visible');
-  const div=document.createElement('div');
-  div.className=`log-line log-${type}`;
-  div.textContent=`${new Date().toLocaleTimeString('nl')} — ${msg}`;
-  el.appendChild(div);el.scrollTop=el.scrollHeight;
-}
-function setProgress(pct,status){
-  document.getElementById('progressBar').style.width=pct+'%';
-  document.getElementById('progressStatus').textContent=status;
-}
-
-async function migrateAndPublish(){await publishToGitHub();}
-
-async function publishToGitHub(){
-  if(!GH_TOKEN){showToast('⚠️ Geen token — stel in via ⚙️ Instellingen','error');return;}
-  const btn=document.getElementById('publishBtn');
-  btn.disabled=true;btn.textContent='⏳ Publiceren...';
-  document.getElementById('publishLog').innerHTML='';
-  document.getElementById('publishLog').classList.add('visible');
-  document.getElementById('progressWrap').classList.add('visible');
-  setProgress(5,'Verbinding maken...');
-
-  try{
-    pubLog('Verbinding maken met GitHub...','info');
-    const check=await ghFetch(`repos/${GH_USER}/${GH_REPO}`);
-    if(!check.ok) throw new Error(`Repository niet gevonden (${check.status})`);
-    pubLog('✅ Repository gevonden!','ok');
-    setProgress(10,'Foto\'s uploaden...');
-
-    // ── STAP 1: Upload alle eigen foto's naar images/ ──────────────
-    let fotosTotaal=0, fotosGedaan=0;
-    // Tel hoeveel foto-objecten er zijn (base64, nog niet geüpload)
-    products.forEach(p=>{
-      p.fotos.forEach(f=>{if(typeof f==='object'&&f.base64) fotosTotaal++;});
-    });
-
-    if(fotosTotaal>0){
-      pubLog(`${fotosTotaal} eigen foto's uploaden naar GitHub images/...`,'info');
-    }
-
-    // Upload per product
-    for(let pi=0; pi<products.length; pi++){
-      const p = products[pi];
-      const nieuweUrls = [];
-      for(let fi=0; fi<p.fotos.length; fi++){
-        const f = p.fotos[fi];
-        if(typeof f === 'object' && f.base64){
-          // Eigen foto — uploaden
-          fotosGedaan++;
-          const pct = 10 + Math.round((fotosGedaan/Math.max(fotosTotaal,1))*35);
-          setProgress(pct, `Foto ${fotosGedaan}/${fotosTotaal}: ${f.filename||'foto'}`);
-          pubLog(`⬆️ Uploaden: ${f.filename} (${p.naam})`,'info');
-          try{
-            const url = await uploadFotoToGitHub(f, p.naam);
-            nieuweUrls.push(url);
-            pubLog(`✅ ${f.filename} → GitHub`,'ok');
-          }catch(e){
-            pubLog(`⚠️ Foto upload mislukt: ${e.message}`,'warn');
-            // Gebruik base64 als fallback zodat product niet verloren gaat
-            nieuweUrls.push(f.base64full || '');
-          }
-          await new Promise(r=>setTimeout(r,200)); // kleine pauze
-        } else if(typeof f === 'object' && f.githubUrl){
-          nieuweUrls.push(f.githubUrl);
-        } else {
-          // String URL — gewoon overnemen
-          nieuweUrls.push(f);
-        }
-      }
-      products[pi].fotos = nieuweUrls;
-    }
-
-    // ── STAP 2: Publiceer producten.js ────────────────────────────
-    setProgress(50,'producten.js ophalen...');
-    const sha=await getFileSHA('producten.js');
-    setProgress(65,'producten.js uploaden...');
-    pubLog(`${products.length} producten publiceren...`,'info');
-    const content=buildProductsJS();
-    const encoded=btoa(unescape(encodeURIComponent(content)));
-    const r=await putFile('producten.js',encoded,`✅ Glory Elevn — ${products.length} producten`,sha);
-    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||r.status);}
-
-    pubLog('✅ producten.js gepubliceerd!','ok');
-    setProgress(100,'✅ Live!');
-    pubLog(`🎉 Klaar! ${products.length} producten live${fotosTotaal>0?` + ${fotosTotaal} eigen foto's geüpload`:''}.`,'ok');
-    showToast(`🚀 Live! ${products.length} producten${fotosTotaal>0?` + ${fotosTotaal} foto's`:''}`, 'success');
-
-  }catch(e){
-    pubLog(`❌ Fout: ${e.message}`,'err');
-    setProgress(0,'❌ Mislukt');
-    showToast('❌ '+e.message,'error');
-  }finally{
-    btn.disabled=false;
-    btn.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Publiceer naar gloryelevn.com';
-    updateTokenStatus();
-  }
-}
-
-// ══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 // TOAST
-// ══════════════════════════════════════════════════════════════════
-function showToast(msg,type=''){
+// ═══════════════════════════════════════════════════════
+function toast(msg,type=''){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast show'+(type?' '+type:'');
   setTimeout(()=>t.classList.remove('show'),4500);
