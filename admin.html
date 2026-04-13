@@ -581,14 +581,14 @@ function setMigProgress(pct,status,current=''){
 // De workflow downloadt elke foto server-side en slaat hem op in images/
 
 async function createMigrationWorkflow(urlList){
-  const downloads = urlList.map(item=>{
+  // Stap 1: Sla alle URLs op in een apart tekstbestand (geen YAML-problemen)
+  const urlLines = urlList.map(item=>{
     const fn = shopifyUrlToFilename(item.url);
     const cleanUrl = item.url.replace(/&width=\d+/,'').replace(/\?width=\d+/,'');
-    return `  migrate("${cleanUrl}", "images/${fn}")`;
+    return `${cleanUrl}|images/${fn}`;
   }).join('\n');
 
-  // Trigger: push — workflow starts AUTOMATICALLY when this file is committed
-  // No need to manually trigger via API (which fails for new workflows)
+  // Stap 2: Workflow leest het tekstbestand — geen speciale tekens in YAML
   const workflowYaml = `name: Migrate Shopify Photos
 on:
   push:
@@ -601,39 +601,38 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Download and save photos
+      - name: Download photos
         run: |
-          python3 << 'EOF'
+          python3 - << 'PYEOF'
 import urllib.request, os, time
-
 os.makedirs("images", exist_ok=True)
-
-def migrate(url, path):
+with open(".github/workflows/urls.txt") as f:
+    lines = [l.strip() for l in f if l.strip()]
+for line in lines:
+    url, path = line.split("|", 1)
     if os.path.exists(path):
-        print(f"Already exists: {path}")
-        return
+        print("skip " + path)
+        continue
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=30) as r:
             data = r.read()
-        with open(path, "wb") as f:
-            f.write(data)
-        print(f"OK {path} ({len(data)//1024}KB)")
-        time.sleep(0.15)
+        with open(path, "wb") as f2:
+            f2.write(data)
+        print("ok " + path + " " + str(len(data)//1024) + "KB")
+        time.sleep(0.1)
     except Exception as e:
-        print(f"FAIL {path}: {e}")
-
-${downloads}
-EOF
-      - name: Commit photos
+        print("fail " + path + " " + str(e))
+PYEOF
+      - name: Commit
         run: |
-          git config user.name "Glory Elevn Admin"
+          git config user.name "Glory Elevn"
           git config user.email "admin@gloryelevn.com"
           git add images/
-          git diff --staged --quiet || git commit -m "Foto migratie van Shopify naar GitHub"
+          git diff --staged --quiet || git commit -m "Foto migratie Shopify naar GitHub"
           git push
 `;
-  return workflowYaml;
+  return { workflowYaml, urlLines };
 }
 
 let toMigrateGlobal=[];
@@ -662,15 +661,27 @@ async function step1_createWorkflow(){
   migLog('Migratiescript uploaden — start automatisch na commit...','info');
 
   try{
-    // Upload workflow — push trigger zorgt dat het AUTOMATISCH start
-    const workflowContent=await createMigrationWorkflow(toMigrateGlobal);
-    const workflowPath='.github/workflows/migrate-photos.yml';
+    // Genereer workflow + URL lijst
+    const {workflowYaml, urlLines} = await createMigrationWorkflow(toMigrateGlobal);
+    const workflowPath = '.github/workflows/migrate-photos.yml';
+    const urlsPath = '.github/workflows/urls.txt';
 
-    // Altijd een nieuwe SHA gebruiken zodat GitHub een nieuwe push ziet
-    const existingSHA=await getFileSHA(workflowPath);
-    const encoded=btoa(unescape(encodeURIComponent(workflowContent)));
-    const uploadR=await putFile(workflowPath,encoded,`Foto migratie gestart — ${new Date().toLocaleTimeString('nl')}`,existingSHA);
-    if(!uploadR.ok){const e=await uploadR.json().catch(()=>({}));throw new Error('Upload mislukt: '+(e.message||uploadR.status));}
+    // Stap A: Upload urls.txt eerst (geen trigger)
+    setMigProgress(15,'URL-lijst uploaden...');
+    migLog(`${toMigrateGlobal.length} foto-URLs opslaan in urls.txt...`,'info');
+    const urlsSHA = await getFileSHA(urlsPath);
+    const urlsEncoded = btoa(unescape(encodeURIComponent(urlLines)));
+    const urlsR = await putFile(urlsPath, urlsEncoded, 'Foto URL lijst', urlsSHA);
+    if(!urlsR.ok){const e=await urlsR.json().catch(()=>({}));throw new Error('URLs upload mislukt: '+(e.message||urlsR.status));}
+    migLog('✅ URL-lijst opgeslagen!','ok');
+
+    // Stap B: Upload workflow — triggert automatisch via push
+    setMigProgress(25,'Migratiescript uploaden (start automatisch)...');
+    migLog('Migratiescript uploaden naar GitHub...','info');
+    const existingSHA = await getFileSHA(workflowPath);
+    const encoded = btoa(unescape(encodeURIComponent(workflowYaml)));
+    const uploadR = await putFile(workflowPath, encoded, `Foto migratie gestart ${new Date().toLocaleTimeString('nl')}`, existingSHA);
+    if(!uploadR.ok){const e=await uploadR.json().catch(()=>({}));throw new Error('Script upload mislukt: '+(e.message||uploadR.status));}
 
     migLog('✅ Script geüpload! GitHub start automatisch met downloaden...','ok');
     setMigProgress(30,'Wachten op GitHub Actions... (automatisch gestart)');
