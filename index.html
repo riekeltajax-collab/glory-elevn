@@ -747,6 +747,17 @@ const blbl={new:'Nieuw',sale:'Sale',kids:'Kids',retro:'Retro',training:'Training
 let currentFilter='all', currentSearch='', currentProduct=null, selectedPlayer='';
 let favs=[];try{favs=JSON.parse(localStorage.getItem('ge_favs')||'[]')}catch(e){}
 
+// ── FOTO URL FIX ──────────────────────────
+// Zet relatieve images/ paden om naar absolute GitHub raw URLs
+const GITHUB_BASE='https://raw.githubusercontent.com/riekeltajax-collab/glory-elevn/main/';
+function fotoUrl(url){
+  if(!url) return '';
+  // Al een absolute URL — niets doen
+  if(url.startsWith('http')) return url;
+  // Relatief pad zoals 'images/foto.jpg' — maak absoluut
+  return GITHUB_BASE + url;
+}
+
 // ── MENU ─────────────────────────────────
 function openMenu(){
   document.getElementById('slideMenu').classList.add('open');
@@ -800,8 +811,8 @@ function render(){
     const bl=p.sale?'Sale':(blbl[p.badge]||'Nieuw');
     return `<div class="product-card" style="animation-delay:${i*.03}s" onclick="cardClick(this,${idx})">
       <div class="prod-img">
-        <img src="${p.fotos[0]}" alt="${p.naam}" loading="lazy">
-        ${p.fotos[1]?`<img src="${p.fotos[1]}" alt="" class="img2" loading="lazy">`:''}
+        <img src="${fotoUrl(p.fotos[0])}" alt="${p.naam}" loading="lazy">
+        ${p.fotos[1]?`<img src="${fotoUrl(p.fotos[1])}" alt="" class="img2" loading="lazy">`:''}
         <div class="badge ${bc}">${bl}</div>
         <div class="card-actions">
           <button class="card-action-btn${isFav?' fav-active':''}" onclick="toggleFav(${idx},event)">${isFav?'❤️':'🤍'}</button>
@@ -896,8 +907,8 @@ function openModal(idx){
   document.getElementById('modalPlayers').innerHTML=p.spelers.map(s=>`<span class="modal-player-tag" onclick="selectPlayer(this,'${s.replace(/'/g,"\\'")}')"> ${s}</span>`).join('');
   document.getElementById('playerHint').textContent=p.spelers.length?'Tik een speler aan om te selecteren voor je bestelling':'';
   document.getElementById('modalSizes').innerHTML=p.maten.map((m,i)=>`<button class="msz${i===0?' active':''}" onclick="this.closest('.modal-sizes').querySelectorAll('.msz').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${m}</button>`).join('');
-  document.getElementById('modalMainImg').src=p.fotos[0];
-  document.getElementById('modalThumbs').innerHTML=p.fotos.length>1?p.fotos.map((f,i)=>`<img class="modal-thumb${i===0?' active':''}" src="${f}" onclick="switchPhoto(this,'${f}')" alt="">`).join(''):'';
+  document.getElementById('modalMainImg').src=fotoUrl(p.fotos[0]);
+  document.getElementById('modalThumbs').innerHTML=p.fotos.length>1?p.fotos.map((f,i)=>`<img class="modal-thumb${i===0?' active':''}" src="${fotoUrl(f)}" onclick="switchPhoto(this,'${fotoUrl(f)}')" alt="">`).join(''):'';
   document.getElementById('modalBg').classList.add('open');document.body.style.overflow='hidden';
 }
 
@@ -951,7 +962,7 @@ function buildCarousel(){
   const row1=fill(items,20),row2=fill([...items].reverse(),20);
   function makeItem(p){
     const d=document.createElement('div');d.className='carousel-item';
-    d.innerHTML=`<img src="${p.fotos[0]}" alt="${p.naam}" loading="lazy"><div class="carousel-item-label">${p.naam}</div>`;
+    d.innerHTML=`<img src="${fotoUrl(p.fotos[0])}" alt="${p.naam}" loading="lazy"><div class="carousel-item-label">${p.naam}</div>`;
     d.onclick=()=>{openModal(products.indexOf(p));scrollToShop();};
     return d;
   }
