@@ -385,8 +385,7 @@ let GH_REPO   = localStorage.getItem('ge_gh_repo')   || 'glory-elevn';
 let GH_BRANCH = localStorage.getItem('ge_gh_branch') || 'main';
 let GH_TOKEN  = localStorage.getItem('ge_gh_token')  || '';
 
-let newProductPhotos = [];
-let editPhotos = {};
+// foto arrays worden gedeclareerd in de foto-upload sectie hieronder
 
 // ══════════════════════════════════════════════════════════════════
 // LOGIN
@@ -750,37 +749,129 @@ async function step2_triggerWorkflow(){} // niet meer nodig
 async function startMigration(){await step1_createWorkflow();}
 
 // ══════════════════════════════════════════════════════════════════
-// FOTO UPLOAD (nieuweproducten / edit)
+// FOTO UPLOAD → DIRECT NAAR GITHUB
 // ══════════════════════════════════════════════════════════════════
+
+// Sla foto's op als base64 tijdelijk, upload later bij publiceren
+let newProductPhotos = []; // array van {base64, filename, githubUrl}
+let editPhotos = {};
+
+function sanitizeFilename(naam, index){
+  // Maak een veilige bestandsnaam van de productnaam
+  const safe = naam.toLowerCase()
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 40);
+  return `${safe}-${Date.now()}-${index}.jpg`;
+}
+
 function handlePhotos(files, arr, previewId){
   if(!files||!files.length) return;
   let done=0;
-  Array.from(files).forEach(file=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      arr.push(e.target.result);
+  Array.from(files).forEach((file, i)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const base64full = e.target.result; // data:image/jpeg;base64,...
+      const base64 = base64full.split(',')[1];
+      const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+      const filename = `foto-${Date.now()}-${i}.${ext}`;
+      arr.push({
+        base64full,        // voor preview
+        base64,            // voor GitHub upload
+        filename,
+        githubUrl: null,   // wordt ingevuld na upload
+      });
       done++;
       if(done===files.length) renderPreviews(arr, previewId);
     };
-    r.readAsDataURL(file);
+    reader.readAsDataURL(file);
   });
 }
+
 function renderPreviews(arr, previewId){
-  const el=document.getElementById(previewId);if(!el) return;
-  el.innerHTML=arr.map((src,i)=>`
+  const el=document.getElementById(previewId);
+  if(!el) return;
+  el.innerHTML=arr.map((item,i)=>`
     <div class="photo-preview">
-      <img src="${src}" alt="">
-      <div class="ph-num">Foto ${i+1}</div>
+      <img src="${item.base64full||item}" alt="">
+      <div class="ph-num">${item.githubUrl?'✅ Klaar':'⏳ Uploaden...'}</div>
       <button class="rm" onclick="removePhoto(${i},'${previewId}')">✕</button>
     </div>`).join('');
 }
+
 function removePhoto(idx, previewId){
   if(previewId==='photoPreviews'){
-    newProductPhotos.splice(idx,1);renderPreviews(newProductPhotos,previewId);
+    newProductPhotos.splice(idx,1);
+    renderPreviews(newProductPhotos,'photoPreviews');
   } else {
     const ri=parseInt(previewId.replace('ep-prev-',''));
-    editPhotos[ri].splice(idx,1);renderPreviews(editPhotos[ri],previewId);
+    editPhotos[ri].splice(idx,1);
+    renderPreviews(editPhotos[ri],previewId);
   }
+}
+
+// Upload één foto naar GitHub images/ map
+async function uploadFotoToGitHub(fotoObj, naam){
+  if(!GH_TOKEN) throw new Error('Geen GitHub token ingesteld');
+  if(fotoObj.githubUrl) return fotoObj.githubUrl; // al geüpload
+
+  const filename = fotoObj.filename || sanitizeFilename(naam||'foto', Date.now());
+  const path = `images/${filename}`;
+
+  // Check of bestand al bestaat
+  const sha = await getFileSHA(path);
+
+  const r = await ghFetch(`repos/${GH_USER}/${GH_REPO}/contents/${path}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      message: `📸 Foto toegevoegd: ${filename}`,
+      content: fotoObj.base64,
+      branch: GH_BRANCH,
+      ...(sha ? {sha} : {})
+    })
+  });
+
+  if(!r.ok){
+    const e = await r.json().catch(()=>({}));
+    throw new Error(`Foto upload mislukt: ${e.message||r.status}`);
+  }
+
+  // Return de raw GitHub URL
+  const url = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/images/${filename}`;
+  fotoObj.githubUrl = url;
+  return url;
+}
+
+// Upload alle foto's in een array en return de GitHub URLs
+async function uploadAllFotos(arr, naam, statusEl){
+  const urls = [];
+  for(let i=0; i<arr.length; i++){
+    const item = arr[i];
+    // Al een echte URL (bestaande foto) — gewoon gebruiken
+    if(typeof item === 'string'){
+      urls.push(item);
+      continue;
+    }
+    if(item.githubUrl){
+      urls.push(item.githubUrl);
+      continue;
+    }
+    // Nog uploaden
+    if(statusEl) statusEl.textContent = `📸 Foto ${i+1}/${arr.length} uploaden naar GitHub...`;
+    try {
+      const url = await uploadFotoToGitHub(item, naam);
+      urls.push(url);
+      // Update preview
+      const previews = document.querySelectorAll('.photo-preview .ph-num');
+      if(previews[i]) previews[i].textContent = '✅ Klaar';
+    } catch(e){
+      showToast(`⚠️ Foto ${i+1} upload mislukt: ${e.message}`, 'error');
+      // Behoud base64 als fallback zodat product niet verloren gaat
+      if(item.base64full) urls.push(item.base64full);
+    }
+  }
+  return urls;
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -793,12 +884,14 @@ function addProduct(){
   if(!newProductPhotos.length){showToast('⚠️ Voeg minimaal 1 foto toe','error');return false;}
   const sale=document.getElementById('f-sale').value.trim();
   const cat=document.getElementById('f-cat').value;
-  const maten=document.getElementById('f-maten').value.trim().split(',').map(s=>s.trim()).filter(Boolean)||['S','M','L','XL','XXL'];
+  const maten=document.getElementById('f-maten').value.trim().split(',').map(s=>s.trim()).filter(Boolean);
   const spelers=document.getElementById('f-spelers').value.trim().split(',').map(s=>s.trim()).filter(Boolean);
+  if(!maten.length) maten.push('S','M','L','XL','XXL');
+  // Sla tijdelijk op met foto-objecten — worden geüpload bij publishToGitHub()
   products.unshift({naam,prijs,sale,cat,badge:sale?'sale':cat,maten,spelers,fotos:[...newProductPhotos]});
   ['f-naam','f-prijs','f-sale','f-maten','f-spelers'].forEach(id=>document.getElementById(id).value='');
   newProductPhotos=[];document.getElementById('photoPreviews').innerHTML='';
-  showToast(`✅ "${naam}" toegevoegd!`,'success');
+  showToast(`✅ "${naam}" toegevoegd! Druk op 🚀 Publiceer om foto's te uploaden.`,'success');
   return true;
 }
 async function addAndPublish(){if(addProduct()) await publishToGitHub();}
@@ -847,8 +940,10 @@ function renderList(){
     </div>`).join('');
   products.forEach((p,i)=>{editPhotos[i]=[...p.fotos];});
 }
-function handleEditPhotos(idx,files){editPhotos[idx]=[];handlePhotos(files,editPhotos[idx],`ep-prev-${idx}`);}
-function toggleEdit(i){document.getElementById('edit-'+i).classList.toggle('open');}
+function handleEditPhotos(idx,files){
+  editPhotos[idx]=[];
+  handlePhotos(files,editPhotos[idx],`ep-prev-${idx}`);
+}function toggleEdit(i){document.getElementById('edit-'+i).classList.toggle('open');}
 function saveEdit(i){
   const cat=document.getElementById('ec-'+i).value;
   const sale=document.getElementById('es-'+i).value.trim();
@@ -874,19 +969,15 @@ function delProduct(i){
 function buildProductsJS(){
   const lines=products.map(p=>{
     const fotos=p.fotos.map(f=>{
-      if(f.startsWith('data:image')) return `'__BASE64_UPLOAD_NEEDED__'`;
-      return `'${f.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}'`;
-    });
-    return [
-      `  {naam:'${p.naam.replace(/'/g,"\\'")}',`,
-      `prijs:'${p.prijs}',`,
-      `sale:'${p.sale||''}',`,
-      `cat:'${p.cat}',`,
-      `badge:'${p.badge}',`,
-      `maten:[${p.maten.map(m=>`'${m}'`).join(',')}],`,
-      `spelers:[${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],`,
-      `fotos:[${fotos.join(',')}]}`,
-    ].join('');
+      // Foto-object dat nog niet geüpload is — gebruik placeholder
+      if(typeof f==='object' && f.base64) return `'__FOTO_NOG_NIET_GEUPLOAD__'`;
+      // Foto-object dat al geüpload is
+      if(typeof f==='object' && f.githubUrl) return `'${f.githubUrl}'`;
+      // Normale string URL
+      if(typeof f==='string' && f) return `'${f.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}'`;
+      return null;
+    }).filter(Boolean);
+    return `  {naam:'${p.naam.replace(/'/g,"\\'")}',prijs:'${p.prijs}',sale:'${p.sale||''}',cat:'${p.cat}',badge:'${p.badge}',maten:[${p.maten.map(m=>`'${m}'`).join(',')}],spelers:[${p.spelers.map(s=>`'${s.replace(/'/g,"\\'")}'`).join(',')}],fotos:[${fotos.join(',')}]}`;
   });
   return `const products = [\n${lines.join(',\n')}\n];\n`;
 }
@@ -907,30 +998,79 @@ function setProgress(pct,status){
 async function migrateAndPublish(){await publishToGitHub();}
 
 async function publishToGitHub(){
-  if(!GH_TOKEN){showToast('⚠️ Geen token','error');return;}
+  if(!GH_TOKEN){showToast('⚠️ Geen token — stel in via ⚙️ Instellingen','error');return;}
   const btn=document.getElementById('publishBtn');
   btn.disabled=true;btn.textContent='⏳ Publiceren...';
   document.getElementById('publishLog').innerHTML='';
   document.getElementById('publishLog').classList.add('visible');
   document.getElementById('progressWrap').classList.add('visible');
   setProgress(5,'Verbinding maken...');
+
   try{
     pubLog('Verbinding maken met GitHub...','info');
     const check=await ghFetch(`repos/${GH_USER}/${GH_REPO}`);
     if(!check.ok) throw new Error(`Repository niet gevonden (${check.status})`);
     pubLog('✅ Repository gevonden!','ok');
-    setProgress(30,'producten.js ophalen...');
+    setProgress(10,'Foto\'s uploaden...');
+
+    // ── STAP 1: Upload alle eigen foto's naar images/ ──────────────
+    let fotosTotaal=0, fotosGedaan=0;
+    // Tel hoeveel foto-objecten er zijn (base64, nog niet geüpload)
+    products.forEach(p=>{
+      p.fotos.forEach(f=>{if(typeof f==='object'&&f.base64) fotosTotaal++;});
+    });
+
+    if(fotosTotaal>0){
+      pubLog(`${fotosTotaal} eigen foto's uploaden naar GitHub images/...`,'info');
+    }
+
+    // Upload per product
+    for(let pi=0; pi<products.length; pi++){
+      const p = products[pi];
+      const nieuweUrls = [];
+      for(let fi=0; fi<p.fotos.length; fi++){
+        const f = p.fotos[fi];
+        if(typeof f === 'object' && f.base64){
+          // Eigen foto — uploaden
+          fotosGedaan++;
+          const pct = 10 + Math.round((fotosGedaan/Math.max(fotosTotaal,1))*35);
+          setProgress(pct, `Foto ${fotosGedaan}/${fotosTotaal}: ${f.filename||'foto'}`);
+          pubLog(`⬆️ Uploaden: ${f.filename} (${p.naam})`,'info');
+          try{
+            const url = await uploadFotoToGitHub(f, p.naam);
+            nieuweUrls.push(url);
+            pubLog(`✅ ${f.filename} → GitHub`,'ok');
+          }catch(e){
+            pubLog(`⚠️ Foto upload mislukt: ${e.message}`,'warn');
+            // Gebruik base64 als fallback zodat product niet verloren gaat
+            nieuweUrls.push(f.base64full || '');
+          }
+          await new Promise(r=>setTimeout(r,200)); // kleine pauze
+        } else if(typeof f === 'object' && f.githubUrl){
+          nieuweUrls.push(f.githubUrl);
+        } else {
+          // String URL — gewoon overnemen
+          nieuweUrls.push(f);
+        }
+      }
+      products[pi].fotos = nieuweUrls;
+    }
+
+    // ── STAP 2: Publiceer producten.js ────────────────────────────
+    setProgress(50,'producten.js ophalen...');
     const sha=await getFileSHA('producten.js');
-    setProgress(55,'producten.js uploaden...');
-    pubLog(`${products.length} producten worden gepubliceerd...`,'info');
+    setProgress(65,'producten.js uploaden...');
+    pubLog(`${products.length} producten publiceren...`,'info');
     const content=buildProductsJS();
     const encoded=btoa(unescape(encodeURIComponent(content)));
-    const r=await putFile('producten.js',encoded,`✅ Glory Elevn — ${products.length} producten bijgewerkt`,sha);
+    const r=await putFile('producten.js',encoded,`✅ Glory Elevn — ${products.length} producten`,sha);
     if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||r.status);}
+
     pubLog('✅ producten.js gepubliceerd!','ok');
     setProgress(100,'✅ Live!');
-    pubLog(`🎉 Klaar! ${products.length} producten zijn live op je website.`,'ok');
-    showToast(`🚀 ${products.length} producten zijn live!`,'success');
+    pubLog(`🎉 Klaar! ${products.length} producten live${fotosTotaal>0?` + ${fotosTotaal} eigen foto's geüpload`:''}.`,'ok');
+    showToast(`🚀 Live! ${products.length} producten${fotosTotaal>0?` + ${fotosTotaal} foto's`:''}`, 'success');
+
   }catch(e){
     pubLog(`❌ Fout: ${e.message}`,'err');
     setProgress(0,'❌ Mislukt');
