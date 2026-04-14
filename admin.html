@@ -179,6 +179,16 @@
       <span class="token-text" id="tokenText">Laden...</span>
       <button class="token-link" onclick="showPage('settings',document.querySelectorAll('.nav-tab')[4])">Instellen →</button>
     </div>
+
+    <!-- FIX BANNER — toont alleen als er kapotte paden zijn -->
+    <div id="fixBanner" style="display:none;background:#fff3e0;border-left:4px solid #ff9800;padding:14px;margin-bottom:14px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:6px">⚠️ Kapotte foto-paden gedetecteerd</div>
+      <div style="font-size:12px;color:#555;margin-bottom:10px">Er zijn producten met relatieve <code>images/</code> paden die niet laden op de website. Klik hieronder om ze automatisch te repareren en te publiceren.</div>
+      <button onclick="fixEnPubliceer()" style="width:100%;padding:12px;background:#ff9800;color:#fff;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif">
+        🔧 Fix foto-paden + publiceer nu
+      </button>
+    </div>
+
     <div class="publish-hero">
       <h2>🚀 Live Publiceren</h2>
       <p>Alle producten direct live op je website</p>
@@ -350,6 +360,42 @@ if(sessionStorage.getItem('ge_ok')==='1'){
   initApp();
 }
 
+const GITHUB_RAW = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/`;
+
+// Zet relatieve images/ paden om naar absolute URLs — altijd
+function fixFotoUrl(url){
+  if(!url || typeof url !== 'string') return url;
+  if(url.startsWith('http')) return url; // al absoluut
+  return `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${url}`;
+}
+
+function fixAllFotoPaden(){
+  let fixed = 0;
+  products.forEach(p => {
+    if(!p.fotos) return;
+    p.fotos = p.fotos.map(f => {
+      const nieuw = fixFotoUrl(f);
+      if(nieuw !== f) fixed++;
+      return nieuw;
+    });
+  });
+  return fixed;
+}
+
+function checkKapottePaden(){
+  if(typeof products === 'undefined') return 0;
+  return products.filter(p => p.fotos && p.fotos.some(f =>
+    typeof f === 'string' && !f.startsWith('http')
+  )).length;
+}
+
+async function fixEnPubliceer(){
+  const n = fixAllFotoPaden();
+  toast(`🔧 ${n} foto-paden gecorrigeerd — nu publiceren...`);
+  document.getElementById('fixBanner').style.display='none';
+  await publishAll();
+}
+
 function initApp(){
   updateTokenUI();
   document.getElementById('s-user').value=GH_USER;
@@ -357,6 +403,13 @@ function initApp(){
   document.getElementById('s-branch').value=GH_BRANCH;
   if(GH_TOKEN) document.getElementById('tokenInput').value=GH_TOKEN;
   updateMigStats();
+
+  // Fix alle relatieve paden direct bij laden — altijd
+  const fixed = fixAllFotoPaden();
+  if(fixed > 0){
+    console.log(`Auto-fixed ${fixed} foto-paden bij laden`);
+    document.getElementById('fixBanner').style.display='block';
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -716,8 +769,10 @@ function delProduct(i){
 function buildJS(){
   const lines=products.map(p=>{
     const fotos=p.fotos.map(f=>{
-      const url=typeof f==='object'?f.url:f;
+      let url=typeof f==='object'?f.url:f;
       if(!url||url.startsWith('data:')||url==='__BASE64_UPLOAD_NEEDED__') return null;
+      // ALTIJD absolute URL — nooit relatief pad opslaan
+      url = fixFotoUrl(url);
       return `'${url.replace(/'/g,"\\'")}'`;
     }).filter(Boolean);
     if(!fotos.length) return null;
